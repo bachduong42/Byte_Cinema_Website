@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@font-face {
+  font-family: "Pixelify Sans Local";
+  src: url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Playfair Display", serif;
+  src: url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.pixel-text {
+  font-family: "Pixelify Sans", "Pixelify Sans Local", sans-serif;
+}
+.playfair-text {
+  font-family: "Playfair Display", "Playfair Display", sans-serif;
+}
