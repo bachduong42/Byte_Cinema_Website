@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton+SC&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 @font-face {
   font-family: "Pixelify Sans Local";
   src: url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap")
@@ -15,10 +17,67 @@
   font-weight: normal;
   font-style: normal;
 }
-
+.anton-text {
+  font-family: "Anton SC", sans-serif;
+}
 .pixel-text {
   font-family: "Pixelify Sans", "Pixelify Sans Local", sans-serif;
 }
 .playfair-text {
   font-family: "Playfair Display", "Playfair Display", sans-serif;
 }
+.anton-text {
+  font-family: "Anton SC", sans-serif;
+}
+.nunito-text {
+  font-family: "Nunito", sans-serif;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  display: none;
+}
+
+.home .swiper-button-next,
+.home .swiper-button-prev {
+  display: none;
+}
+
+/* scroll */
+html ::-webkit-scrollbar {
+  border-radius: 0px;
+  width: 0px;
+}
+
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 0px;
+}
+html ::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(22, 24, 35, 0.06);
+}
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+html ::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background-color: rgba(0, 0, 0, 0);
+}
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* .wrapper {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.scrollable {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+} */

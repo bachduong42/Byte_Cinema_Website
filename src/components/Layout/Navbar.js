@@ -1,26 +1,71 @@
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/images/logo.png"
+import Button from "../Button/Button";
+import { useLocation } from "react-router-dom";
 import Image from "../Image/Image";
-function Navbar() {
+const Navbar = React.memo(() => {
+    console.log("re-render")
+    const location = useLocation();
+    const [activeButton, setActiveButton] = useState('/');
+    const [isScrolled, setIsScrolled] = useState(false);
+    useEffect(() => {
+        setActiveButton(location.pathname);
+    }, [location.pathname]);
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
     return (
-        <nav className="flex justify-between">
-            <div className="flex gap-x-5">
+        <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[95px] h-[68px] lg:pt-3 pt-2 transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B]' : ''}`}>
+            <div className="flex gap-x-14 items-center">
                 <div className="flex flex-col items-start">
-                    <Image src={logo} alt={logo} width="75px" height="65px" />
-                    <div className="pixel-text text-[32px]  leading-5">Bytes</div>
-                    <div className="text-[#43CFFB]  text-xl playfair-text">Cinema</div>
+                    <Image src={logo} alt={logo} className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]" />
+                    <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5 text-white">Bytes</div>
+                    <div className="text-[#43CFFB]  lg:text-xl md:text-[18px] text-[12px] playfair-text">Cinema</div>
                 </div>
-                <ul className="flex gap-x-5">
-                    <a href="/" >Trang chủ</a>
-                    <a href="/" >Thể loại</a>
-                    <a href="/" >Sự kiện</a>
-                    <a href="/" >Rạp/Giá vé</a>
+                <ul className="lg:flex hidden gap-x-12 items-center">
+                    <Button
+                        href="/"
+                        active={activeButton === '/'}
+                        onClick={() => setActiveButton('/')}>
+                        Trang chủ
+                    </Button>
+                    <Button
+                        href="/categories"
+                        active={activeButton === '/categories'}
+                        onClick={() => setActiveButton('/categories')}>
+                        Thể loại
+                    </Button>
+                    <Button
+                        href="/events"
+                        active={activeButton === '/events'}
+                        onClick={() => setActiveButton('/events')}>
+                        Sự kiện
+                    </Button>
+                    <Button
+                        href="/theaters"
+                        active={activeButton === '/theaters'}
+                        onClick={() => setActiveButton('/theaters')}>
+                        Rạp/Giá vé
+                    </Button>
                 </ul>
             </div>
-            <div className="flex gap-x-5">
-                <button></button>
+            <div className="flex gap-x-5 items-center">
+                <Button text>Đăng nhập</Button>
+                <Button primary>Đăng ký</Button>
             </div>
         </nav>
     );
-}
+})
 
 export default Navbar;
