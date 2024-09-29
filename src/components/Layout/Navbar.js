@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import { useLocation } from "react-router-dom";
 import Image from "../Image/Image";
 import Login from "../../modules/auth/Login";
-
+import Register from "../../modules/auth/Register";
 const Navbar = React.memo(() => {
     console.log("re-render")
     const location = useLocation();
@@ -12,7 +12,7 @@ const Navbar = React.memo(() => {
     const [isScrolled, setIsScrolled] = useState(false);
 
     const [loginModalRef, setLoginModalRef] = useState(null); 
-
+    const [registerModalRef, setRegisterModalRef] = useState(null); 
     useEffect(() => {
         setActiveButton(location.pathname);
     }, [location.pathname]);
@@ -37,6 +37,11 @@ const Navbar = React.memo(() => {
         }
       };
 
+      const handleRegisterClick = () => {
+        if (registerModalRef) {
+            registerModalRef.openRegisterModal();
+        }
+      };
     return (
         <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[95px] h-[68px] lg:pt-3 pt-2 transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B]' : ''}`}>
             <div className="flex gap-x-14 items-center">
@@ -74,11 +79,11 @@ const Navbar = React.memo(() => {
             </div>
             <div className="flex gap-x-5 items-center">
                 <Button text onClick={handleLoginClick}>Đăng nhập</Button>
-                <Button primary>Đăng ký</Button>
+                <Button primary onClick={handleRegisterClick}>Đăng ký</Button>
             </div>
 
             <Login setModalRef={setLoginModalRef} />
-            
+            <Register setModalRef={setRegisterModalRef} />
         </nav>
     );
 })

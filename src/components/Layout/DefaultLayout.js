@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import Navbar from "../../components/Layout/Navbar"
-import { useState } from 'react';
 function DefaultLayout({ children }) {
-    const [isLoginModalOpen, setLoginModalOpen] = useState(false);
     return (
         <>
             <div className="bg-white ">
