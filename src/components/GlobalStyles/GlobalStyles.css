@@ -81,3 +81,27 @@ html *::-webkit-scrollbar-track {
   width: 100%;
   overflow-y: auto;
 } */
+
+.logo-login-modal{
+  top: 0;
+}
+
+#register-line::before {
+  content: '';
+  display: block;
+  align-self: center;
+  height: 1px;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  background: #c0c1c4;
+}
+
+#register-line::after {
+  content: '';
+  display: block;
+  align-self: center;
+  height: 1px;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  background: #c0c1c4;
+}
