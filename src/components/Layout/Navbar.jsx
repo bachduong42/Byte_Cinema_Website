@@ -26,7 +26,7 @@ const Navbar = React.memo(() => {
         };
     }, []);
     return (
-        <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[95px] h-[68px] lg:pt-3 pt-2 transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B]' : ''}`}>
+        <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B] shadow-md border border-b-1 border-black' : ''}`}>
             <div className="flex gap-x-14 items-center">
                 <div className="flex flex-col items-start">
                     <Image src={logo} alt={logo} className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]" />
@@ -41,19 +41,19 @@ const Navbar = React.memo(() => {
                         Trang chủ
                     </Button>
                     <Button
-                        href="/categories"
+                        href="/"
                         active={activeButton === '/categories'}
                         onClick={() => setActiveButton('/categories')}>
                         Thể loại
                     </Button>
                     <Button
-                        href="/events"
+                        href="/"
                         active={activeButton === '/events'}
                         onClick={() => setActiveButton('/events')}>
                         Sự kiện
                     </Button>
                     <Button
-                        href="/theaters"
+                        href="/"
                         active={activeButton === '/theaters'}
                         onClick={() => setActiveButton('/theaters')}>
                         Rạp/Giá vé

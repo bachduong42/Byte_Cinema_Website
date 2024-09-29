@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import Navbar from "../../components/Layout/Navbar"
+import Navbar from "./Navbar"
+import Footer from './Footer';
 function DefaultLayout({ children }) {
     return (
         <>
@@ -8,6 +9,7 @@ function DefaultLayout({ children }) {
                 <div className="bg-bgGray ">
                     {children}
                 </div>
+                <Footer></Footer>
             </div>
         </>
     );
