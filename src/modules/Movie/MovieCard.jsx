@@ -1,9 +1,9 @@
-import Button from "../../components/Button/Button";
+
 import Image from "../../components/Image/Image";
 import PropTypes from 'prop-types';
-function MovieCard({ infor, className = "", cardInfor = false }) {
+function MovieCard({ infor, className, cardInfor = false }) {
     return (
-        <div className={`relative ${className} group ${cardInfor ? "transition-transform duration-300 ease-in-out transform hover:scale-110" : ""}`}>
+        <div className={`relative ${className} group cursor-pointer ${cardInfor ? "transition-transform duration-300 ease-in-out transform hover:scale-95" : ""}`}>
             <Image src={infor.image} alt={infor.image} className="w-full h-full object-cover  " />
             {cardInfor &&
                 <div className="absolute flex flex-col items-center gap-2 bg-[#12739dcc] w-full bottom-0  h-2/5  opacity-0 transform  translate-y-1 group-hover:opacity-100 group-hover:translate-y-1 transition-transform duration-300 ease-in-out">
