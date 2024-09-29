@@ -3,9 +3,9 @@ import Navbar from "../../components/Layout/Navbar"
 function DefaultLayout({ children }) {
     return (
         <>
-            <div className="bg-white lg:pt-3 pt-2">
+            <div className="bg-white ">
                 <Navbar></Navbar>
-                <div className="mx-6 bg-bgGray ">
+                <div className="bg-bgGray ">
                     {children}
                 </div>
             </div>

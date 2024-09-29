@@ -7,15 +7,30 @@ const Navbar = React.memo(() => {
     console.log("re-render")
     const location = useLocation();
     const [activeButton, setActiveButton] = useState('/');
+    const [isScrolled, setIsScrolled] = useState(false);
     useEffect(() => {
         setActiveButton(location.pathname);
     }, [location.pathname]);
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 80) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
     return (
-        <nav className="flex justify-between lg:px-14 px-6 lg:h-[111px] md:h-[95px] h-[68px]">
+        <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[95px] h-[68px] lg:pt-3 pt-2 transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B]' : ''}`}>
             <div className="flex gap-x-14 items-center">
                 <div className="flex flex-col items-start">
                     <Image src={logo} alt={logo} className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]" />
-                    <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5">Bytes</div>
+                    <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5 text-white">Bytes</div>
                     <div className="text-[#43CFFB]  lg:text-xl md:text-[18px] text-[12px] playfair-text">Cinema</div>
                 </div>
                 <ul className="lg:flex hidden gap-x-12 items-center">
