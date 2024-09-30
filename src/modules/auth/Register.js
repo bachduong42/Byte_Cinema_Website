@@ -110,11 +110,11 @@ const Register = ({ setModalRef }) => {
 
     const validateConfirmPassword = () => {
         if (confirmPassword.length === 0) {
-            setConfirmPasswordError('Vui lòng nhập mật khẩu')
+            setConfirmPasswordError('Vui lòng nhập mật khẩu');
         } else if (confirmPassword.length < 6) {
-            setConfirmPasswordError('Mật khẩu phải có ít nhất 6 ký tự')
+            setConfirmPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
         } else if (confirmPassword !== password) {
-            setConfirmPasswordError('Mật khẩu không khớp')
+            setConfirmPasswordError('Mật khẩu không khớp');
         }
         else {
             setConfirmPasswordError('');
@@ -141,7 +141,7 @@ const Register = ({ setModalRef }) => {
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='flex-row'>
-                                        <input type="text" name="username" id='username-input' placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={validateEmail} value={email} />
+                                        <input type="text" name="username" placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={validateEmail} value={email} />
 
                                         {email.length > 0 && (
                                             <div className='right-[51px] top-[131px] absolute' onClick={() => setEmail("")}>
@@ -157,7 +157,7 @@ const Register = ({ setModalRef }) => {
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='relative flex-row'>
-                                        <input type={isPasswordVisible ? "text" : "password"} name="password" id='username-password' placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={validatePassword} value={password} />
+                                        <input type={isPasswordVisible ? "text" : "password"} name="password"  placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={validatePassword} value={password} />
 
                                         {password.length > 0 && (
                                             <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setPassword("")}>
@@ -177,7 +177,7 @@ const Register = ({ setModalRef }) => {
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='relative flex-row'>
-                                        <input type={isConfirmPasswordVisible ? "text" : "password"} name="password" id='username-password' placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmPassword(e.target.value)} onBlur={validateConfirmPassword} value={confirmPassword} />
+                                        <input type={isConfirmPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmPassword(e.target.value)} onBlur={validateConfirmPassword} value={confirmPassword} />
 
                                         {confirmPassword.length > 0 && (
                                             <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setConfirmPassword("")}>
@@ -196,10 +196,10 @@ const Register = ({ setModalRef }) => {
 
                                 </div>
 
-                                <button type='submit-button' id='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isRegisterButtonEnabled} style={{ backgroundColor: isRegisterButtonEnabled ? '#e3e3e3' : '#db9a45' }}>Đăng ký</button>
+                                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isRegisterButtonEnabled} style={{ backgroundColor: isRegisterButtonEnabled ? '#e3e3e3' : '#db9a45' }}>Đăng ký</button>
                             </form>
 
-                            <div id="register-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
+                            <div id="login-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
                                 Bạn đã có tài khoản ?<a href='#' className='text-[#db9a45]'>Đăng nhập ngay</a>
                             </div>
                         </div>

@@ -21,7 +21,8 @@ const Login = ({ setModalRef }) => {
   const chibiContainerRef = useRef();
   const tlRef = useRef();
 
-  const isLoginButtonEnabled = !email || !password || password.length < 6;
+  const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isLoginButtonEnabled = !email || !password || password.length < 6 || !emailValidate.test(email);
 
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
@@ -78,21 +79,20 @@ const Login = ({ setModalRef }) => {
   };
 
   const checkInputEmail = () => {
-    const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email.length === 0) {
-      setEmailError('Vui lòng nhập email')
+      setEmailError('Vui lòng nhập email');
     } else if (!emailValidate.test(email)) {
-      setEmailError('Email không hợp lệ')
+      setEmailError('Email không hợp lệ');
     } else {
-      setEmailError('');
+      setEmailError('');;
     }
   }
 
   const checkInputPassword = () => {
     if (password.length === 0) {
-      setPasswordError('Vui lòng nhập mật khẩu')
+      setPasswordError('Vui lòng nhập mật khẩu');
     } else if (password.length < 6) {
-      setPasswordError('Mật khẩu phải có ít nhất 6 ký tự')
+      setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
     } else {
       setPasswordError('');
     }
@@ -118,7 +118,7 @@ const Login = ({ setModalRef }) => {
 
                 <div className="input mb-[1.5rem]">
                   <div className='flex-row'>
-                    <input type="text" name="username" id='username-input' placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={checkInputEmail} value={email} />
+                    <input type="text" name="username"placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={checkInputEmail} value={email} />
 
                     {email.length > 0 && (
                       <div className='right-[51px] top-[131px] absolute' onClick={() => setEmail("")}>
@@ -134,7 +134,7 @@ const Login = ({ setModalRef }) => {
 
                 <div className="input mb-[1.5rem]">
                   <div className='relative flex-row'>
-                    <input type={isPasswordVisible ? "text" : "password"} name="password" id='username-password' placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={checkInputPassword} value={password} />
+                    <input type={isPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={checkInputPassword} value={password} />
 
                     {password.length > 0 && (
                       <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setPassword("")}>
@@ -157,7 +157,7 @@ const Login = ({ setModalRef }) => {
                   <a href='#' className='text-[#db9a45]'>Quên mật khẩu</a>
                 </div>
 
-                <button type='submit-button' id='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isLoginButtonEnabled} style={{ backgroundColor: isLoginButtonEnabled ? '#e3e3e3' : '#db9a45' }}>Đăng nhập</button>
+                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isLoginButtonEnabled} style={{ backgroundColor: isLoginButtonEnabled ? '#e3e3e3' : '#db9a45' }}>Đăng nhập</button>
               </form>
 
               <div id="register-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
