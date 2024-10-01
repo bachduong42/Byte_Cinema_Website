@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
 
 
-const Login = ({ setModalRef, openRegisterModal }) => {
+const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
 
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -124,6 +124,15 @@ const Login = ({ setModalRef, openRegisterModal }) => {
     }, 500);
   };
 
+  const handleForgetPasswordClick = () => {
+    closeLoginModal();
+    setTimeout(() => {
+      openForgetPasswordModal();
+    }, 500);
+  };
+
+
+
   return (
     <>
       <div id="login-overlay" ref={loginOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
@@ -181,7 +190,7 @@ const Login = ({ setModalRef, openRegisterModal }) => {
                 </div>
 
                 <div id="cta-help" className='p-0 text-sm flex justify-end'>
-                  <button className='text-[#db9a45]'>Quên mật khẩu?</button>
+                  <button className='text-[#db9a45]' onClick={handleForgetPasswordClick}>Quên mật khẩu?</button>
                 </div>
 
                 <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isLoginButtonEnabled} style={{ backgroundColor: isLoginButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleLogin}>Đăng nhập</button>

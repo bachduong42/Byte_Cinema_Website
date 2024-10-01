@@ -127,17 +127,18 @@ const Register = ({ setModalRef, openLoginModal }) => {
           openLoginModal();
         }, 500);
       };
+    
 
     return (
         <>
-            <div id="login-overlay" ref={registerOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
-                <div id="login-outer-box" ref={registerOuterBoxRef} className='relative w-[30rem] items-center justify-center self-center'>
+            <div id="register-overlay" ref={registerOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
+                <div id="register-outer-box" ref={registerOuterBoxRef} className='relative w-[30rem] items-center justify-center self-center'>
 
                     <div id="chibi-container" className='relative w-full h-[130px]' ref={chibiContainerRef}>
                         <img id='chibi-img default-img active' src={logo} alt="chibi" className='block absolute w-[150px] left-1/2 top-full -translate-x-1/2 logo-login-modal transition-all duration-500 ease-in-expo' />
                     </div>
 
-                    <div id="login-inner-box" className='relative z-2 bg-white rounded-xl h-full p-[20px]'>
+                    <div id="register-inner-box" className='relative z-2 bg-white rounded-xl h-full p-[20px]'>
                         <div id="close-div" className='w-full h-max mb-[1rem] flex justify-end' onClick={closeRegisterModal}>
                             <IonIcon icon={close} id='close' className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
                         </div>

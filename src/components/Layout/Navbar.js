@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import Image from "../Image/Image";
 import Login from "../../modules/auth/Login";
 import Register from "../../modules/auth/Register";
+import ForgetPassword from "../../modules/auth/ForgetPassword";
 const Navbar = React.memo(() => {
     console.log("re-render")
     const location = useLocation();
@@ -13,6 +14,8 @@ const Navbar = React.memo(() => {
 
     const [loginModalRef, setLoginModalRef] = useState(null); 
     const [registerModalRef, setRegisterModalRef] = useState(null);
+    const [forgetPasswordModalRef, setForgetPasswordModalRef] = useState(null);
+
     useEffect(() => {
         setActiveButton(location.pathname);
     }, [location.pathname]);
@@ -42,6 +45,12 @@ const Navbar = React.memo(() => {
             registerModalRef.openRegisterModal();
         }
       };
+
+      const handleForgetPasswordClick = () => {
+        if (forgetPasswordModalRef) {
+            forgetPasswordModalRef.openForgetPasswordModal();
+        }
+      }
 
       
     return (
@@ -84,8 +93,9 @@ const Navbar = React.memo(() => {
                 <Button primary onClick={handleRegisterClick}>Đăng ký</Button>
             </div>
 
-            <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} />
+            <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} openForgetPasswordModal={handleForgetPasswordClick}/>
             <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} />
+            <ForgetPassword setModalRef={setForgetPasswordModalRef} />
         </nav>
     );
 })
