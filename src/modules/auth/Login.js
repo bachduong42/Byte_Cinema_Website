@@ -6,13 +6,13 @@ import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
 
 
-const Login = ({ setModalRef }) => {
+const Login = ({ setModalRef, openRegisterModal }) => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [isLoginPasswordVisible, setIsLoginPasswordVisible] = useState(false);
+  const [loginEmailError, setLoginEmailError] = useState('');
+  const [loginPasswordError, setLoginPasswordError] = useState('');
 
 
   const loginOverlayRef = useRef();
@@ -20,9 +20,10 @@ const Login = ({ setModalRef }) => {
   const fadeAnimateRef = useRef();
   const chibiContainerRef = useRef();
   const tlRef = useRef();
+  const switchLoginTLRef = useRef();
 
   const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isLoginButtonEnabled = !email || !password || password.length < 6 || !emailValidate.test(email);
+  const isLoginButtonEnabled = !loginEmail || !loginPassword || loginPassword.length < 6 || !emailValidate.test(loginEmail);
 
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
@@ -32,11 +33,19 @@ const Login = ({ setModalRef }) => {
       .from(fadeAnimateRef.current, { duration: 0.3, opacity: 0, ease: 'power4.out' })
       .from(chibiContainerRef.current, { duration: 0.7, yPercent: 100, ease: 'power4.out' }, 1);
     tlRef.current = tl;
+
+    const switchLoginTL = gsap.timeline({ paused: true });
+    switchLoginTL.to(loginOverlayRef.current, { display: 'flex' })
+      .from(fadeAnimateRef.current, { duration: 0.3, opacity: 0, ease: 'power4.out' })
+      .from(chibiContainerRef.current, { duration: 0.7, xPercent: 100, ease: 'power4.out' }, 0)
+      .from(fadeAnimateRef.current, { duration: 0.3, opacity: 1, ease: 'power4.out' })
+      .from(chibiContainerRef.current, { duration: 0.7, xPercent: 0, ease: 'power4.out' }, 0);
+    switchLoginTLRef.current = switchLoginTL;
   }, []);
 
   useEffect(() => {
     setModalRef({
-      openLoginModal,
+      openLoginModal
     });
   }, [setModalRef]);
 
@@ -47,17 +56,17 @@ const Login = ({ setModalRef }) => {
   const closeLoginModal = () => {
     tlRef.current.reverse();
     setTimeout(() => {
-      setEmail('');
-      setPassword('');
-      setEmailError('');
-      setPasswordError('');
+      setLoginEmail('');
+      setLoginPassword('');
+      setLoginEmailError('');
+      setLoginPasswordError('');
     }, 700);
   };
 
-  const handleSubmit = (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
-    console.log('Username:', email);
-    console.log('Password:', password);
+    console.log('Username:', loginEmail);
+    console.log('Password:', loginPassword);
   };
 
   // const handleBlur = (event) => {
@@ -75,28 +84,45 @@ const Login = ({ setModalRef }) => {
   };
 
   const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
+    setIsLoginPasswordVisible(!isLoginPasswordVisible);
   };
 
   const checkInputEmail = () => {
-    if (email.length === 0) {
-      setEmailError('Vui lòng nhập email');
-    } else if (!emailValidate.test(email)) {
-      setEmailError('Email không hợp lệ');
+    if (loginEmail.length === 0) {
+      setLoginEmailError('Vui lòng nhập email');
+    } else if (!emailValidate.test(loginEmail)) {
+      setLoginEmailError('Email không hợp lệ');
     } else {
-      setEmailError('');;
+      setLoginEmailError('');;
     }
   }
 
   const checkInputPassword = () => {
-    if (password.length === 0) {
-      setPasswordError('Vui lòng nhập mật khẩu');
-    } else if (password.length < 6) {
-      setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
+    if (loginPassword.length === 0) {
+      setLoginPasswordError('Vui lòng nhập mật khẩu');
+    } else if (loginPassword.length < 6) {
+      setLoginPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
     } else {
-      setPasswordError('');
+      setLoginPasswordError('');
     }
   }
+
+  // const switchLoginModal = () => {
+  //   tlRef.current.reverse();
+  //   setTimeout(() => {
+  //     setLoginEmail('');
+  //     setLoginPassword('');
+  //     setLoginEmailError('');
+  //     setLoginPasswordError('');
+  //   }, 700);
+  // };
+
+  const handleRegisterClick = () => {
+    closeLoginModal();
+    setTimeout(() => {
+      openRegisterModal();
+    }, 500);
+  };
 
   return (
     <>
@@ -114,54 +140,57 @@ const Login = ({ setModalRef }) => {
 
             <div className="fade-animate" ref={fadeAnimateRef}>
               <h2 className='text-center mb-[1rem]'>ĐĂNG NHẬP</h2>
-              <form autoComplete='off' action='/' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}>
+              {/* <form autoComplete='off' action='/' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
+              <div className='w-full p-[20px]'>
 
                 <div className="input mb-[1.5rem]">
                   <div className='flex-row'>
-                    <input type="text" name="username"placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={checkInputEmail} value={email} />
+                    <input type="text" name="username" placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setLoginEmail(e.target.value)} onBlur={checkInputEmail} value={loginEmail} />
 
-                    {email.length > 0 && (
-                      <div className='right-[51px] top-[131px] absolute' onClick={() => setEmail("")}>
+                    {loginEmail.length > 0 && (
+                      <div className='right-[51px] top-[131px] absolute' onClick={() => setLoginEmail("")}>
                         <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
                       </div>
                     )}
                   </div>
                   <div className='ml-[15px] mt-[3px]'>
-                    <span name='error' id='username-error' className='text-[13px] error text-red-600 text-start flex'>  {emailError}</span>
+                    <span name='error' id='username-error' className='text-[13px] error text-red-600 text-start flex'>  {loginEmailError}</span>
                   </div>
 
                 </div>
 
                 <div className="input mb-[1.5rem]">
                   <div className='relative flex-row'>
-                    <input type={isPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={checkInputPassword} value={password} />
+                    <input type={isLoginPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setLoginPassword(e.target.value)} onBlur={checkInputPassword} value={loginPassword} />
 
-                    {password.length > 0 && (
-                      <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setPassword("")}>
+                    {loginPassword.length > 0 && (
+                      <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setLoginPassword("")}>
                         <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
                       </div>
                     )}
 
                     <div className='right-[11px] top-[50%] transform -translate-y-[11px] absolute' onClick={togglePasswordVisibility}>
-                      <IonIcon icon={isPasswordVisible ? eyeOutline : eyeOffOutline} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
+                      <IonIcon icon={isLoginPasswordVisible ? eyeOutline : eyeOffOutline} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
                     </div>
 
                   </div>
                   <div className='ml-[15px] mt-[3px]'>
-                    <span name='error' id='password-error' className='text-[13px] error text-red-600 text-start flex'>  {passwordError}</span>
+                    <span name='error' id='password-error' className='text-[13px] error text-red-600 text-start flex'>  {loginPasswordError}</span>
                   </div>
 
                 </div>
 
                 <div id="cta-help" className='p-0 text-sm flex justify-end'>
-                  <a href='#' className='text-[#db9a45]'>Quên mật khẩu</a>
+                  <button className='text-[#db9a45]'>Quên mật khẩu?</button>
                 </div>
 
-                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isLoginButtonEnabled} style={{ backgroundColor: isLoginButtonEnabled ? '#e3e3e3' : '#db9a45' }}>Đăng nhập</button>
-              </form>
+                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isLoginButtonEnabled} style={{ backgroundColor: isLoginButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleLogin}>Đăng nhập</button>
+                {/* </form> */}
+              </div>
 
               <div id="register-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
-                Bạn chưa có tài khoản ?<a href='#' className='text-[#db9a45]'>Đăng ký ngay</a>
+                Bạn chưa có tài khoản ? <button className='text-[#db9a45]' onMouseDown={handleRegisterClick}>Đăng ký ngay</button>
+
               </div>
             </div>
           </div>
@@ -172,3 +201,4 @@ const Login = ({ setModalRef }) => {
 }
 
 export default Login;
+

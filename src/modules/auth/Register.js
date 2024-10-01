@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
 
 
-const Register = ({ setModalRef }) => {
+const Register = ({ setModalRef, openLoginModal }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -59,7 +59,7 @@ const Register = ({ setModalRef }) => {
         }, 700);
     };
 
-    const handleSubmit = (event) => {
+    const handleRegister = (event) => {
         event.preventDefault();
         console.log('Username:', email);
         console.log('Password:', password);
@@ -121,6 +121,13 @@ const Register = ({ setModalRef }) => {
         }
     }
 
+    const handleLoginClick = () => {
+        closeRegisterModal();
+        setTimeout(() => {
+          openLoginModal();
+        }, 500);
+      };
+
     return (
         <>
             <div id="login-overlay" ref={registerOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
@@ -137,7 +144,8 @@ const Register = ({ setModalRef }) => {
 
                         <div className="fade-animate" ref={fadeAnimateRef}>
                             <h2 className='text-center mb-[1rem]'>ĐĂNG KÝ</h2>
-                            <form autoComplete='off' action='/' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}>
+                            {/* <form autoComplete='off' action='/' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
+                            <div className='w-full p-[20px]'>
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='flex-row'>
@@ -196,11 +204,12 @@ const Register = ({ setModalRef }) => {
 
                                 </div>
 
-                                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isRegisterButtonEnabled} style={{ backgroundColor: isRegisterButtonEnabled ? '#e3e3e3' : '#db9a45' }}>Đăng ký</button>
-                            </form>
+                                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isRegisterButtonEnabled} style={{ backgroundColor: isRegisterButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleRegister}>Đăng ký</button>
+                            {/* </form> */}
+                            </div>
 
                             <div id="login-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
-                                Bạn đã có tài khoản ?<a href='#' className='text-[#db9a45]'>Đăng nhập ngay</a>
+                                Bạn đã có tài khoản ?<button className='text-[#db9a45]' onMouseDown={handleLoginClick}>Đăng nhập ngay</button>
                             </div>
                         </div>
                     </div>

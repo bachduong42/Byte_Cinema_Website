@@ -12,7 +12,7 @@ const Navbar = React.memo(() => {
     const [isScrolled, setIsScrolled] = useState(false);
 
     const [loginModalRef, setLoginModalRef] = useState(null); 
-    const [registerModalRef, setRegisterModalRef] = useState(null); 
+    const [registerModalRef, setRegisterModalRef] = useState(null);
     useEffect(() => {
         setActiveButton(location.pathname);
     }, [location.pathname]);
@@ -42,6 +42,8 @@ const Navbar = React.memo(() => {
             registerModalRef.openRegisterModal();
         }
       };
+
+      
     return (
         <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[95px] h-[68px] lg:pt-3 pt-2 transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B]' : ''}`}>
             <div className="flex gap-x-14 items-center">
@@ -82,8 +84,8 @@ const Navbar = React.memo(() => {
                 <Button primary onClick={handleRegisterClick}>Đăng ký</Button>
             </div>
 
-            <Login setModalRef={setLoginModalRef} />
-            <Register setModalRef={setRegisterModalRef} />
+            <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} />
+            <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} />
         </nav>
     );
 })
