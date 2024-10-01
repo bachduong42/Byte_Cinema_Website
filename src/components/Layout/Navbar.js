@@ -6,6 +6,7 @@ import Image from "../Image/Image";
 import Login from "../../modules/auth/Login";
 import Register from "../../modules/auth/Register";
 import ForgetPassword from "../../modules/auth/ForgetPassword";
+import ChangePassword from "../../modules/auth/ChangePassword";
 const Navbar = React.memo(() => {
     console.log("re-render")
     const location = useLocation();
@@ -15,6 +16,7 @@ const Navbar = React.memo(() => {
     const [loginModalRef, setLoginModalRef] = useState(null); 
     const [registerModalRef, setRegisterModalRef] = useState(null);
     const [forgetPasswordModalRef, setForgetPasswordModalRef] = useState(null);
+    const [changePasswordModalRef, setChangePasswordModalRef] = useState(null);
 
     useEffect(() => {
         setActiveButton(location.pathname);
@@ -51,6 +53,14 @@ const Navbar = React.memo(() => {
             forgetPasswordModalRef.openForgetPasswordModal();
         }
       }
+
+      const handleChangePasswordClick = () => {
+        if (changePasswordModalRef) {
+            changePasswordModalRef.openChangePasswordModal();
+        }
+      }
+
+      
 
       
     return (
@@ -95,7 +105,8 @@ const Navbar = React.memo(() => {
 
             <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} openForgetPasswordModal={handleForgetPasswordClick}/>
             <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} />
-            <ForgetPassword setModalRef={setForgetPasswordModalRef} />
+            <ForgetPassword setModalRef={setForgetPasswordModalRef} openChangePasswordModal={handleChangePasswordClick}/>
+            <ChangePassword setModalRef={setChangePasswordModalRef} openLoginModal={handleLoginClick} />
         </nav>
     );
 })

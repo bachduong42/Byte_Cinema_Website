@@ -186,7 +186,7 @@ const Register = ({ setModalRef, openLoginModal }) => {
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='relative flex-row'>
-                                        <input type={isConfirmPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmPassword(e.target.value)} onBlur={validateConfirmPassword} value={confirmPassword} />
+                                        <input type={isConfirmPasswordVisible ? "text" : "password"} name="password" placeholder="Nhập lại mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmPassword(e.target.value)} onBlur={validateConfirmPassword} value={confirmPassword} />
 
                                         {confirmPassword.length > 0 && (
                                             <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setConfirmPassword("")}>

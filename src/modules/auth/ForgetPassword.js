@@ -48,10 +48,17 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
         setTimeout(() => {
             setEmail('');
             setEmailError('');
-            setOtpError('');
+            setOtp('');
             setOtpError('');
         }, 700);
     };
+
+    const handleFPClick = () => {
+        closeForgetPasswordModal();
+        setTimeout(() => {
+            openChangePasswordModal();
+        }, 500);
+      };
 
     const handleSendOtp = (event) => {
         event.preventDefault();
@@ -61,6 +68,7 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
     const handleVerifyOtp = (event) => {
         event.preventDefault();
         console.log('OTP:', otp);
+        handleFPClick();
     };
 
     const handleOverlayClick = (event) => {
@@ -89,7 +97,6 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
         }
     }
 
-
     return (
         <>
             <div id="fp-overlay" ref={fpOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
@@ -111,7 +118,7 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
 
                                 <div className="input mb-[1rem]">
                                     <div className='flex-row'>
-                                        <input type="text" name="username" placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={validateEmail} value={email} />
+                                        <input type="text" name="username" placeholder="Gửi tới Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={validateEmail} value={email} />
 
                                         {email.length > 0 && (
                                             <div className='right-[51px] top-[131px] absolute' onClick={() => setEmail("")}>
