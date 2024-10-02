@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import MovieBanner from "../modules/Movie/MovieBanner";
 import MovieCard from "../modules/Movie/MovieCard";
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from "react-icons/md";
@@ -19,6 +19,33 @@ const Home = () => {
     const sliderRef = useRef(null);
     const coverflowRef = useRef(null);
     const swiperRef = useRef(null);
+    const [slidesPerView, setSlidesPerView] = useState(1);
+    const [coverflowSlidesPerView, setCoverflowSlidesPerView] = useState(3);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            if (width >= 1024) {
+                setSlidesPerView(1);
+                setCoverflowSlidesPerView(3);
+            } else if (width >= 640) {
+                setSlidesPerView(1);
+                setCoverflowSlidesPerView(2);
+            } else {
+                setSlidesPerView(1);
+                setCoverflowSlidesPerView(1);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+
+
+
     const handlePrev = useCallback(() => {
         if (sliderRef.current && sliderRef.current.swiper) {
             sliderRef.current.swiper.slidePrev();
@@ -186,7 +213,7 @@ const Home = () => {
                         ref={coverflowRef}
                         effect={'coverflow'}
                         spaceBetween={20}
-                        slidesPerView={3}
+                        slidesPerView={coverflowSlidesPerView}
                         loop={true}
                         grabCursor={true}
                         centeredSlides={true}
@@ -200,7 +227,8 @@ const Home = () => {
                             modifier: 1,
                             slideShadows: true,
                         }}
-                        autoplay={{
+                        autoplay=
+                        {{
                             delay: 3000,
                             disableOnInteraction: false,
                         }}
