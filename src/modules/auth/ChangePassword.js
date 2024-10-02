@@ -132,7 +132,7 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
 
                         <div className="fade-animate" ref={fadeAnimateRef}>
                             <h2 className='text-center mb-[1rem]'>ĐỔI MẬT KHẨU</h2>
-                            {/* <form autoComplete='off' action='/' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
+                            {/* <form autoComplete='off' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
                             <div className='w-full p-[20px]'>
 
 
