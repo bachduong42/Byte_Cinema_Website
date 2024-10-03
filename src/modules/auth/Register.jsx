@@ -4,6 +4,7 @@ import { close, eyeOffOutline, eyeOutline, closeSharp } from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
+import { register } from '../../services/registerService';
 
 
 const Register = ({ setModalRef, openLoginModal }) => {
@@ -59,11 +60,12 @@ const Register = ({ setModalRef, openLoginModal }) => {
         }, 700);
     };
 
-    const handleRegister = (event) => {
+    const handleRegister = async (event) => {
         event.preventDefault();
-        console.log('Username:', email);
-        console.log('Password:', password);
-        console.log('Confirm Password:', confirmPassword);
+        const data = await register(email, password, confirmPassword);
+        if (data) {
+            console.log(data)
+        }
     };
 
     //   const handleBlur = (event) => {
