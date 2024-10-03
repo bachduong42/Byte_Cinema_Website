@@ -48,3 +48,5 @@ const getUser = async () => {
         throw error;
     }
 }
+
+export { loginService, logoutService, getUser }
