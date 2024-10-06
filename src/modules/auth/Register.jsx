@@ -7,7 +7,7 @@ import logo from '../../assets/images/logo.png';
 import { register } from '../../services/registerService';
 
 
-const Register = ({ setModalRef, openLoginModal }) => {
+const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -60,12 +60,32 @@ const Register = ({ setModalRef, openLoginModal }) => {
         }, 700);
     };
 
+    const switchModal = () => {
+        tlRef.current.reverse();
+        setTimeout(() => {
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            setEmailError('');
+            setPasswordError('');
+            setConfirmPasswordError('');
+        }, 700);
+    };
+
     const handleRegister = async (event) => {
         event.preventDefault();
+
+        // console.log('Username:', email);
+        // console.log('Password:', password);
+        // console.log('Confirm Password:', confirmPassword);
         const data = await register(email, password, confirmPassword);
         if (data) {
-            console.log(data)
+            console.log(data);
         }
+        switchModal();
+        setTimeout(() => {
+            openConfirmOtpModal();
+          }, 500);
     };
 
     //   const handleBlur = (event) => {

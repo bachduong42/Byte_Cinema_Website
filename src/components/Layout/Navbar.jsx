@@ -7,6 +7,7 @@ import Login from "../../modules/auth/Login";
 import Register from "../../modules/auth/Register";
 import ForgetPassword from "../../modules/auth/ForgetPassword";
 import ChangePassword from "../../modules/auth/ChangePassword";
+import ConfirmOtp from "../../modules/auth/ConfirmOtp";
 const Navbar = React.memo(() => {
     console.log("re-render")
     const location = useLocation();
@@ -17,6 +18,7 @@ const Navbar = React.memo(() => {
     const [registerModalRef, setRegisterModalRef] = useState(null);
     const [forgetPasswordModalRef, setForgetPasswordModalRef] = useState(null);
     const [changePasswordModalRef, setChangePasswordModalRef] = useState(null);
+    const [confirmOtpModalRef, setConfirmOtpModalRef] = useState(null);
 
     useEffect(() => {
         setActiveButton(location.pathname);
@@ -59,6 +61,14 @@ const Navbar = React.memo(() => {
             changePasswordModalRef.openChangePasswordModal();
         }
       }
+
+      const handleConfirmOtpClick = () => {
+        if (confirmOtpModalRef) {
+            confirmOtpModalRef.openConfirmOtpModal();
+        }
+      }
+
+      
 
       
 
@@ -104,9 +114,10 @@ const Navbar = React.memo(() => {
             </div>
 
             <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} openForgetPasswordModal={handleForgetPasswordClick}/>
-            <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} />
+            <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} openConfirmOtpModal={handleConfirmOtpClick}  />
             <ForgetPassword setModalRef={setForgetPasswordModalRef} openChangePasswordModal={handleChangePasswordClick}/>
             <ChangePassword setModalRef={setChangePasswordModalRef} openLoginModal={handleLoginClick} />
+            <ConfirmOtp setModalRef={setConfirmOtpModalRef} openLoginModal={handleLoginClick}/>
         </nav>
     );
 })

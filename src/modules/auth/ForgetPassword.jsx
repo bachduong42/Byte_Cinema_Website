@@ -62,7 +62,7 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
 
     const handleSendOtp = (event) => {
         event.preventDefault();
-        console.log('Username:', email);
+        console.log('Email:', email);
     };
 
     const handleVerifyOtp = (event) => {
