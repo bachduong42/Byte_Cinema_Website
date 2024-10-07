@@ -1,0 +1,16 @@
+import request from '../utils/httpRequest'
+
+export const register = async (email, password, confirmPassword) => {
+    try {
+        const res = await request.post('/auth/register', {
+            email,
+            password,
+            confirmPassword,
+            roleId:15
+        })
+        return res.data
+    }
+    catch (error) {
+        throw error.response.data.data.error
+    }
+}

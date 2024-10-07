@@ -2,7 +2,7 @@ import * as httpRequest from '../utils/httpRequest'
 
 export const register = async (email, password, confirmPassword) => {
     try {
-        const res = await httpRequest.post('/api/v1/auth/register', {
+        const res = await httpRequest.post('/auth/register', {
           email,
           password,
           confirmPassword,

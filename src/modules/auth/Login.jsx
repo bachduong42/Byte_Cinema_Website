@@ -1,10 +1,13 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import { IonIcon } from '@ionic/react';
 import { close, eyeOffOutline, eyeOutline, closeSharp } from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
-
+import { getUser, loginService } from "../../services/login";
+import { UserContext } from '../../contexts/UserContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
 
@@ -21,7 +24,7 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
   const chibiContainerRef = useRef();
   const tlRef = useRef();
   const switchLoginTLRef = useRef();
-
+  const { login } = useContext(UserContext);
   const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isLoginButtonEnabled = !loginEmail || !loginPassword || loginPassword.length < 6 || !emailValidate.test(loginEmail);
 
@@ -63,10 +66,39 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
     }, 700);
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     console.log('Username:', loginEmail);
     console.log('Password:', loginPassword);
+    try {
+      const response = await loginService(loginEmail, loginPassword);
+      console.log('Login success:', response);
+      const { access_token } = response;
+      localStorage.setItem('accessToken', access_token);
+      console.log('accesstoken', access_token)
+      const user = await getUser();
+      login(user);
+      toast.success("Đăng nhập thành công", {
+        autoClose: 1000
+      });
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const { errors } = error.response.data;
+        if (errors && errors["Auth.InvalidCredentials"]) {
+          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
+        } else {
+          toast.error("Đăng nhập thất bại, vui lòng thử lại", {
+            autoClose: 1000
+          });
+          // set('');
+          // setPassword('');
+        }
+      } else {
+        toast.error("Lỗi kết nối, vui lòng thử lại", {
+          autoClose: 1000
+        });
+      }
+    }
   };
 
   // const handleBlur = (event) => {
@@ -130,7 +162,6 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
       openForgetPasswordModal();
     }, 500);
   };
-
 
 
   return (

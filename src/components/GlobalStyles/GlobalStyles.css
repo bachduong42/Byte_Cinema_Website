@@ -34,14 +34,22 @@
 }
 .swiper-button-next,
 .swiper-button-prev {
-  display: none;
+  /* display: none; */
 }
 
 .home .swiper-button-next,
 .home .swiper-button-prev {
   display: none;
 }
-
+.swiper-button-prev,
+.swiper-button-next {
+  size: 13px;
+  width: 20px !important;
+  height: 20px !important;
+}
+.swiper-pagination {
+  display: none !important; /* Ẩn pagination */
+}
 /* scroll */
 html ::-webkit-scrollbar {
   border-radius: 0px;
