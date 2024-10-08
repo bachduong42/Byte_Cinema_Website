@@ -8,6 +8,7 @@ import { getUser, loginService } from "../../services/login";
 import { UserContext } from '../../contexts/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
 const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
 
@@ -72,15 +73,19 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
     console.log('Password:', loginPassword);
     try {
       const response = await loginService(loginEmail, loginPassword);
-      console.log('Login success:', response);
-      const { access_token } = response;
+      console.log('Login success:', response.data);
+      const { access_token, refresh_token } = response.data;
       localStorage.setItem('accessToken', access_token);
       console.log('accesstoken', access_token)
+      console.log('refresh_token', refresh_token)
+      Cookies.set('refreshToken', refresh_token, { expires: 7 });
+
       const user = await getUser();
       login(user);
       toast.success("Đăng nhập thành công", {
         autoClose: 1000
       });
+      closeLoginModal();
     } catch (error) {
       if (error.response && error.response.data) {
         const { errors } = error.response.data;
@@ -90,8 +95,6 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
           toast.error("Đăng nhập thất bại, vui lòng thử lại", {
             autoClose: 1000
           });
-          // set('');
-          // setPassword('');
         }
       } else {
         toast.error("Lỗi kết nối, vui lòng thử lại", {

@@ -33,6 +33,7 @@ const logoutService = async () => {
         throw error;
     }
 }
+
 const getUser = async () => {
     try {
         const res = await httpRequest.get('auth/users', {

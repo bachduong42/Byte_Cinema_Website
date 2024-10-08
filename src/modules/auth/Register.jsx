@@ -126,10 +126,10 @@ const Register = ({ setModalRef, openLoginModal }) => {
     const handleLoginClick = () => {
         closeRegisterModal();
         setTimeout(() => {
-          openLoginModal();
+            openLoginModal();
         }, 500);
-      };
-    
+    };
+
 
     return (
         <>
@@ -168,7 +168,7 @@ const Register = ({ setModalRef, openLoginModal }) => {
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='relative flex-row'>
-                                        <input type={isPasswordVisible ? "text" : "password"} name="password"  placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={validatePassword} value={password} />
+                                        <input type={isPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setPassword(e.target.value)} onBlur={validatePassword} value={password} />
 
                                         {password.length > 0 && (
                                             <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setPassword("")}>
@@ -208,7 +208,7 @@ const Register = ({ setModalRef, openLoginModal }) => {
                                 </div>
 
                                 <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isRegisterButtonEnabled} style={{ backgroundColor: isRegisterButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleRegister}>Đăng ký</button>
-                            {/* </form> */}
+                                {/* </form> */}
                             </div>
 
                             <div id="login-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
