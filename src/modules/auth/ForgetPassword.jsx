@@ -4,6 +4,8 @@ import { close, closeSharp } from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
+import { forgetPasswordService } from '../../services/login';
+import { toast } from 'react-toastify';
 
 
 const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
@@ -58,11 +60,20 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
         setTimeout(() => {
             openChangePasswordModal();
         }, 500);
-      };
+    };
 
-    const handleSendOtp = (event) => {
+    const handleSendOtp = async (event) => {
         event.preventDefault();
-        console.log('Username:', email);
+        console.log('Email:', email);
+        try {
+            const result = await forgetPasswordService(email);
+            if (result) {
+                toast.success("Vui lòng kiểm tra email để đặt lại mật khẩu");
+                handleFPClick();
+            }
+        } catch (error) {
+            toast.error("Đã có lỗi xảy ra, vui lòng thử lại.");
+        }
     };
 
     const handleVerifyOtp = (event) => {
@@ -131,14 +142,14 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
                                     </div>
 
                                 </div>
-                                <button type='button' className='w-1/2 text-base p-[10px] mt-[00.5rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isSendOtpButtonEnabled} style={{ backgroundColor: isSendOtpButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleSendOtp}>Gửi OTP</button>
+                                <button type='button' className='w-1/2 text-base p-[10px] mt-[00.5rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isSendOtpButtonEnabled} style={{ backgroundColor: isSendOtpButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleSendOtp}>Xác nhận</button>
 
-                                <div className="input mb-[1.5rem] mt-[2rem]">
+                                {/* <div className="input mb-[1.5rem] mt-[2rem]">
                                     <div className='relative flex-row'>
                                         <input type="text" name="otp" placeholder="Nhập OTP" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setOtp(e.target.value)} onBlur={validateOtp} value={otp} maxLength={6} onKeyPress={(e) => {
                                             if (!/[0-9]/.test(e.key)) {
                                                 e.preventDefault();
-                                            }   
+                                            }
                                         }} />
 
                                         {otp.length > 0 && (
@@ -150,8 +161,8 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
                                     <div className='ml-[15px] mt-[3px]'>
                                         <span name='error' id='otp-error' className='text-[13px] error text-red-600 text-start flex'>  {otpError}</span>
                                     </div>
-                                </div>
-                                <button type='button' className='w-1/2 text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isVerifyOtpButtonEnabled} style={{ backgroundColor: isVerifyOtpButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleVerifyOtp}>Xác nhận</button>
+                                </div> */}
+                                {/* <button type='button' className='w-1/2 text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isVerifyOtpButtonEnabled} style={{ backgroundColor: isVerifyOtpButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleVerifyOtp}>Xác nhận</button> */}
 
 
 

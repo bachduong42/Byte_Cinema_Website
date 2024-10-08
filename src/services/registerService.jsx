@@ -6,11 +6,11 @@ export const register = async (email, password, confirmPassword) => {
             email,
             password,
             confirmPassword,
-            roleId:1
+            roleId:15
         })
         return res.data
     }
     catch (error) {
-        console.log('Register error: ', error);
+        throw error.response.data.data.error
     }
 }

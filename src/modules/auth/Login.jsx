@@ -8,7 +8,7 @@ import { getUser, loginService } from "../../services/login";
 import { UserContext } from '../../contexts/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'js-cookie';
+
 
 const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
 
@@ -73,13 +73,8 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
     console.log('Password:', loginPassword);
     try {
       const response = await loginService(loginEmail, loginPassword);
-      console.log('Login success:', response.data);
-      const { access_token, refresh_token } = response.data;
+      const { access_token } = response.data;
       localStorage.setItem('accessToken', access_token);
-      console.log('accesstoken', access_token)
-      console.log('refresh_token', refresh_token)
-      Cookies.set('refreshToken', refresh_token, { expires: 7 });
-
       const user = await getUser();
       login(user);
       toast.success("Đăng nhập thành công", {
@@ -92,7 +87,7 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
         if (errors && errors["Auth.InvalidCredentials"]) {
           setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
         } else {
-          toast.error("Đăng nhập thất bại, vui lòng thử lại", {
+          toast.error("Tài khoản hoặc mật khẩu không đúng", {
             autoClose: 1000
           });
         }
