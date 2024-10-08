@@ -7,7 +7,8 @@ import logo from '../../assets/images/logo.png';
 
 
 const ChangePassword = ({ setModalRef, openLoginModal }) => {
-
+    const [confirmEmail, setConfirmEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
@@ -22,7 +23,9 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
     const chibiContainerRef = useRef();
     const tlRef = useRef();
 
-    const isCPButtonEnabled = !newPassword || !confirmNewPassword || newPassword.length < 6 || confirmNewPassword.length < 6 || newPassword !== confirmNewPassword;
+    const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const isCPButtonEnabled = !newPassword || !confirmNewPassword || newPassword.length < 6 || confirmNewPassword.length < 6 || newPassword !== confirmNewPassword || !confirmEmail || !emailValidate.test(confirmEmail);
 
     useGSAP(() => {
         const tl = gsap.timeline({ paused: true });
@@ -47,6 +50,8 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
     const closeChangePasswordModal = () => {
         tlRef.current.reverse();
         setTimeout(() => {
+            setConfirmEmail('');
+            setEmailError('');
             setNewPassword('');
             setConfirmNewPassword('');
             setNewPasswordError('');
@@ -56,6 +61,7 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
 
     const handleChangePassword = (event) => {
         event.preventDefault();
+        console.log('Confirm Email:', confirmEmail);
         console.log('New Password:', newPassword);
         console.log('Confirm New Password:', confirmNewPassword);
         handleDirectToLoginClick();
@@ -82,6 +88,16 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
     const toggleConfirmPasswordVisibility = () => {
         setIsConfirmNewPasswordVisible(!isConfirmNewPasswordVisible);
     };
+
+    const validateEmail = () => {
+        if (confirmEmail.length === 0) {
+            setEmailError('Vui lòng nhập email')
+        } else if (!emailValidate.test(confirmEmail)) {
+            setEmailError('Email không hợp lệ')
+        } else {
+            setEmailError('');
+        }
+    }
 
 
     const validatePassword = () => {
@@ -110,11 +126,11 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
     const handleDirectToLoginClick = () => {
         closeChangePasswordModal();
         setTimeout(() => {
-          openLoginModal();
+            openLoginModal();
         }, 500);
-      };
+    };
 
-    
+
 
     return (
         <>
@@ -135,10 +151,26 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
                             {/* <form autoComplete='off' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
                             <div className='w-full p-[20px]'>
 
+                                <div className="input mb-[1.5rem]">
+                                    <div className='flex-row'>
+                                        <input type="text" name="email" placeholder="Email xác nhận" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmEmail(e.target.value)} onBlur={validateEmail} value={confirmEmail} />
+
+                                        {confirmEmail.length > 0 && (
+                                            <div className='right-[51px] top-[131px] absolute' onClick={() => setConfirmEmail("")}>
+                                                <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className='ml-[15px] mt-[3px]'>
+                                        <span name='error' id='email-error' className='text-[13px] error text-red-600 text-start flex'>  {emailError}</span>
+                                    </div>
+
+                                </div>
+
 
                                 <div className="input mb-[1.5rem]">
                                     <div className='relative flex-row'>
-                                        <input type={isNewPasswordVisible ? "text" : "password"} name="password"  placeholder="Mật khẩu mới" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setNewPassword(e.target.value)} onBlur={validatePassword} value={newPassword} />
+                                        <input type={isNewPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu mới" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setNewPassword(e.target.value)} onBlur={validatePassword} value={newPassword} />
 
                                         {newPassword.length > 0 && (
                                             <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setNewPassword("")}>
@@ -178,7 +210,7 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
                                 </div>
 
                                 <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isCPButtonEnabled} style={{ backgroundColor: isCPButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleChangePassword}>Đổi mật khẩu</button>
-                            {/* </form> */}
+                                {/* </form> */}
                             </div>
 
                         </div>
