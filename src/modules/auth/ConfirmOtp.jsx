@@ -25,6 +25,8 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
 
   const isVerifyOtpButtonEnabled = !otp || otp.length < 6;
 
+  console.log('re-render')
+
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
     tl.to(overlayRef.current, { display: "flex" })
@@ -92,8 +94,9 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
 
   const handleConfirm = async () => {
     try {
-      const data = await verifyOTP(getEmail(), otp);
+      await verifyOTP(getEmail(), otp);
       toast.success("Xác nhận OTP thành công!");
+      setOtp("");
       closeConfirmOtpModal();
       setTimeout(() => {
         openLoginModal();

@@ -1,6 +1,7 @@
 import * as httpRequest from "../utils/httpRequest";
 
 export const resendOTP = async (email) => {
+  console.log(email)
   try {
     const res = await httpRequest.post(`/auth/resend?email=${email}`);
     return res.data;

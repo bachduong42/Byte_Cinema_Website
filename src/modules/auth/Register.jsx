@@ -7,6 +7,7 @@ import logo from '../../assets/images/logo.png';
 import { register } from '../../services/registerService';
 import { toast } from "react-toastify";
 import { UserContext } from '../../contexts/UserContext';
+import { resendOTP } from "../../apiServices/resendOTP";
 
 const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
   const [email, setEmail] = useState("");
@@ -18,14 +19,14 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-
+  const [showOTPModal, setShowOTPModal] = useState(false);
 
   const registerOverlayRef = useRef();
   const registerOuterBoxRef = useRef();
   const fadeAnimateRef = useRef();
   const chibiContainerRef = useRef();
   const tlRef = useRef();
-  const {saveEmail} = useContext(UserContext)
+  const { saveEmail } = useContext(UserContext);
 
   const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isRegisterButtonEnabled =
@@ -100,14 +101,20 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
   const handleRegister = async (event) => {
     event.preventDefault();
     try {
+      saveEmail(email);
       const data = await register(email, password, confirmPassword);
-      saveEmail(email)
+      toast.info(data.info, { autoClose: 2000 });
       switchModal();
       setTimeout(() => {
         openConfirmOtpModal();
       }, 500);
-    } catch (error) {
-      toast.error(error);
+    } catch (message) {
+      toast.error(message);
+      setShowOTPModal(
+        String(message).includes(
+          "Email này đã được đăng ký nhưng chưa xác nhận. Vui lòng xác nhận"
+        )
+      );
     }
   };
 
@@ -170,6 +177,20 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
     setTimeout(() => {
       openLoginModal();
     }, 500);
+  };
+
+  const handleShowOTPModal = async () => {
+    setShowOTPModal(false);
+    closeRegisterModal();
+    await setTimeout(() => {
+      openConfirmOtpModal();
+    }, 500);
+    try {
+      const data = await resendOTP(email);
+      toast.success("Kiểm tra lại email để nhận OTP");
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (
@@ -350,6 +371,19 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
                     </span>
                   </div>
                 </div>
+
+                {showOTPModal && (
+                  <button
+                    type="submit-button"
+                    className="w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out"
+                    style={{
+                      backgroundColor: "#db9a45",
+                    }}
+                    onClick={handleShowOTPModal}
+                  >
+                    Xác nhận OTP
+                  </button>
+                )}
 
                 <button
                   type="submit-button"
