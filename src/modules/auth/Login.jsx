@@ -9,6 +9,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
 
   const [loginEmail, setLoginEmail] = useState('');
@@ -72,26 +73,21 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
     console.log('Password:', loginPassword);
     try {
       const response = await loginService(loginEmail, loginPassword);
-      console.log('Login success:', response);
-      const { access_token } = response;
+      const { access_token } = response.data;
       localStorage.setItem('accessToken', access_token);
-      console.log('accesstoken', access_token)
       const user = await getUser();
       login(user);
       toast.success("Đăng nhập thành công", {
         autoClose: 1000
       });
+      closeLoginModal();
     } catch (error) {
       if (error.response && error.response.data) {
         const { errors } = error.response.data;
         if (errors && errors["Auth.InvalidCredentials"]) {
           setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
         } else {
-          toast.error("Đăng nhập thất bại, vui lòng thử lại", {
-            autoClose: 1000
-          });
-          // set('');
-          // setPassword('');
+          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
         }
       } else {
         toast.error("Lỗi kết nối, vui lòng thử lại", {

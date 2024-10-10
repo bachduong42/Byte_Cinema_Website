@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import { ToastContainer} from "react-toastify";
+ import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { publicRoutes } from "./router"
 import DefaultLayout from "./components/Layout/DefaultLayout"
@@ -24,6 +26,7 @@ function App() {
             );
           })}
         </Routes>
+        <ToastContainer position='top-right'  style={{width: '340px', textAlign: 'left'}} autoClose={3000} />
       </div>
     </Router>
   );

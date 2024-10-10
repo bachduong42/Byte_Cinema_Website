@@ -4,6 +4,8 @@ import { close, closeSharp } from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
+import { forgetPasswordService, sendOTPService } from '../../services/login';
+import { toast } from 'react-toastify';
 
 
 const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
@@ -58,17 +60,32 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
         setTimeout(() => {
             openChangePasswordModal();
         }, 500);
-      };
-
-    const handleSendOtp = (event) => {
-        event.preventDefault();
-        console.log('Username:', email);
     };
 
-    const handleVerifyOtp = (event) => {
+    const handleSendOtp = async (event) => {
         event.preventDefault();
-        console.log('OTP:', otp);
-        handleFPClick();
+        console.log('Email:', email);
+        try {
+            const result = await forgetPasswordService(email);
+            if (result) {
+                toast.info("Kiểm tra email để đặt lại mật khẩu");
+            }
+        } catch (error) {
+            toast.error("Đã có lỗi xảy ra, vui lòng thử lại.");
+        }
+    };
+
+    const handleVerifyOtp = async (event) => {
+        event.preventDefault();
+        try {
+            const result = await sendOTPService(email, otp);
+            if (result) {
+                toast.success("Xác thực tài khoản thành công");
+                handleFPClick();
+            }
+        } catch (error) {
+            toast.error("Xác thực không thành công.");
+        }
     };
 
     const handleOverlayClick = (event) => {
@@ -138,7 +155,7 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
                                         <input type="text" name="otp" placeholder="Nhập OTP" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setOtp(e.target.value)} onBlur={validateOtp} value={otp} maxLength={6} onKeyPress={(e) => {
                                             if (!/[0-9]/.test(e.key)) {
                                                 e.preventDefault();
-                                            }   
+                                            }
                                         }} />
 
                                         {otp.length > 0 && (

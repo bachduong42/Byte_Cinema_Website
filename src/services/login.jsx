@@ -7,6 +7,9 @@ const loginService = async (email, password) => {
             email,
             password,
         });
+        const cookies = document.cookie;
+        console.log('Cookies:', cookies);
+        console.log('Response:', res);
         return res.data;
     } catch (error) {
         console.log('Login error: ', error);
@@ -33,12 +36,12 @@ const logoutService = async () => {
         throw error;
     }
 }
+
 const getUser = async () => {
     try {
-        const res = await httpRequest.get('auth/users', {
+        const res = await httpRequest.get('user-info', {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         }
         );
@@ -49,4 +52,44 @@ const getUser = async () => {
     }
 }
 
-export { loginService, logoutService, getUser }
+const forgetPasswordService = async (email) => {
+    try {
+        const res = await httpRequest.post('auth/reset-password-request', null, {
+            params: {
+                email: email
+            }
+        });
+        return res.data;
+    } catch (error) {
+        console.log('logout error: ', error);
+        throw error;
+    }
+}
+const resetPasswordService = async (email, password) => {
+    try {
+        const res = await httpRequest.post('auth/reset-password', {
+            email: email,
+            password: password,
+            confirmPassword: password
+        });
+        return res.data;
+    } catch (error) {
+        console.log('logout error: ', error);
+        throw error;
+    }
+}
+
+const sendOTPService = async (email, otp) => {
+    try {
+        const res = await httpRequest.post('auth/verify-otp-forgot-password', {
+            email: email,
+            otp: otp
+        });
+        return res.data;
+    } catch (error) {
+        console.log('logout error: ', error);
+        throw error;
+    }
+}
+
+export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService, sendOTPService }
