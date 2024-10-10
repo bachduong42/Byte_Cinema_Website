@@ -79,4 +79,17 @@ const resetPasswordService = async (email, password) => {
     }
 }
 
-export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService }
+const sendOTPService = async (email, otp) => {
+    try {
+        const res = await httpRequest.post('auth/verify-otp-forgot-password', {
+            email: email,
+            otp: otp
+        });
+        return res.data;
+    } catch (error) {
+        console.log('logout error: ', error);
+        throw error;
+    }
+}
+
+export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService, sendOTPService }

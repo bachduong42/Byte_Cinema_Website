@@ -163,7 +163,7 @@ const Navbar = React.memo(() => {
                 </div>
             )}
             <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} openForgetPasswordModal={handleForgetPasswordClick} />
-            <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} />
+            <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} openConfirmOtpModal={handleConfirmOtpClick} />
             <ForgetPassword setModalRef={setForgetPasswordModalRef} openChangePasswordModal={handleChangePasswordClick} />
             <ChangePassword setModalRef={setChangePasswordModalRef} openLoginModal={handleLoginClick} />
             <ConfirmOtp setModalRef={setConfirmOtpModalRef} openLoginModal={handleLoginClick} />

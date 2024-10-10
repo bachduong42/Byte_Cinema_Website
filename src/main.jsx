@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <UserProvider>
             <GlobalStyles>
                 <ToastContainer
-                    position="top-center" // Hoặc "bottom-center" nếu bạn muốn hiển thị dưới cùng
+                    position="top-center"
                     autoClose={3000}
                     hideProgressBar={false}
                     newestOnTop={true}

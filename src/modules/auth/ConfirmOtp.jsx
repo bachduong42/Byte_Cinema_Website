@@ -4,10 +4,10 @@ import { close, closeSharp } from "ionicons/icons";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import logo from "../../assets/images/logo.png";
-import { verifyOTP } from "../../apiServices/verifyOTP";
+import { verifyOTP } from "../../services/verifyOTP";
 import { UserContext } from "../../contexts/UserContext";
 import { toast } from "react-toastify";
-import { resendOTP } from "../../apiServices/resendOTP";
+import { resendOTP } from "../../services/resendOTP";
 
 const ChangeOtp = ({ setModalRef, openLoginModal }) => {
   const [otp, setOtp] = useState("");
@@ -24,6 +24,8 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
   const { getEmail } = useContext(UserContext);
 
   const isVerifyOtpButtonEnabled = !otp || otp.length < 6;
+
+  console.log('re-render')
 
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
@@ -92,8 +94,9 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
 
   const handleConfirm = async () => {
     try {
-      const data = await verifyOTP(getEmail(), otp);
+      await verifyOTP(getEmail(), otp);
       toast.success("Xác nhận OTP thành công!");
+      setOtp("");
       closeConfirmOtpModal();
       setTimeout(() => {
         openLoginModal();

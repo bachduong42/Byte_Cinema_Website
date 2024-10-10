@@ -2,10 +2,6 @@ import axios from 'axios';
 
 const httpRequest = axios.create({
     baseURL: 'http://localhost:8080/api/v1/',
-    headers: {
-        "Content-Type": "application/json"
-    }
-
 });
 
 export const get = async (path, options = {}) => {

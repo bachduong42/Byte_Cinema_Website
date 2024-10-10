@@ -87,9 +87,7 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
         if (errors && errors["Auth.InvalidCredentials"]) {
           setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
         } else {
-          toast.error("Tài khoản hoặc mật khẩu không đúng", {
-            autoClose: 1000
-          });
+          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
         }
       } else {
         toast.error("Lỗi kết nối, vui lòng thử lại", {

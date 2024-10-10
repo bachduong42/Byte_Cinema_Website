@@ -26,7 +26,7 @@ function App() {
             );
           })}
         </Routes>
-        <ToastContainer position='top-center' autoClose={ 3000} />
+        <ToastContainer position='top-right'  style={{width: '340px', textAlign: 'left'}} autoClose={3000} />
       </div>
     </Router>
   );
