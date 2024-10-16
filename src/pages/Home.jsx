@@ -13,7 +13,7 @@ import Movie4 from "../assets/images/movie4.jpg";
 import sapchieu from "../assets/images/sapchieu.png"
 import Button from "../components/Button/Button";
 import MovieCommingSoon from "../modules/Movie/MovieCommingSoon";
-
+import  listMovie  from "../constants/MovieList";
 
 const Home = () => {
     const sliderRef = useRef(null);
@@ -75,80 +75,80 @@ const Home = () => {
         }
     };
 
-    const listMovie = [
-        {
-            id: 1,
-            type: "Tình cảm",
-            image: Movie1,
-            title: "THANH XUÂN 18x2",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "20.9.2023",
-        },
-        {
-            id: 2,
-            type: "Kinh dị",
-            image: Movie2,
-            title: "CÔ DÂU HÀO MÔN",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 3,
-            type: "Tình cảm",
-            image: Movie3,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 4,
-            type: "Hài",
-            image: Movie4,
-            title: "HÔN LỄ CỦA EM",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 5,
-            type: "Tình cảm",
-            image: Movie3,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 6,
-            type: "Tình cảm",
-            image: Movie3,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 7,
-            type: "Tình cảm",
-            image: Movie4,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 8,
-            type: "Tình cảm",
-            image: Movie2,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-    ];
+    // const listMovie = [
+    //     {
+    //         id: 1,
+    //         type: "Tình cảm",
+    //         image: Movie1,
+    //         title: "THANH XUÂN 18x2",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "20.9.2023",
+    //     },
+    //     {
+    //         id: 2,
+    //         type: "Kinh dị",
+    //         image: Movie2,
+    //         title: "CÔ DÂU HÀO MÔN",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    //     {
+    //         id: 3,
+    //         type: "Tình cảm",
+    //         image: Movie3,
+    //         title: "KẺ ẨN DANH",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    //     {
+    //         id: 4,
+    //         type: "Hài",
+    //         image: Movie4,
+    //         title: "HÔN LỄ CỦA EM",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    //     {
+    //         id: 5,
+    //         type: "Tình cảm",
+    //         image: Movie3,
+    //         title: "KẺ ẨN DANH",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    //     {
+    //         id: 6,
+    //         type: "Tình cảm",
+    //         image: Movie3,
+    //         title: "KẺ ẨN DANH",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    //     {
+    //         id: 7,
+    //         type: "Tình cảm",
+    //         image: Movie4,
+    //         title: "KẺ ẨN DANH",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    //     {
+    //         id: 8,
+    //         type: "Tình cảm",
+    //         image: Movie2,
+    //         title: "KẺ ẨN DANH",
+    //         time: "1h50p",
+    //         description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
+    //         date: "11.2.2024",
+    //     },
+    // ];
     const listComming = [
         {
             title: "KHÔNG NÓI ĐIỀU DỮ",
