@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 function MovieCard({ infor, className, cardInfor = false }) {
     return (
         <div className={`relative ${className} group cursor-pointer ${cardInfor ? "transition-transform duration-300 ease-in-out transform hover:scale-95" : ""}`}>
-            <Image src={infor.image} alt={infor.image} className="w-full h-full object-cover  " />
+            <Image src={infor.imagePaths[0]} alt="" className="w-full h-full object-cover  " />
             {cardInfor &&
                 <div className="absolute flex flex-col items-center gap-2 bg-[#12739dcc] w-full bottom-0  h-2/5  opacity-0 transform  translate-y-1 group-hover:opacity-100 group-hover:translate-y-1 transition-transform duration-300 ease-in-out">
-                    <div className="text-[#FDB6B6] text-[14px] nunito-text font-extrabold pt-5">{infor.title}</div>
+                    <div className="text-[#FDB6B6] text-[14px] nunito-text font-extrabold pt-5">{infor.name}</div>
                     <div className="flex gap-2 text-white text-[10px] nunito-text font-extrabold">
                         <div>Thể loại:</div>
                         <div>{infor.type}</div>

@@ -13,6 +13,7 @@ import Movie4 from "../assets/images/movie4.jpg";
 import sapchieu from "../assets/images/sapchieu.png"
 import Button from "../components/Button/Button";
 import MovieCommingSoon from "../modules/Movie/MovieCommingSoon";
+import { getListMovie } from "../services/getListMovie";
 
 
 const Home = () => {
@@ -21,7 +22,7 @@ const Home = () => {
     const swiperRef = useRef(null);
     const [slidesPerView, setSlidesPerView] = useState(1);
     const [coverflowSlidesPerView, setCoverflowSlidesPerView] = useState(3);
-
+    const [listMovie, setListMovie] = useState([]);
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
@@ -43,6 +44,14 @@ const Home = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const fetchMovie = async () => {
+        const res = await getListMovie();
+        console.log(res);
+        setListMovie(res.data);
+    }
+    useEffect(() => {
+        fetchMovie();
+    }, [])
 
 
 
@@ -65,106 +74,25 @@ const Home = () => {
     }, []);
     const handleMouseEnter = () => {
         if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.autoplay.stop(); // Dừng autoplay
+            swiperRef.current.swiper.autoplay.stop();
         }
     };
 
     const handleMouseLeave = () => {
         if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.autoplay.start(); // Bắt đầu autoplay lại
+            swiperRef.current.swiper.autoplay.start();
         }
     };
+    const handleSlideChange = useCallback(() => {
+        if (sliderRef.current && sliderRef.current.swiper) {
+            const activeIndex = sliderRef.current.swiper.realIndex;
+            if (coverflowRef.current && coverflowRef.current.swiper) {
+                coverflowRef.current.swiper.slideToLoop(activeIndex);
+            }
+        }
+    }, []);
 
-    const listMovie = [
-        {
-            id: 1,
-            type: "Tình cảm",
-            image: Movie1,
-            title: "THANH XUÂN 18x2",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "20.9.2023",
-        },
-        {
-            id: 2,
-            type: "Kinh dị",
-            image: Movie2,
-            title: "CÔ DÂU HÀO MÔN",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 3,
-            type: "Tình cảm",
-            image: Movie3,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 4,
-            type: "Hài",
-            image: Movie4,
-            title: "HÔN LỄ CỦA EM",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 5,
-            type: "Tình cảm",
-            image: Movie3,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 6,
-            type: "Tình cảm",
-            image: Movie3,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 7,
-            type: "Tình cảm",
-            image: Movie4,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 8,
-            type: "Tình cảm",
-            image: Movie2,
-            title: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-    ];
-    const listComming = [
-        {
-            title: "KHÔNG NÓI ĐIỀU DỮ",
-            image: sapchieu,
-            type: 'Ảo tưởng/ Hành động',
-            description: "Lâm - một người đàn ông từng là xã hội đen nhưng lại mất trí nhớ và nay đang lẩn trốn như một người bình thường, kiếm sống bằng lao động chân tay. Lâm sống cùng vợ - Hạnh và con gái riêng của cô là Hiền. Hiền vẫn chưa chấp nhận tình yêu thương của chú Lâm dành cho mình. Hiền lớn lên với sự bốc đồng và bị dụ dỗ bởi Tiến",
-            date: "30/9/2024"
-        },
-        {
-            title: "KHÔNG NÓI ĐIỀU DỮ",
-            image: Movie4,
-            type: 'Ảo tưởng/ Hành động',
-            description: "Lâm - một người đàn ông từng là xã hội đen nhưng lại mất trí nhớ và nay đang lẩn trốn như một người bình thường, kiếm sống bằng lao động chân tay. Lâm sống cùng vợ - Hạnh và con gái riêng của cô là Hiền. Hiền vẫn chưa chấp nhận tình yêu thương của chú Lâm dành cho mình. Hiền lớn lên với sự bốc đồng và bị dụ dỗ bởi Tiến",
-            date: "30/9/2024"
-        },
-    ]
+
 
     return (
         <>
@@ -181,6 +109,7 @@ const Home = () => {
                         delay: 3000,
                         disableOnInteraction: false,
                     }}
+                    onSlideChange={handleSlideChange}
                 >
                     {listMovie.map((movie) => (
                         <SwiperSlide key={movie.id}>
@@ -242,7 +171,6 @@ const Home = () => {
                         ))}
                     </Swiper>
                 </div>
-
             </div>
             <div className="flex flex-col w-full bg-[#092B4B] px-[50px] py-[50px]">
                 <div className="flex gap-2 items-center">
@@ -294,7 +222,7 @@ const Home = () => {
                             disableOnInteraction: false,
                         }}
                     >
-                        {listComming.map((movie) => (
+                        {listMovie.map((movie) => (
                             <SwiperSlide key={movie.id}>
                                 <MovieCommingSoon infor={movie} />
                             </SwiperSlide>
