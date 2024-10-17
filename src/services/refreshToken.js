@@ -1,6 +1,6 @@
 import httpRequest from '../utils/httpRequest';
 
-const getUser = async () => {
+const refreshToken = async () => {
     try {
         const res = await httpRequest.get('auth/refresh', {
             headers: {
@@ -14,3 +14,4 @@ const getUser = async () => {
         throw error;
     }
 }
+export { refreshToken }
