@@ -11,13 +11,16 @@ import { IonIcon } from "@ionic/react";
 import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import HorizontalMovieCard from "../modules/Movie/HorizontalMovieCard";
 import { getDetailFilm } from "../services/getDetailFilm";
+import { getListMovie } from "../services/getListMovie";
+import { FadeLoader } from "react-spinners";
 
 const Movie = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams();
   const currentMovieId = parseInt(id);
   const [movie, setMovie] = useState({});
-  // const movie = listMovie.find((movie) => movie.id === parseInt(id));
+  const [listMovie, setListMovie] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   function formatDate(dateStr) {
     const date = new Date(dateStr);
@@ -33,12 +36,23 @@ const Movie = () => {
     return `${formattedDay}/${formattedMonth}/${year} ${formattedHours}:${formattedMinutes}`;
   }
 
+  const fetchMovie = async () => {
+    const res = await getListMovie();
+    console.log(res);
+    setListMovie(res.data);
+  };
+  useEffect(() => {
+    fetchMovie();
+  }, []);
+
   useEffect(() => {
     async function getMovie() {
+      
       const movie = await getDetailFilm(id);
       if (movie) {
         console.log(movie);
         setMovie(movie);
+        setIsLoading(false)
       }
     }
     getMovie();
@@ -63,6 +77,10 @@ const Movie = () => {
 
   if (!movie) {
     return <div>Rạp phim phá sản, hết phim</div>;
+  }
+
+  if (isLoading) {
+    return <FadeLoader loading={isLoading} />
   }
 
   return (
@@ -229,7 +247,7 @@ const Movie = () => {
                       Phim đang chiếu
                     </h1>
                   </div>
-                  {/* <div>
+                  <div>
                     {listMovie
                       .filter((movie) => movie.id !== currentMovieId)
                       .slice(0, 4)
@@ -238,7 +256,7 @@ const Movie = () => {
                           <HorizontalMovieCard infor={movie} />
                         </div>
                       ))}
-                  </div> */}
+                  </div>
                 </div>
               </div>
             </div>

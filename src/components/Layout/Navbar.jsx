@@ -84,11 +84,11 @@ const Navbar = React.memo(() => {
         window.location.reload();
     }
 
-
+    const isChangePasswordPage = location.pathname === '/reset-password';
 
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300 ${isScrolled ? 'bg-[#092B4B] shadow-md border border-b-1 border-black' : ''}`}>
+        <nav className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${isChangePasswordPage ? 'bg-[#092B4B]' : (isScrolled ? 'bg-[#092B4B] shadow-md border border-b-1 border-black' : '')}`}>
             <div className="flex gap-x-14 items-center">
                 <div className="flex flex-col items-start">
                     <Image src={logo} alt={logo} className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]" />
@@ -166,7 +166,7 @@ const Navbar = React.memo(() => {
             <Login setModalRef={setLoginModalRef} openRegisterModal={handleRegisterClick} openForgetPasswordModal={handleForgetPasswordClick} />
             <Register setModalRef={setRegisterModalRef} openLoginModal={handleLoginClick} openConfirmOtpModal={handleConfirmOtpClick} />
             <ForgetPassword setModalRef={setForgetPasswordModalRef} openChangePasswordModal={handleChangePasswordClick} />
-            <ChangePassword setModalRef={setChangePasswordModalRef} openLoginModal={handleLoginClick} />
+            {/* <ChangePassword setModalRef={setChangePasswordModalRef} openLoginModal={handleLoginClick} /> */}
             <ConfirmOtp setModalRef={setConfirmOtpModalRef} openLoginModal={handleLoginClick} />
         </nav>
     );

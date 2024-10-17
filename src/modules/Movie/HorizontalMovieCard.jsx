@@ -16,27 +16,27 @@ function HorizontalMovieCard({ infor, className, cardInfor = false }) {
       <div className="flex flex-row overflow-hidden">
         <div className="w-1/3 overflow-hidden">
           <Image
-            src={infor.image}
-            alt={infor.image}
-            className=" h-full w- overflow-hidden"
+            src={infor.imagePaths[0]}
+            alt={infor.imagePaths[0]}
+            className=" h-full w- overflow-hidden object-cover"
           />
         </div>
         <div className="p-4 text-left justify-center items-center">
-          <p className="text-3xl font-bold">{infor.title}</p>
+          <p className="text-3xl font-bold">{infor.name}</p>
           <div className="text-xl">
-            <p className="text-[#008e28]">{infor.type}</p>
+            {/* <p className="text-[#008e28]">{infor.type}</p> */}
             <p className="text-gray-600 py-2">
               <span className="font-bold">Thời lượng: </span>
-              {infor.time}
+              {infor.length}
             </p>
             <p className="text-gray-600 py-2">
               <span className="font-bold">Quốc gia: </span>
-              {infor.country}
+              {infor.nation}
             </p>
-            <p className="text-gray-600 py-2">
+            {/* <p className="text-gray-600 py-2">
               <span className="font-bold">Ngôn ngữ: </span>
               {infor.language}
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

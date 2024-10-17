@@ -54,7 +54,7 @@ const getUser = async () => {
 
 const forgetPasswordService = async (email) => {
     try {
-        const res = await httpRequest.post('auth/reset-password-request', null, {
+        const res = await httpRequest.get('auth/forgot-password', {
             params: {
                 email: email
             }
@@ -65,10 +65,26 @@ const forgetPasswordService = async (email) => {
         throw error;
     }
 }
-const resetPasswordService = async (email, password) => {
+
+const checkToken = async (token) => {
     try {
-        const res = await httpRequest.post('auth/reset-password', {
-            email: email,
+        const res = await httpRequest.get('auth/verify-token', {
+            params: {
+                token: token
+            }
+        });
+        // console.log(res);
+        return res.data.data;
+    } catch (error) {
+        console.log('logout error: ', error);
+        throw error;
+    }
+}
+
+const resetPasswordService = async (token, password) => {
+    try {
+        const res = await httpRequest.post('auth/change-password', {
+            token: token,
             password: password,
             confirmPassword: password
         });
@@ -79,17 +95,5 @@ const resetPasswordService = async (email, password) => {
     }
 }
 
-const sendOTPService = async (email, otp) => {
-    try {
-        const res = await httpRequest.post('auth/verify-otp-forgot-password', {
-            email: email,
-            otp: otp
-        });
-        return res.data;
-    } catch (error) {
-        console.log('logout error: ', error);
-        throw error;
-    }
-}
 
-export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService, sendOTPService }
+export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService, checkToken }

@@ -25,8 +25,6 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
 
   const isVerifyOtpButtonEnabled = !otp || otp.length < 6;
 
-  console.log('re-render')
-
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
     tl.to(overlayRef.current, { display: "flex" })
