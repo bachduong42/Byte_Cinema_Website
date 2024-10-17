@@ -1,19 +1,23 @@
 
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
+import { refreshToken } from "../services/refreshToken";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [email, setEmail] = useState(null)
-
-    // useEffect(() => {
-    //     if (localStorage.getItem('accessToken')) {
-    //         getUser()
-    //             .then((data) => setUser(data))
-    //             .catch((error) => console.log('Error fetching user:', error));
-    //     }
-    // }, []);
+    const [isTokenExpired, setIsTokenExpired] = useState(false);
+    const checkLoginSession = useCallback(async () => {
+        if (document.cookie) return true;
+        const response = await refreshToken();
+        if (!response) {
+            setIsTokenExpired(true);
+            logout();
+            return false;
+        }
+        return true
+    }, [])
 
     const login = (user) => {
         setUser(user);
@@ -35,8 +39,16 @@ export const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{ user, login, logout, saveEmail, getEmail }}>
+        <UserContext.Provider value={{ user, login, logout, saveEmail, getEmail, checkLoginSession }}>
             {children}
+            {isTokenExpired && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <p>Your session has expired. Please login again.</p>
+                        <button onClick={() => setIsTokenExpired(false)}>Close</button>
+                    </div>
+                </div>
+            )}
         </UserContext.Provider>
     )
 }

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import { IonIcon } from "@ionic/react";
-import { close, closeSharp } from "ionicons/icons";
+import { close} from "ionicons/icons";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import logo from "../../assets/images/logo.png";
@@ -24,8 +24,6 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
   const { getEmail } = useContext(UserContext);
 
   const isVerifyOtpButtonEnabled = !otp || otp.length < 6;
-
-  console.log('re-render')
 
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
@@ -203,19 +201,6 @@ const ChangeOtp = ({ setModalRef, openLoginModal }) => {
                         }
                       }}
                     />
-
-                    {otp.length > 0 && (
-                      <div
-                        className={`absolute top-[50%] transform -translate-y-[3px] right-[30%] -translate-x-[10px]`}
-                        onClick={() => setOtp("")}
-                      >
-                        <IonIcon
-                          icon={closeSharp}
-                          className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
-                        />
-                      </div>
-                    )}
-
                     <button
                       type="button"
                       className="w-1/4 ml-[0.5rem] text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out"

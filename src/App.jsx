@@ -5,9 +5,11 @@ import { ToastContainer} from "react-toastify";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { publicRoutes } from "./router"
 import DefaultLayout from "./components/Layout/DefaultLayout"
+import ScrollToTop from './utils/ScrollToTop';
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         <Routes>
           {publicRoutes.map((route, index) => {

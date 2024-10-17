@@ -4,7 +4,7 @@ import Footer from './Footer';
 function DefaultLayout({ children }) {
     return (
         <>
-            <div className="bg-white ">
+            <div className="bg-white flex-1">
                 <Navbar></Navbar>
                 <div className="bg-bgGray ">
                     {children}

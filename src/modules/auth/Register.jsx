@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { IonIcon } from '@ionic/react';
-import { close, eyeOffOutline, eyeOutline, closeSharp } from 'ionicons/icons';
+import { close, eyeOffOutline, eyeOutline} from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
@@ -251,18 +251,6 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
                       onBlur={validateEmail}
                       value={email}
                     />
-
-                    {email.length > 0 && (
-                      <div
-                        className="right-[51px] top-[131px] absolute"
-                        onClick={() => setEmail("")}
-                      >
-                        <IonIcon
-                          icon={closeSharp}
-                          className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
-                        />
-                      </div>
-                    )}
                   </div>
                   <div className="ml-[15px] mt-[3px]">
                     <span
@@ -288,18 +276,6 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
                       onBlur={validatePassword}
                       value={password}
                     />
-
-                    {password.length > 0 && (
-                      <div
-                        className="absolute right-[51px] top-[50%] transform -translate-y-[11px]"
-                        onClick={() => setPassword("")}
-                      >
-                        <IonIcon
-                          icon={closeSharp}
-                          className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
-                        />
-                      </div>
-                    )}
 
                     <div
                       className="right-[11px] top-[50%] transform -translate-y-[11px] absolute"
@@ -335,19 +311,6 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
                       onBlur={validateConfirmPassword}
                       value={confirmPassword}
                     />
-
-                    {confirmPassword.length > 0 && (
-                      <div
-                        className="absolute right-[51px] top-[50%] transform -translate-y-[11px]"
-                        onClick={() => setConfirmPassword("")}
-                      >
-                        <IonIcon
-                          icon={closeSharp}
-                          className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
-                        />
-                      </div>
-                    )}
-
                     <div
                       className="right-[11px] top-[50%] transform -translate-y-[11px] absolute"
                       onClick={toggleConfirmPasswordVisibility}
