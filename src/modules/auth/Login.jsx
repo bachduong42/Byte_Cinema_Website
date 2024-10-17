@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { IonIcon } from '@ionic/react';
-import { close, eyeOffOutline, eyeOutline} from 'ionicons/icons';
+import { close, eyeOffOutline, eyeOutline } from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
@@ -80,6 +80,8 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
       toast.success("Đăng nhập thành công", {
         autoClose: 1000
       });
+      window.location.reload();
+
       closeLoginModal();
     } catch (error) {
       if (error.response && error.response.data) {

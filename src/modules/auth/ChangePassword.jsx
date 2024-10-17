@@ -101,9 +101,8 @@ const ChangePassword = ({ openLoginModal }) => {
     <>
       <div className="flex flex-col h-[500px] w-1/3 mt-[150px] mx-auto">
         <div
-          className={`w-full ${
-            isValid ? "h-[350px]" : "h-[200px] border-yellow-300 "
-          } border px-5 flex justify-center flex-col items-center mt-10 shadow-md`}
+          className={`w-full ${isValid ? "h-[350px]" : "h-[200px] border-yellow-300 "
+            } border px-5 flex justify-center flex-col items-center mt-10 shadow-md`}
         >
           {isValid ? (
             <>
@@ -128,7 +127,6 @@ const ChangePassword = ({ openLoginModal }) => {
                         onClick={() => setNewPassword("")}
                       >
                         <IonIcon
-                          icon={closeSharp}
                           className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
                         />
                       </div>
@@ -175,7 +173,7 @@ const ChangePassword = ({ openLoginModal }) => {
                         onClick={() => setConfirmNewPassword("")}
                       >
                         <IonIcon
-                          icon={closeSharp}
+
                           className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
                         />
                       </div>
