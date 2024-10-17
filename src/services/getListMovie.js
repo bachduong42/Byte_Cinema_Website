@@ -2,12 +2,7 @@ import httpRequest from '../utils/httpRequest';
 
 const getListMovie = async () => {
     try {
-        const res = await httpRequest.get('movies', {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            }
-        }
-        );
+        const res = await httpRequest.get('movies');
         return res.data;
     } catch (error) {
         console.log('Login error: ', error);
