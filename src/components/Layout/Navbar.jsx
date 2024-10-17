@@ -31,8 +31,9 @@ const Navbar = React.memo(() => {
         setActiveButton(location.pathname);
     }, [location.pathname]);
     useEffect(() => {
+        window.scrollTo(0, 0);
         const handleScroll = () => {
-            if (window.scrollY > 80) {
+            if (window.scrollY > 60) {
                 setIsScrolled(true);
             } else {
                 setIsScrolled(false);

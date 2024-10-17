@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { IonIcon } from '@ionic/react';
-import { close, eyeOffOutline, eyeOutline, closeSharp } from 'ionicons/icons';
+import { close, eyeOffOutline, eyeOutline} from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
@@ -182,12 +182,6 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
                 <div className="input mb-[1.5rem]">
                   <div className='flex-row'>
                     <input type="text" name="username" placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setLoginEmail(e.target.value)} onBlur={checkInputEmail} value={loginEmail} />
-
-                    {loginEmail.length > 0 && (
-                      <div className='right-[51px] top-[131px] absolute' onClick={() => setLoginEmail("")}>
-                        <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                      </div>
-                    )}
                   </div>
                   <div className='ml-[15px] mt-[3px]'>
                     <span name='error' id='username-error' className='text-[13px] error text-red-600 text-start flex'>  {loginEmailError}</span>
@@ -198,13 +192,6 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
                 <div className="input mb-[1.5rem]">
                   <div className='relative flex-row'>
                     <input type={isLoginPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setLoginPassword(e.target.value)} onBlur={checkInputPassword} value={loginPassword} />
-
-                    {loginPassword.length > 0 && (
-                      <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setLoginPassword("")}>
-                        <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                      </div>
-                    )}
-
                     <div className='right-[11px] top-[50%] transform -translate-y-[11px] absolute' onClick={togglePasswordVisibility}>
                       <IonIcon icon={isLoginPasswordVisible ? eyeOutline : eyeOffOutline} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
                     </div>

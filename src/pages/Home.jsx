@@ -6,11 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import "swiper/swiper-bundle.css";
 import { BiMoviePlay } from "react-icons/bi";
-import Movie1 from "../assets/images/movie1.jpg";
-import Movie2 from "../assets/images/movie2.jpg";
-import Movie3 from "../assets/images/movie3.jpg";
-import Movie4 from "../assets/images/movie4.jpg";
-import sapchieu from "../assets/images/sapchieu.png"
 import Button from "../components/Button/Button";
 import MovieCommingSoon from "../modules/Movie/MovieCommingSoon";
 import { getListMovie } from "../services/getListMovie";
@@ -91,9 +86,6 @@ const Home = () => {
             }
         }
     }, []);
-
-
-
     return (
         <>
             <div className="relative bg-[#092B4B] home">

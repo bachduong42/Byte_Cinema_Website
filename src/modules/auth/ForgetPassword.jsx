@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { IonIcon } from '@ionic/react';
-import { close, closeSharp } from 'ionicons/icons';
+import { close} from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
@@ -138,12 +138,6 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
                                 <div className="input mb-[1rem]">
                                     <div className='flex-row'>
                                         <input type="text" name="username" placeholder="Gửi tới Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setEmail(e.target.value)} onBlur={validateEmail} value={email} />
-
-                                        {email.length > 0 && (
-                                            <div className='right-[51px] top-[131px] absolute' onClick={() => setEmail("")}>
-                                                <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                            </div>
-                                        )}
                                     </div>
                                     <div className='ml-[15px] mt-[3px]'>
                                         <span name='error' id='username-error' className='text-[13px] error text-red-600 text-start flex'>  {emailError}</span>
@@ -159,12 +153,6 @@ const ForgetPassword = ({ setModalRef, openChangePasswordModal }) => {
                                                 e.preventDefault();
                                             }
                                         }} />
-
-                                        {otp.length > 0 && (
-                                            <div className='right-[11px] top-[50%] transform -translate-y-[11px] absolute' onClick={() => setOtp("")}>
-                                                <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                            </div>
-                                        )}
                                     </div>
                                     <div className='ml-[15px] mt-[3px]'>
                                         <span name='error' id='otp-error' className='text-[13px] error text-red-600 text-start flex'>  {otpError}</span>
