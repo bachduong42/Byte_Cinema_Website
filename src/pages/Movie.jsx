@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import listMovie from "../constants/MovieList";
+// import listMovie from "../constants/MovieList";
 import {
   close,
   timeOutline,
@@ -10,22 +10,49 @@ import {
 import { IonIcon } from "@ionic/react";
 import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import HorizontalMovieCard from "../modules/Movie/HorizontalMovieCard";
+import { getDetailFilm } from "../services/getDetailFilm";
 
 const Movie = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams();
   const currentMovieId = parseInt(id);
-  const movie = listMovie.find((movie) => movie.id === parseInt(id));
+  const [movie, setMovie] = useState({});
+  // const movie = listMovie.find((movie) => movie.id === parseInt(id));
+
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const formattedDay = day.toString().padStart(2, "0");
+    const formattedMonth = month.toString().padStart(2, "0");
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    return `${formattedDay}/${formattedMonth}/${year} ${formattedHours}:${formattedMinutes}`;
+  }
+
+  useEffect(() => {
+    async function getMovie() {
+      const movie = await getDetailFilm(id);
+      if (movie) {
+        console.log(movie);
+        setMovie(movie);
+      }
+    }
+    getMovie();
+  }, [id]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   const getYouTubeEmbedUrl = (url) => {
-    const videoId = url.split("v=")[1];
-    const ampersandPosition = videoId.indexOf("&");
+    const videoId = url?.split("v=")[1];
+    const ampersandPosition = videoId?.indexOf("&");
     if (ampersandPosition !== -1) {
-      return videoId.substring(0, ampersandPosition);
+      return videoId?.substring(0, ampersandPosition);
     }
     return videoId;
   };
@@ -46,11 +73,15 @@ const Movie = () => {
             <div className="video-preview w-full relative overflow-hidden">
               <div
                 className="absolute inset-0 bg-cover bg-center filter blur-xl"
-                style={{ backgroundImage: `url(${movie.banner})` }}
+                style={{
+                  backgroundImage: `url(${
+                    movie.imagePaths ? movie.imagePaths[0] : null
+                  })`,
+                }}
               ></div>
               <img
-                src={movie.banner}
-                alt={movie.title}
+                src={movie.imagePaths ? movie.imagePaths[0] : null}
+                alt={movie.name}
                 className="banner-image relative"
               />
               <IonIcon
@@ -65,14 +96,14 @@ const Movie = () => {
             <div className="flex-row flex pt-[50px] flex-1">
               <div className="transition translate-y-[-13%] z-40">
                 <img
-                  src={movie.image}
-                  alt={movie.title}
+                  src={movie.imagePaths ? movie.imagePaths[0] : null}
+                  alt={movie.name}
                   className="border-2 border-black rounded-lg w-[450px]"
                 />
               </div>
               <div className="items-start  text-left ml-[50px] w-3/4 flex flex-col">
                 <h1 className="text-6xl mb-[15px] font-semibold text-[#092b4b]">
-                  {movie.title}
+                  {movie.name}
                 </h1>
                 <>
                   {/* <div className="flex-row flex text-lg items-center gap-[30px]">
@@ -95,19 +126,19 @@ const Movie = () => {
 
                 <div className="grid grid-cols-1 gap-x-2 py-4 text-2xl w-full">
                   <div className="flex items-center py-2 text-2xl font-semibold">
-                    <div className="w-[10%] flex items-center gap-[7px] mr-[20px]">
+                    {/* <div className="w-[10%] flex items-center gap-[7px] mr-[20px]">
                       <IonIcon
                         icon={timeOutline}
                         className="text-[#FE9051] text-3xl"
                       />
-                      <p>{movie.time}</p>
-                    </div>
+                      <p>{formatDate(movie.releaseDay)}</p>
+                    </div> */}
                     <div className="w-[90%] flex items-center gap-[10px]">
                       <IonIcon
                         icon={calendarOutline}
                         className="text-[#FE9051] text-2xl"
                       />
-                      <p>{movie.date}</p>
+                      <p>{formatDate(movie.releaseDay)}</p>
                     </div>
                   </div>
                   <div className="flex items-center py-2">
@@ -124,32 +155,34 @@ const Movie = () => {
                     <span className="w-[90%]">{movie.actors}</span>
                   </div>
 
-                  <div className="flex items-center py-2">
+                  {/* <div className="flex items-center py-2">
                     <span className="font-bold mr-[20px] w-[10%]">
                       Thể loại:
                     </span>
-                    <span className="w-[90%]">{movie.type}</span>
-                  </div>
+                    <span className="w-[90%]">{movie.nation}</span>
+                  </div> */}
 
                   <div className="flex items-center py-2">
                     <span className="font-bold mr-[20px] w-[10%]">
                       Khởi chiếu:
                     </span>
-                    <span className="w-[90%]">{movie.date}</span>
+                    <span className="w-[90%]">
+                      {formatDate(movie.releaseDay)}
+                    </span>
                   </div>
 
                   <div className="flex items-center py-2">
                     <span className="font-bold mr-[20px] w-[10%]">
                       Thời lượng:
                     </span>
-                    <span className="w-[90%]">{movie.time}</span>
+                    <span className="w-[90%]">{movie.length}</span>
                   </div>
 
                   <div className="flex items-center py-2">
                     <span className="font-bold mr-[20px] w-[10%]">
                       Quốc gia:
                     </span>
-                    <span className="w-[90%]">{movie.country}</span>
+                    <span className="w-[90%]">{movie.nation}</span>
                   </div>
                 </div>
               </div>
@@ -196,16 +229,16 @@ const Movie = () => {
                       Phim đang chiếu
                     </h1>
                   </div>
-                  <div>
+                  {/* <div>
                     {listMovie
                       .filter((movie) => movie.id !== currentMovieId)
                       .slice(0, 4)
                       .map((movie) => (
                         <div key={movie.id}>
-                          <HorizontalMovieCard  infor={movie} />
+                          <HorizontalMovieCard infor={movie} />
                         </div>
                       ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

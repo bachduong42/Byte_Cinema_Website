@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { IonIcon } from '@ionic/react';
-import { close, eyeOffOutline, eyeOutline, closeSharp } from 'ionicons/icons';
+import { close, eyeOffOutline, eyeOutline} from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
@@ -143,92 +143,171 @@ const ChangePassword = ({ setModalRef, openLoginModal }) => {
 
 
     return (
-        <>
-            <div id="cp-overlay" ref={cpOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
-                <div id="cp-outer-box" ref={cpOuterBoxRef} className='relative w-[30rem] items-center justify-center self-center'>
-
-                    <div id="chibi-container" className='relative w-full h-[130px]' ref={chibiContainerRef}>
-                        <img id='chibi-img default-img active' src={logo} alt="chibi" className='block absolute w-[150px] left-1/2 top-full -translate-x-1/2 logo-login-modal transition-all duration-500 ease-in-expo' />
-                    </div>
-
-                    <div id="cp-inner-box" className='relative z-2 bg-white rounded-xl h-full p-[20px]'>
-                        <div id="close-div" className='w-full h-max mb-[1rem] flex justify-end' onClick={closeChangePasswordModal}>
-                            <IonIcon icon={close} id='close' className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                        </div>
-
-                        <div className="fade-animate" ref={fadeAnimateRef}>
-                            <h2 className='text-center mb-[1rem]'>ĐỔI MẬT KHẨU</h2>
-                            {/* <form autoComplete='off' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
-                            <div className='w-full p-[20px]'>
-
-                                <div className="input mb-[1.5rem]">
-                                    <div className='flex-row'>
-                                        <input type="text" name="email" placeholder="Email xác nhận" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmEmail(e.target.value)} onBlur={validateEmail} value={confirmEmail} />
-
-                                        {confirmEmail.length > 0 && (
-                                            <div className='right-[51px] top-[131px] absolute' onClick={() => setConfirmEmail("")}>
-                                                <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className='ml-[15px] mt-[3px]'>
-                                        <span name='error' id='email-error' className='text-[13px] error text-red-600 text-start flex'>  {emailError}</span>
-                                    </div>
-
-                                </div>
-
-
-                                <div className="input mb-[1.5rem]">
-                                    <div className='relative flex-row'>
-                                        <input type={isNewPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu mới" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setNewPassword(e.target.value)} onBlur={validatePassword} value={newPassword} />
-
-                                        {newPassword.length > 0 && (
-                                            <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setNewPassword("")}>
-                                                <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                            </div>
-                                        )}
-
-                                        <div className='right-[11px] top-[50%] transform -translate-y-[11px] absolute' onClick={togglePasswordVisibility}>
-                                            <IonIcon icon={isNewPasswordVisible ? eyeOutline : eyeOffOutline} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                        </div>
-
-                                    </div>
-                                    <div className='ml-[15px] mt-[3px]'>
-                                        <span name='error' id='password-error' className='text-[13px] error text-red-600 text-start flex'>  {newPasswordError}</span>
-                                    </div>
-                                </div>
-
-                                <div className="input mb-[1.5rem]">
-                                    <div className='relative flex-row'>
-                                        <input type={isConfirmNewPasswordVisible ? "text" : "password"} name="password" placeholder="Nhập lại mật khẩu mới" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setConfirmNewPassword(e.target.value)} onBlur={validateConfirmPassword} value={confirmNewPassword} />
-
-                                        {confirmNewPassword.length > 0 && (
-                                            <div className='absolute right-[51px] top-[50%] transform -translate-y-[11px]' onClick={() => setConfirmNewPassword("")}>
-                                                <IonIcon icon={closeSharp} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                            </div>
-                                        )}
-
-                                        <div className='right-[11px] top-[50%] transform -translate-y-[11px] absolute' onClick={toggleConfirmPasswordVisibility}>
-                                            <IonIcon icon={isNewPasswordVisible ? eyeOutline : eyeOffOutline} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
-                                        </div>
-
-                                    </div>
-                                    <div className='ml-[15px] mt-[3px]'>
-                                        <span name='error' id='password-error' className='text-[13px] error text-red-600 text-start flex'>  {confirmNewPasswordError}</span>
-                                    </div>
-
-                                </div>
-
-                                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isCPButtonEnabled} style={{ backgroundColor: isCPButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleChangePassword}>Đổi mật khẩu</button>
-                                {/* </form> */}
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+      <>
+        <div
+          id="cp-overlay"
+          ref={cpOverlayRef}
+          className="fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden"
+          onMouseDown={handleOverlayClick}
+        >
+          <div
+            id="cp-outer-box"
+            ref={cpOuterBoxRef}
+            className="relative w-[30rem] items-center justify-center self-center"
+          >
+            <div
+              id="chibi-container"
+              className="relative w-full h-[130px]"
+              ref={chibiContainerRef}
+            >
+              <img
+                id="chibi-img default-img active"
+                src={logo}
+                alt="chibi"
+                className="block absolute w-[150px] left-1/2 top-full -translate-x-1/2 logo-login-modal transition-all duration-500 ease-in-expo"
+              />
             </div>
-        </>
-    )
+
+            <div
+              id="cp-inner-box"
+              className="relative z-2 bg-white rounded-xl h-full p-[20px]"
+            >
+              <div
+                id="close-div"
+                className="w-full h-max mb-[1rem] flex justify-end"
+                onClick={closeChangePasswordModal}
+              >
+                <IonIcon
+                  icon={close}
+                  id="close"
+                  className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
+                />
+              </div>
+
+              <div className="fade-animate" ref={fadeAnimateRef}>
+                <h2 className="text-center mb-[1rem]">ĐỔI MẬT KHẨU</h2>
+                {/* <form autoComplete='off' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
+                <div className="w-full p-[20px]">
+                  <div className="input mb-[1.5rem]">
+                    <div className="flex-row">
+                      <input
+                        type="text"
+                        name="email"
+                        placeholder="Email xác nhận"
+                        required
+                        className=" w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]"
+                        onChange={(e) => setConfirmEmail(e.target.value)}
+                        onBlur={validateEmail}
+                        value={confirmEmail}
+                      />
+                    </div>
+                    <div className="ml-[15px] mt-[3px]">
+                      <span
+                        name="error"
+                        id="email-error"
+                        className="text-[13px] error text-red-600 text-start flex"
+                      >
+                        {" "}
+                        {emailError}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="input mb-[1.5rem]">
+                    <div className="relative flex-row">
+                      <input
+                        type={isNewPasswordVisible ? "text" : "password"}
+                        name="password"
+                        placeholder="Mật khẩu mới"
+                        required
+                        className=" w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]"
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        onBlur={validatePassword}
+                        value={newPassword}
+                      />
+
+                      <div
+                        className="right-[11px] top-[50%] transform -translate-y-[11px] absolute"
+                        onClick={togglePasswordVisibility}
+                      >
+                        <IonIcon
+                          icon={
+                            isNewPasswordVisible ? eyeOutline : eyeOffOutline
+                          }
+                          className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                    <div className="ml-[15px] mt-[3px]">
+                      <span
+                        name="error"
+                        id="password-error"
+                        className="text-[13px] error text-red-600 text-start flex"
+                      >
+                        {" "}
+                        {newPasswordError}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="input mb-[1.5rem]">
+                    <div className="relative flex-row">
+                      <input
+                        type={isConfirmNewPasswordVisible ? "text" : "password"}
+                        name="password"
+                        placeholder="Nhập lại mật khẩu mới"
+                        required
+                        className=" w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]"
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        onBlur={validateConfirmPassword}
+                        value={confirmNewPassword}
+                      />
+
+                      <div
+                        className="right-[11px] top-[50%] transform -translate-y-[11px] absolute"
+                        onClick={toggleConfirmPasswordVisibility}
+                      >
+                        <IonIcon
+                          icon={
+                            isNewPasswordVisible ? eyeOutline : eyeOffOutline
+                          }
+                          className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                    <div className="ml-[15px] mt-[3px]">
+                      <span
+                        name="error"
+                        id="password-error"
+                        className="text-[13px] error text-red-600 text-start flex"
+                      >
+                        {" "}
+                        {confirmNewPasswordError}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit-button"
+                    className="w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out"
+                    disabled={isCPButtonEnabled}
+                    style={{
+                      backgroundColor: isCPButtonEnabled
+                        ? "#e3e3e3"
+                        : "#db9a45",
+                    }}
+                    onClick={handleChangePassword}
+                  >
+                    Đổi mật khẩu
+                  </button>
+                  {/* </form> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
 }
 
 export default ChangePassword;
