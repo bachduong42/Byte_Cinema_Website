@@ -12,11 +12,10 @@ function MovieCard({ infor, className, cardInfor = false }) {
 
   return (
     <div
-      className={`relative ${className} group cursor-pointer ${
-        cardInfor
+      className={`relative ${className} group cursor-pointer ${cardInfor
           ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
           : ""
-      }`}
+        }`}
       onClick={handleCardClick}
     >
       <Image
@@ -37,7 +36,7 @@ function MovieCard({ infor, className, cardInfor = false }) {
             <div>Thời lượng:</div>
             <div>{infor.time}</div>
           </div>
-          <button className="bg-[#FE9051] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+          <button className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
             Mua vé
           </button>
         </div>
@@ -46,8 +45,8 @@ function MovieCard({ infor, className, cardInfor = false }) {
   );
 }
 MovieCard.protoTypes = {
-    infor: PropTypes.object.isRequired,
-    className: PropTypes.string,
-    cardInfor: PropTypes.bool,
+  infor: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  cardInfor: PropTypes.bool,
 }
 export default MovieCard;

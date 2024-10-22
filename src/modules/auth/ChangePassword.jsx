@@ -20,7 +20,7 @@ const ChangePassword = ({ openLoginModal }) => {
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
   const location = useLocation();
   const [token, setToken] = useState("");
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -30,6 +30,7 @@ const ChangePassword = ({ openLoginModal }) => {
       const isValidToken = await checkToken(tokenParam);
       setIsValid(isValidToken.info);
       setToken(tokenParam);
+
       console.log(isValidToken.info);
     };
     if (tokenParam) {

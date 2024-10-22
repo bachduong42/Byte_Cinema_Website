@@ -111,7 +111,7 @@ const Home = () => {
                 </Swiper>
 
                 <div className="absolute flex  bottom-[150px] left-[100px] z-20 gap-10">
-                    <Button secondary >Đặt vé ngay</Button>
+                    <Button secondary className="lg:w-[140px]w-[80px]">Đặt vé ngay</Button>
                     <Button color={"#0DB1F6"}>Xem chi tiết</Button>
                 </div>
 
@@ -222,7 +222,7 @@ const Home = () => {
                     </Swiper>
                 </div>
                 <div className="flex gap-10 mt-8 pl-[200px]">
-                    <Button secondary className="">Đặt vé ngay</Button>
+                    <Button secondary className="lg:w-[140px]w-[80px]">Đặt vé ngay</Button>
                     <div className="flex gap-1 items-center cursor-pointer">
                         <Button color={"#0DB1F6"}>Xem trailer</Button>
                         <BiMoviePlay className="text-white w-[25px] h-[25px]" />
