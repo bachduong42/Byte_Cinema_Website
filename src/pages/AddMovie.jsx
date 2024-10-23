@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
 import NoImage from "../assets/images/no-image.svg";
 import { getMovieGenres } from "../services/getMovieGenres";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { addMovieRequest } from "../services/addMovie";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 function AddMovie() {
   const [movie, setMovie] = useState({
     title: "",
     director: "",
     actors: "",
-    genre: -1,
+    genre: 0,
     duration: "",
     country: "",
     // language: "",
     releaseDay: new Date().toISOString(),
     content: "",
     images: [NoImage],
-    poster: "",
+    poster: null,
+    posterPreview: null,
     // trailer: "",
   });
   const [movieGenres, setMovieGenres] = useState([]);
 
   const [releaseDate, setReleaseDate] = useState(new Date());
+  const navigate = useNavigate();
 
   const isSubmitButtonEnabled =
     !movie.title ||
@@ -62,40 +66,7 @@ function AddMovie() {
 
   // console.log("Access_token: ", access_token);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMovie({
-      ...movie,
-      [name]: typeof movie[name] === "number" ? Number(value) : value,
-    });
-  };
-
-  // const handleDateChange = (e) => {
-  //   const date = e.target.value;
-  //   const isoString = formatISO(date, { representation: 'complete' });
-  //   setMovie({
-  //     ...movie,
-  //     releaseDay: isoString.toString(),
-  //   });
-  // }
-
-  const handleDateChange = (date) => {
-    const isoString = date.toISOString(); // Convert to ISO string
-    setMovie({
-      ...movie,
-      releaseDay: isoString, // Store the ISO string in releaseDay
-    });
-    setReleaseDate(date); // Update the releaseDate state for DatePicker
-  };
-
-  const isInputValid = () => {
-    return Object.values(movie)
-      .filter((value) => typeof value === "string")
-      .every((value) => value.trim() !== "");
-  };
-
-
-
+  
   // const handleSave = (e) => {
   //   e.preventDefault();
   //   console.log(movie.images);
@@ -122,6 +93,33 @@ function AddMovie() {
   //   }
   // };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setMovie({
+      ...movie,
+      [name]: typeof movie[name] === "number" ? Number(value) : value,
+    });
+  };
+
+  const handleDateChange = (date) => {
+    const isoString = date.toISOString(); // Convert to ISO string
+    setMovie({
+      ...movie,
+      releaseDay: isoString, // Store the ISO string in releaseDay
+    });
+    setReleaseDate(date); // Update the releaseDate state for DatePicker
+  };
+
+  const isInputValid = () => {
+    return Object.values(movie)
+      .filter((value) => typeof value === "string")
+      .every((value) => value.trim() !== "");
+  };
+
+  const isImageFilesArray = (imageFiles) => {
+    return Array.isArray(imageFiles) && imageFiles.every(file => file instanceof File);
+  };
+
   const handleSave = (e) => {
     e.preventDefault();
     if (isInputValid()) {
@@ -129,74 +127,122 @@ function AddMovie() {
       if (!filteredImages.includes(movie.poster)) {
         filteredImages.unshift(movie.poster);
       }
+      filteredImages[0] = { file: movie.poster, imagePreview: movie.posterPreview };
       const filteredMovie = {
         ...movie,
         images: filteredImages,
       };
       console.log(filteredMovie);
-      console.log(filteredImages.length);
+      console.log(filteredImages.length); 
       console.log(movie.releaseDay);
-      _addMovie(filteredMovie);
+      const imageFiles = filteredMovie.images.map(image => image.file);
+      if (isImageFilesArray(imageFiles)) {
+        _addMovie(filteredMovie);
+      } else {
+        alert("Invalid image files.");
+      }
     } else {
       alert("Invalid input: fields cannot contain only spaces.");
     }
   };
 
-  const _addMovie = async (movie) => {
+  const _addMovie = async (_movie) => {
     try {
+      // console.log("Image: ", _movie.images[0]);
       const form_data = new FormData();
-      form_data.append("imageFiles", movie.images);
-      form_data.append("movie-info", {
-        "description": movie.content,
-        "duration": movie.duration,
-        "name": movie.title,
-        "releaseDay": movie.releaseDay,
-        "genreIds": [movie.genre],
-        "imagePaths": [],
-        "director": movie.director,
-        "nation": movie.country,
-        "actors": movie.actors,
-    });
+      _movie.images.forEach((image) => {
+        console.log("Image from images: ", image.file);
+        console.log("File type: ", image.file.type);
+        const _file = image.file;
+        form_data.append(`imageFiles`, _file);
+      });
+      form_data.append(
+        "movie-info",
+        new Blob([JSON.stringify({
+          description: _movie.content,
+          duration: _movie.duration,
+          name: _movie.title,
+          releaseDay: _movie.releaseDay,
+          genreIds: [_movie.genre],
+          imagePaths: [],
+          director: _movie.director,
+          nation: _movie.country,
+          actors: _movie.actors,
+        })], {'type': 'application/json'})
+      );
 
-      const res = await addMovieRequest(localStorage.getItem('accessToken'), form_data);
+      const res = await addMovieRequest(
+        localStorage.getItem("accessToken"),
+        form_data
+      );
+      toast.success("Thêm phim thành công", {
+        autoClose: 1000
+      });
       console.log("Add movie response: ", res);
+      navigate("/film-management");
     } catch (error) {
       console.error("Add movie error: ", error);
+      toast.error("Có lỗi xảy ra, vui lòng thử lại", {
+        autoClose: 1000
+      });
       throw error;
     }
-  }
+  };
+
+  // const handleImageChange = (e, index) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       const newImages = [...movie.images];
+  //       newImages[index] = reader.result;
+  //       if (newImages.length < 6 && newImages[index] !== NoImage) {
+  //         newImages.push(NoImage);
+  //       }
+  //       setMovie({
+  //         ...movie,
+  //         images: newImages,
+  //       });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newImages = [...movie.images];
-        newImages[index] = reader.result;
-        if (newImages.length < 6 && newImages[index] !== NoImage) {
-          newImages.push(NoImage);
-        }
-        setMovie({
-          ...movie,
-          images: newImages,
-        });
-      };
-      reader.readAsDataURL(file);
+      const imagePreview = URL.createObjectURL(file);
+      const newImages = [...movie.images];
+      newImages[index] = { file, imagePreview };
+      if (newImages.length < 6 && newImages[index] !== NoImage) {
+        newImages.push(NoImage);
+      }
+      setMovie({
+        ...movie,
+        images: newImages,
+      });
     }
   };
+
+  // const handlePosterChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setMovie({ ...movie, poster: reader.result });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handlePosterChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setMovie({ ...movie, poster: reader.result });
-      };
-      reader.readAsDataURL(file);
+      const posterPreview = URL.createObjectURL(file);
+
+      setMovie({ ...movie, poster: file, posterPreview });
     }
   };
-
-  
 
   return (
     <>
@@ -318,7 +364,7 @@ function AddMovie() {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md"
                 >
-                  <option value={-1} disabled hidden>
+                  <option value={0} disabled hidden>
                     Chọn thể loại phim
                   </option>
                   {movieGenres.map((genre) => (
@@ -331,7 +377,7 @@ function AddMovie() {
 
               {/* <div className="flex items-start py-2 justify-center mb-4">
                 <span className="font-bold mr-[00px] w-[40%]">Giờ chiếu:</span> */}
-                {/* <select
+              {/* <select
                   name="type"
                   value={movie.type}
                   onChange={handleChange}
@@ -349,7 +395,7 @@ function AddMovie() {
                     </option>
                   ))}
                 </select> */}
-                {/* <DatePicker
+              {/* <DatePicker
                   selected={releaseDate}
                   onChange={(date) => setReleaseDate(date)}
                   className={'form-control form-control-sm w-full px-3 py-2 border rounded-md'}
@@ -357,22 +403,21 @@ function AddMovie() {
                 /> */}
               {/* </div> */}
 
-
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[00px] w-[40%]">Ngày khởi chiếu:</span>
+                <span className="font-bold mr-[00px] w-[40%]">
+                  Ngày khởi chiếu:
+                </span>
                 <div className=" flex w-[100%] bg-white items-start justify-start self-start">
-                <DatePicker
-                  selected={releaseDate}
-                  onChange={handleDateChange}
-                  className={'form-control form-control-sm w-[100%] px-3 py-2 border rounded-md items-start justify-start self-start'}
-                  dateFormat="yyyy-MM-dd"
-                />
+                  <DatePicker
+                    selected={releaseDate}
+                    onChange={handleDateChange}
+                    className={
+                      "form-control form-control-sm w-[100%] px-3 py-2 border rounded-md items-start justify-start self-start"
+                    }
+                    dateFormat="yyyy-MM-dd"
+                  />
                 </div>
-                
               </div>
-
-
-
 
               <div className="flex items-start py-2 justify-center mb-4">
                 <span className="font-bold mr-[00px] w-[40%]">Nội dung:</span>
@@ -403,9 +448,23 @@ function AddMovie() {
                   className="absolute inset-0 opacity-0 cursor-pointer"
                   onChange={handlePosterChange}
                 />
-                {movie.poster ? (
+                {/* {movie.poster ? (
                   <img
                     src={movie.poster}
+                    alt="Poster"
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-[500px] flex items-center justify-center bg-gray-200 border border-gray-300 rounded-md px-3">
+                    <span className="text-gray-500">
+                      Click to upload poster
+                    </span>
+                  </div>
+                )} */}
+
+                {movie.posterPreview ? (
+                  <img
+                    src={movie.posterPreview}
                     alt="Poster"
                     className="w-full h-full object-contain"
                   />
@@ -419,7 +478,7 @@ function AddMovie() {
               </div>
 
               <div className="grid grid-cols-3 gap-2 p-2 w-2/3 h-full">
-                {movie.images.map((image, index) => (
+                {/* {movie.images.map((image, index) => (
                   <div
                     key={index}
                     className="relative p-2 h-[200px] flex items-center justify-center bg-gray-200 w-full"
@@ -436,6 +495,33 @@ function AddMovie() {
                       alt={`Image ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
+                  </div>
+                ))} */}
+
+                {movie.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative p-2 h-[200px] flex items-center justify-center bg-gray-200 w-full"
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={(e) => handleImageChange(e, index)}
+                    />
+                    {image && image.imagePreview ? (
+                      <img
+                        src={image.imagePreview}
+                        alt={`Image ${index}`}
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-200 border border-gray-300 rounded-md px-3">
+                        <span className="text-gray-500">
+                          Click to upload image
+                        </span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
