@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { IonIcon } from '@ionic/react';
-import { close, eyeOffOutline, eyeOutline } from 'ionicons/icons';
+import { close, eyeOffOutline, eyeOutline, navigate } from 'ionicons/icons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import logo from '../../assets/images/logo.png';
@@ -8,6 +8,7 @@ import { getUser, loginService } from "../../services/login";
 import { UserContext } from '../../contexts/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
@@ -17,6 +18,7 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
   const [isLoginPasswordVisible, setIsLoginPasswordVisible] = useState(false);
   const [loginEmailError, setLoginEmailError] = useState('');
   const [loginPasswordError, setLoginPasswordError] = useState('');
+  const navigate = useNavigate();
 
 
   const loginOverlayRef = useRef();
@@ -80,8 +82,8 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
       toast.success("Đăng nhập thành công", {
         autoClose: 1000
       });
-      window.location.reload();
-
+      // window.location.reload();
+      navigate("/film-management")
       closeLoginModal();
     } catch (error) {
       if (error.response && error.response.data) {

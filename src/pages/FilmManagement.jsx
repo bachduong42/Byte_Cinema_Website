@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Search from "../components/Layout/Search";
 import { MdAddCircleOutline, MdFilterList } from "react-icons/md";
 import Button from "../components/Button/Button";
@@ -8,6 +8,7 @@ import Movie2 from "../assets/images/movie2.jpg";
 import Movie3 from "../assets/images/movie3.jpg";
 import Movie4 from "../assets/images/movie4.jpg";
 import MovieCard from "../modules/Movie/MovieCard";
+import { getListMovie } from "../services/getListMovie";
 
 function FilmManagement() {
     const [searchResult, setSearchResult] = useState([]);
@@ -15,80 +16,47 @@ function FilmManagement() {
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
-    const listMovie = [
-        {
-            id: 1,
-            type: "Tình cảm",
-            imagePaths: [Movie1],
-            name: "THANH XUÂN 18x2",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "20.9.2023",
-        },
-        {
-            id: 2,
-            type: "Kinh dị",
-            imagePaths: [Movie2],
-            name: "CÔ DÂU HÀO MÔN",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 3,
-            type: "Tình cảm",
-            imagePaths: [Movie3],
-            name: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 4,
-            type: "Hài",
-            imagePaths: [Movie4],
-            name: "HÔN LỄ CỦA EM",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 5,
-            type: "Tình cảm",
-            imagePaths: [Movie3],
-            name: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 6,
-            type: "Tình cảm",
-            imagePaths: [Movie3],
-            name: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 7,
-            type: "Tình cảm",
-            imagePaths: [Movie4],
-            name: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-        {
-            id: 8,
-            type: "Tình cảm",
-            imagePaths: [Movie2],
-            name: "KẺ ẨN DANH",
-            time: "1h50p",
-            description: "Answer Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups s",
-            date: "11.2.2024",
-        },
-    ];
+    const [listAllMovie, setListAllMovie] = useState([]);
+    const [listMovie, setListMovie] = useState([]);
+    const [listMovieUpComing, setListMovieUpComing] = useState([])
+    const [filteredMovies, setFilteredMovies] = useState([]);
+    const fetchMovie = async () => {
+        try {
+            const res = await getListMovie();
+            console.log("API Response:", res);
+            if (res.data && Array.isArray(res.data)) {
+                const currentDate = new Date();
+                const filteredReleasedMovies = res.data.filter(movie => {
+                    const releaseDate = new Date(movie.releaseDay);
+                    return releaseDate < currentDate;
+                });
+                const filteredUpcomingMovies = res.data.filter(movie => {
+                    const releaseDate = new Date(movie.releaseDay);
+                    return releaseDate > currentDate;
+                });
+                setListMovie(filteredReleasedMovies);
+                setListMovieUpComing(filteredUpcomingMovies);
+                const combinedMovies = [...filteredReleasedMovies, ...filteredUpcomingMovies];
+                setListAllMovie(combinedMovies);
+            } else {
+                console.error("Data is not an array:", res.data);
+            }
+        } catch (error) {
+            console.error("Error fetching movie data:", error);
+        }
+    };
+    useEffect(() => {
+        fetchMovie();
+    }, []);
+    useEffect(() => {
+        if (activeTab === 'Tất cả') {
+            setFilteredMovies(listAllMovie);
+        } else if (activeTab === 'Đang chiếu') {
+            setFilteredMovies(listMovie);
+        } else if (activeTab === 'Sắp chiếu') {
+            setFilteredMovies(listMovieUpComing);
+        }
+    }, [activeTab, listAllMovie, listMovie, listMovieUpComing]);
     return (
         <div className="flex min-h-[850px] h-auto   flex-col px-[130px] w-full mt-[150px]">
             <div className="flex justify-between w-full h-full">
@@ -111,26 +79,26 @@ function FilmManagement() {
                     <li class="me-2">
                         <a
                             href="#"
-                            onClick={() => handleTabClick('Đã đăng')}
-                            className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Đã đăng'
+                            onClick={() => handleTabClick('Đang chiếu')}
+                            className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Đang chiếu'
                                 ? 'text-white bg-[#092B4B] active'
                                 : 'hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'}`}
-                            aria-current={activeTab === 'Đã đăng' ? "page" : undefined}>Đã đăng</a>
+                            aria-current={activeTab === 'Đang chiếu' ? "page" : undefined}>Đang chiếu</a>
                     </li>
                     <li class="me-2">
                         <a
                             href="#"
-                            onClick={() => handleTabClick('Chưa đăng')}
-                            className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Chưa đăng'
+                            onClick={() => handleTabClick('Sắp chiếu')}
+                            className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Sắp chiếu'
                                 ? 'text-white bg-[#092B4B] active'
                                 : 'hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'}`}
-                            aria-current={activeTab === 'Chưa đăng' ? "page" : undefined}>Chưa đăng</a>
+                            aria-current={activeTab === 'Sắp chiếu' ? "page" : undefined}>Sắp chiếu</a>
                     </li>
                 </ul>
                 <Button className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base" leftIcon={<MdFilterList />}>Sắp xếp</Button>
             </div>
             <div className="w-full grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">
-                {listMovie.map((movie) => (
+                {filteredMovies.map((movie) => (
                     <MovieCard infor={movie} key={movie.id} cardInfor admin></MovieCard>
                 ))}
             </div>

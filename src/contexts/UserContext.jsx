@@ -1,6 +1,7 @@
 
 import { createContext, useCallback, useState } from "react";
 import { refreshToken } from "../services/refreshToken";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
@@ -8,6 +9,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [email, setEmail] = useState(null)
     const [isTokenExpired, setIsTokenExpired] = useState(false);
+   
     const checkLoginSession = useCallback(async () => {
         if (document.cookie) return true;
         const response = await refreshToken();
@@ -28,6 +30,7 @@ export const UserProvider = ({ children }) => {
         setUser(null);
         localStorage.removeItem('isLogin');
         localStorage.removeItem('accessToken');
+        
     };
 
     const saveEmail = (email) => {

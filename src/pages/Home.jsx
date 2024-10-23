@@ -7,8 +7,8 @@ import "swiper/swiper-bundle.css";
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import Button from "../components/Button/Button";
 import { getListMovie } from "../services/getListMovie";
-
-
+import MovieCommingSoon from "../modules/Movie/MovieCommingSoon"
+import { BsFillPlayBtnFill } from "react-icons/bs";
 const Home = () => {
     const sliderRef = useRef(null);
     const coverflowRef = useRef(null);
@@ -16,6 +16,41 @@ const Home = () => {
     const [slidesPerView, setSlidesPerView] = useState(1);
     const [coverflowSlidesPerView, setCoverflowSlidesPerView] = useState(3);
     const [listMovie, setListMovie] = useState([]);
+    const [listMovieUpComming, setListMovieUpcomming] = useState([])
+
+
+    const fetchMovie = async () => {
+        try {
+            const res = await getListMovie();
+            if (res.data && Array.isArray(res.data)) {
+                const currentDate = new Date();
+
+
+                const filteredReleasedMovies = res.data.filter(movie => {
+                    const releaseDate = new Date(movie.releaseDay);
+                    return releaseDate < currentDate;
+                });
+
+
+                const filteredUpcomingMovies = res.data.filter(movie => {
+                    const releaseDate = new Date(movie.releaseDay);
+                    return releaseDate > currentDate;
+                });
+
+                setListMovie(filteredReleasedMovies);
+                setListMovieUpcomming(filteredUpcomingMovies);
+            } else {
+                console.error("Data is not an array:", res.data);
+            }
+        } catch (error) {
+            console.error("Error fetching movie data:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchMovie();
+    }, [])
+
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
@@ -36,26 +71,6 @@ const Home = () => {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    const fetchMovie = async () => {
-        try {
-            const res = await getListMovie();
-            console.log("API Response:", res); // Log the response
-            if (res.data && Array.isArray(res.data)) {
-                setListMovie(res.data);
-                console.log(res.data);
-            } else {
-                console.error("Data is not an array:", res.data);
-            }
-        } catch (error) {
-            console.error("Error fetching movie data:", error);
-        }
-    };
-
-
-    useEffect(() => {
-        fetchMovie();
-    }, [])
 
 
 
@@ -92,24 +107,46 @@ const Home = () => {
             console.log("CoverflowRef or swiper is not available");
         }
     }, []);
-    const handleSlideChange = useCallback(() => {
+    // const [isSliding, setIsSliding] = useState(false);
+    // const handleSlideChange = useCallback(() => {
+    //     if (sliderRef.current && sliderRef.current.swiper) {
+    //         const activeIndex = sliderRef.current.swiper.realIndex;
+
+    //         // Ensure we only set the state when necessary
+    //         if (activeIndex !== 1) {
+    //             setIsSliding(true); // Mark as sliding
+    //             const centerSlideIndex = (activeIndex + 1) % listMovie.length; // Next slide
+    //             sliderRef.current.swiper.slideTo(centerSlideIndex, 0); // Move to desired slide
+    //         } else {
+    //             setIsSliding(false); // Reset the sliding state when reaching the intended slide
+    //         }
+    //     }
+    // }, [listMovie.length]); // Only depend on the length of the movie list
+
+
+    useEffect(() => {
         if (sliderRef.current && sliderRef.current.swiper) {
+            sliderRef.current.swiper.slideTo(1); // Start at the second slide
+        }
+    }, [listMovie.length]);
+    const handleSlideChange = useCallback(() => {
+        if (sliderRef.current) {
             const activeIndex = sliderRef.current.swiper.realIndex;
             if (coverflowRef.current && coverflowRef.current.swiper) {
                 coverflowRef.current.swiper.slideToLoop(activeIndex);
             }
         }
-    }, []);
+    }, [sliderRef, coverflowRef]);
     const handleMouseEnter = () => {
-        // if (swiperRef.current && swiperRef.current.swiper) {
-        //     swiperRef.current.swiper.autoplay.stop();
-        // }
+        if (swiperRef.current && swiperRef.current.swiper) {
+            swiperRef.current.swiper.autoplay.stop();
+        }
     };
 
     const handleMouseLeave = () => {
-        // if (swiperRef.current && swiperRef.current.swiper) {
-        //     swiperRef.current.swiper.autoplay.start();
-        // }
+        if (swiperRef.current && swiperRef.current.swiper) {
+            swiperRef.current.swiper.autoplay.start();
+        }
     };
 
 
@@ -198,6 +235,40 @@ const Home = () => {
             </div>
             <div className="flex flex-col w-full bg-[#092B4B] px-[50px] py-[50px]">
                 <div className="flex gap-2 items-center">
+                    <div className="text-[30px] text-white w-[15%] text-start font-semibold">Sắp chiếu</div>
+                    <hr className="border-t-2 border-[#0DB1F6] border w-[85%]" />
+                </div>
+                <div className="flex mt-[30px] pl-[40px]    ">
+                    <Swiper
+                        ref={swiperRef}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                        loop={true}
+                        modules={[Navigation, Pagination, Autoplay]}
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        }}
+                    >
+                        {listMovieUpComming.map((movie) => (
+                            <SwiperSlide key={movie.id}>
+                                <MovieCommingSoon infor={movie} />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+                <div className="flex gap-10 mt-8 pl-[200px]">
+                    <Button secondary className="">Đặt vé ngay</Button>
+                    <div className="flex gap-1 items-center cursor-pointer">
+                        <Button color={"#0DB1F6"}>Xem trailer</Button>
+                        <BsFillPlayBtnFill className="text-white w-[25px] h-[25px]" />
+                    </div>
+                </div>
+            </div>
+            <div className="flex flex-col w-full bg-[#092B4B] px-[50px] py-[50px]">
+                <div className="flex gap-2 items-center">
                     <div className="text-[30px] text-white w-[15%] text-start font-semibold">Đang chiếu</div>
                     <hr className="border-t-2 border-[#0DB1F6] border w-[85%]" />
                 </div>
@@ -226,40 +297,7 @@ const Home = () => {
 
                 </div>
             </div>
-            <div className="flex flex-col w-full bg-[#092B4B] px-[50px] py-[50px]">
-                <div className="flex gap-2 items-center">
-                    <div className="text-[30px] text-white w-[15%] text-start font-semibold">Sắp chiếu</div>
-                    <hr className="border-t-2 border-[#0DB1F6] border w-[85%]" />
-                </div>
-                <div className="flex mt-[30px] pl-[40px]    ">
-                    <Swiper
-                        ref={swiperRef}
-                        spaceBetween={30}
-                        slidesPerView={1}
-                        navigation
-                        pagination={{ clickable: true }}
-                        loop={true}
-                        modules={[Navigation, Pagination, Autoplay]}
-                        autoplay={{
-                            delay: 3000,
-                            disableOnInteraction: false,
-                        }}
-                    >
-                        {listMovie.map((movie) => (
-                            <SwiperSlide key={movie.id}>
-                                <MovieCommingSoon infor={movie} />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                </div>
-                <div className="flex gap-10 mt-8 pl-[200px]">
-                    <Button secondary className="">Đặt vé ngay</Button>
-                    <div className="flex gap-1 items-center cursor-pointer">
-                        <Button color={"#0DB1F6"}>Xem trailer</Button>
-                        <BiMoviePlay className="text-white w-[25px] h-[25px]" />
-                    </div>
-                </div>
-            </div>
+
         </>
     );
 };

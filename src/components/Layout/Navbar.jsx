@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../Image/Image";
 import Login from "../../modules/auth/Login";
 import Register from "../../modules/auth/Register";
@@ -26,7 +26,7 @@ const Navbar = React.memo(() => {
     const [confirmOtpModalRef, setConfirmOtpModalRef] = useState(null);
     const [showMenu, setShowMenu] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
-
+    const navigate = useNavigate();
     const { user, logout } = useContext(UserContext);
     useEffect(() => {
         setActiveButton(location.pathname);
@@ -82,7 +82,7 @@ const Navbar = React.memo(() => {
     }
     const handleLogout = () => {
         logout();
-        window.location.reload();
+        navigate("/");
     }
 
     const isHome = location.pathname === '/';
