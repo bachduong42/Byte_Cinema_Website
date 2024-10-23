@@ -8,10 +8,19 @@ import Movie2 from "../assets/images/movie2.jpg";
 import Movie3 from "../assets/images/movie3.jpg";
 import Movie4 from "../assets/images/movie4.jpg";
 import MovieCard from "../modules/Movie/MovieCard";
+import { Link, useNavigate } from "react-router-dom";
 
 function FilmManagement() {
     const [searchResult, setSearchResult] = useState([]);
+    
     const [activeTab, setActiveTab] = useState('Tất cả');
+
+    const navigate = useNavigate();
+
+  const handleAddClick = () => {
+    navigate(`/film-management/add`);
+  };
+
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
@@ -93,7 +102,7 @@ function FilmManagement() {
         <div className="flex min-h-[850px] h-auto flex-col px-[130px] w-full mt-[150px]">
             <div className="flex justify-between w-full h-full">
                 <Search searchResult={searchResult} setSearchResult={setSearchResult}></Search>
-                <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />}>
+                <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} onClick={handleAddClick}>
                     Tạo phim mới
                 </Button>
             </div>
