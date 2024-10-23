@@ -3,11 +3,9 @@ import MovieBanner from "../modules/Movie/MovieBanner";
 import MovieCard from "../modules/Movie/MovieCard";
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import "swiper/swiper-bundle.css";
-import { BiMoviePlay } from "react-icons/bi";
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import Button from "../components/Button/Button";
-import MovieCommingSoon from "../modules/Movie/MovieCommingSoon";
 import { getListMovie } from "../services/getListMovie";
 
 
@@ -40,11 +38,21 @@ const Home = () => {
     }, []);
 
     const fetchMovie = async () => {
-        const res = await getListMovie();
-        console.log(res);
-        setListMovie(res.data);
-        console.log(res.data)
-    }
+        try {
+            const res = await getListMovie();
+            console.log("API Response:", res); // Log the response
+            if (res.data && Array.isArray(res.data)) {
+                setListMovie(res.data);
+                console.log(res.data);
+            } else {
+                console.error("Data is not an array:", res.data);
+            }
+        } catch (error) {
+            console.error("Error fetching movie data:", error);
+        }
+    };
+
+
     useEffect(() => {
         fetchMovie();
     }, [])
@@ -60,25 +68,30 @@ const Home = () => {
         }
     }, []);
 
+    // const handleNext = useCallback(() => {
+    //     if (sliderRef.current && sliderRef.current.swiper) {
+    //         sliderRef.current.swiper.slideNext();
+    //         console.log("loiiii")
+    //     }
+    //     if (coverflowRef.current && coverflowRef.current.swiper) {
+    //         coverflowRef.current.swiper.slideNext();
+    //     }
+    // }, []);
     const handleNext = useCallback(() => {
         if (sliderRef.current && sliderRef.current.swiper) {
             sliderRef.current.swiper.slideNext();
+            console.log("Slider is navigating to next slide");
+        } else {
+            console.log("SliderRef or swiper is not available");
         }
+
         if (coverflowRef.current && coverflowRef.current.swiper) {
             coverflowRef.current.swiper.slideNext();
+            console.log("Coverflow is navigating to next slide");
+        } else {
+            console.log("CoverflowRef or swiper is not available");
         }
     }, []);
-    const handleMouseEnter = () => {
-        if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.autoplay.stop();
-        }
-    };
-
-    const handleMouseLeave = () => {
-        if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.autoplay.start();
-        }
-    };
     const handleSlideChange = useCallback(() => {
         if (sliderRef.current && sliderRef.current.swiper) {
             const activeIndex = sliderRef.current.swiper.realIndex;
@@ -87,9 +100,22 @@ const Home = () => {
             }
         }
     }, []);
+    const handleMouseEnter = () => {
+        // if (swiperRef.current && swiperRef.current.swiper) {
+        //     swiperRef.current.swiper.autoplay.stop();
+        // }
+    };
+
+    const handleMouseLeave = () => {
+        // if (swiperRef.current && swiperRef.current.swiper) {
+        //     swiperRef.current.swiper.autoplay.start();
+        // }
+    };
+
+
     return (
         <>
-            <div className="relative bg-[#092B4B] home">
+            <div className="relative bg-[#092B4B] home min-h-screen">
                 <Swiper
                     ref={sliderRef}
                     spaceBetween={0}
@@ -135,13 +161,12 @@ const Home = () => {
                         ref={coverflowRef}
                         effect={'coverflow'}
                         spaceBetween={20}
-                        slidesPerView={coverflowSlidesPerView}
+                        slidesPerView={3}
                         loop={true}
                         grabCursor={true}
                         centeredSlides={true}
                         navigation
                         modules={[EffectCoverflow, Navigation, Autoplay]}
-                        className="mySwiper"
                         coverflowEffect={{
                             rotate: 50,
                             stretch: 0,
@@ -149,17 +174,23 @@ const Home = () => {
                             modifier: 1,
                             slideShadows: true,
                         }}
-                        autoplay=
-                        {{
+                        autoplay={{
                             delay: 3000,
                             disableOnInteraction: false,
                         }}
+                        breakpoints={{
+                            640: {
+                                slidesPerView: 2,
+                            },
+                            1024: {
+                                slidesPerView: 3,
+                            },
+                        }}
                     >
+
                         {listMovie.map((movie) => (
                             <SwiperSlide key={movie.id}>
-                                <div className="">
-                                    <MovieCard className="w-[224px] h-[332px]" infor={movie}></MovieCard>
-                                </div>
+                                <MovieCard className="w-[224px] h-[332px]" infor={movie}></MovieCard>
                             </SwiperSlide>
                         ))}
                     </Swiper>

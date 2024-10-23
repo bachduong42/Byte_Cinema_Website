@@ -90,12 +90,12 @@ html *::-webkit-scrollbar-track {
   overflow-y: auto;
 } */
 
-.logo-login-modal{
+.logo-login-modal {
   top: 0;
 }
 
 #register-line::before {
-  content: '';
+  content: "";
   display: block;
   align-self: center;
   height: 1px;
@@ -105,7 +105,7 @@ html *::-webkit-scrollbar-track {
 }
 
 #register-line::after {
-  content: '';
+  content: "";
   display: block;
   align-self: center;
   height: 1px;
@@ -116,7 +116,7 @@ html *::-webkit-scrollbar-track {
 
 #big-text::after {
   margin-top: 5px;
-  content: '';
+  content: "";
   display: block;
   align-self: center;
   height: 3px;
@@ -129,7 +129,7 @@ html *::-webkit-scrollbar-track {
 #description-title::after {
   margin-top: 5px;
   margin-left: 15px;
-  content: '';
+  content: "";
   max-width: 30%;
   display: block;
   align-self: center;
@@ -172,7 +172,7 @@ html *::-webkit-scrollbar-track {
   color: white;
   fill: white;
   font-size: 3rem;
-  transition:cubic-bezier(0.19, 1, 0.22, 1)
+  transition: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .play-trailer-icon:hover {
@@ -194,7 +194,3 @@ html *::-webkit-scrollbar-track {
   position: relative;
   z-index: 1;
 }
-
-
-
-

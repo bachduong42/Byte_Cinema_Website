@@ -37,11 +37,11 @@ function MovieCard({ infor, className, cardInfor = false, admin = false }) {
             <>
               <div className="flex gap-2 text-white text-[10px] nunito-text font-extrabold">
                 <div>Thể loại:</div>
-                <div>{infor.type}</div>
+                <div>{infor.movieGenres[0].name}</div>
               </div>
               <div className="flex gap-2 text-white text-[10px] nunito-text font-extrabold">
                 <div>Thời lượng:</div>
-                <div>{infor.time}</div>
+                <div>{infor.duration}</div>
               </div>
             </>}
           {admin ?
