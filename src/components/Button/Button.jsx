@@ -30,7 +30,7 @@ function Button({
     return (
         <Comp
 
-            className={`cursor-pointer font-semibold nunito-text flex items-center justify-center
+            className={`cursor-pointer font-semibold nunito-text flex items-center justify-center px-2
         ${primary ? "lg:text-xl md:text-base text-sm  bg-[#FE9051] rounded-[5px] lg:w-[140px] lg:h-[50px] md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white" : ""}
         ${secondary ? " bg-[#00B3FF] lg:text-xl md:text-base text-sm rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white hover:bg-white hover:border hover:shadow-md hover:text-[#0DB1F6] transition-all duration-500" : ""}
         ${text ? "text-black lg:text-xl md:text-base text-sm" : ""}
