@@ -5,9 +5,9 @@ export const getDetailFilm = async (id) => {
   console.log(localStorage.getItem("accessToken"));
   try {
     const res = await httpRequest.get(`/movies/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      // },
     });
     return res.data;
   } catch (error) {

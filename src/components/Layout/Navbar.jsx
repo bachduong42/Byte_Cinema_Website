@@ -100,11 +100,11 @@ const Navbar = React.memo(() => {
                     {isLogin && isAdmin ? (
                         <>
                             <Button
-                                href="/"
+                                href="/film-management"
                                 active={activeButton === '/film-management'}
                                 className="lg:text-xl md:text-base"
                                 onClick={() => setActiveButton('/film-management')}>
-                                Quả lý phim
+                                Quản lý phim
                             </Button>
                             <Button
                                 href="/"
@@ -155,7 +155,7 @@ const Navbar = React.memo(() => {
                     )}
 
                 </ul>
-            </div >
+            </div>
             {
                 isLogin ? (
                     <Tippy
