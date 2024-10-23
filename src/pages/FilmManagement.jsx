@@ -63,7 +63,7 @@ function FilmManagement() {
         }
     }, [activeTab, listAllMovie, listMovie, listMovieUpComing]);
     return (
-        <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px]">
+        <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">
             <div className="flex justify-between w-full h-full">
                 <Search searchResult={searchResult} setSearchResult={setSearchResult}></Search>
                 <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} onClick={handleAddClick}>
