@@ -255,7 +255,7 @@ const Home = () => {
                         {listMovieUpComming.map((movie) => (
                             <SwiperSlide key={movie.id}>
                                 <MovieCommingSoon infor={movie} />
-                            </SwiperSlide>  
+                            </SwiperSlide>
                         ))}
                     </Swiper>
                 </div>
