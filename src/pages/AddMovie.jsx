@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoImage from "../assets/images/no-image.svg";
-
+import { getMovieGenres } from "../services/getMovieGenres";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { addMovieRequest } from "../services/addMovie";
 
 function AddMovie() {
   const [movie, setMovie] = useState({
     title: "",
     director: "",
     actors: "",
-    genre: "",
+    genre: -1,
     duration: "",
     country: "",
-    language: "",
-    type: "",
+    // language: "",
+    releaseDay: new Date().toISOString(),
     content: "",
     images: [NoImage],
     poster: "",
-    trailer: "",
+    // trailer: "",
   });
+  const [movieGenres, setMovieGenres] = useState([]);
 
   const [releaseDate, setReleaseDate] = useState(new Date());
 
@@ -27,21 +31,61 @@ function AddMovie() {
     !movie.genre ||
     !movie.duration ||
     !movie.country ||
-    !movie.language ||
-    !movie.type ||
+    !movie.releaseDay ||
+    // !movie.language ||
+    // !movie.type ||
     !movie.content ||
     !movie.poster ||
-    !movie.trailer ||
+    // !movie.trailer ||
     movie.images.filter((image) => image !== NoImage).length === 0;
+  let access_token = "";
 
-  const movieTypes = ["18+", "PG-13", "Mọi lứa tuổi"];
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        access_token = localStorage.getItem("accessToken");
+        console.log("Access token: ", access_token);
+        const res = await getMovieGenres(access_token);
+        if (res && Array.isArray(res)) {
+          setMovieGenres(res);
+        } else {
+          console.error("Data is not an array:", res);
+        }
+      } catch (error) {
+        console.error("Error fetching genre data:", error);
+      }
+    };
+    fetchGenres();
+  }, []);
+
+  // const movieTypes = ["18+", "PG-13", "Mọi lứa tuổi"];
+
+  // console.log("Access_token: ", access_token);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMovie({
       ...movie,
-      [name]: value,
+      [name]: typeof movie[name] === "number" ? Number(value) : value,
     });
+  };
+
+  // const handleDateChange = (e) => {
+  //   const date = e.target.value;
+  //   const isoString = formatISO(date, { representation: 'complete' });
+  //   setMovie({
+  //     ...movie,
+  //     releaseDay: isoString.toString(),
+  //   });
+  // }
+
+  const handleDateChange = (date) => {
+    const isoString = date.toISOString(); // Convert to ISO string
+    setMovie({
+      ...movie,
+      releaseDay: isoString, // Store the ISO string in releaseDay
+    });
+    setReleaseDate(date); // Update the releaseDate state for DatePicker
   };
 
   const isInputValid = () => {
@@ -49,6 +93,8 @@ function AddMovie() {
       .filter((value) => typeof value === "string")
       .every((value) => value.trim() !== "");
   };
+
+
 
   // const handleSave = (e) => {
   //   e.preventDefault();
@@ -60,21 +106,65 @@ function AddMovie() {
   //   }
   // };
 
+  // const handleSave = (e) => {
+  //   e.preventDefault();
+  //   if (isInputValid()) {
+  //     const filteredMovie = {
+  //       ...movie,
+  //       images: movie.images.filter((image) => image !== NoImage),
+  //     };
+  //     console.log(filteredMovie);
+  //     console.log(
+  //       movie.images.filter((image) => image !== NoImage).length
+  //     );
+  //   } else {
+  //     alert("Invalid input: fields cannot contain only spaces.");
+  //   }
+  // };
+
   const handleSave = (e) => {
     e.preventDefault();
     if (isInputValid()) {
+      const filteredImages = movie.images.filter((image) => image !== NoImage);
+      if (!filteredImages.includes(movie.poster)) {
+        filteredImages.unshift(movie.poster);
+      }
       const filteredMovie = {
         ...movie,
-        images: movie.images.filter((image) => image !== NoImage),
+        images: filteredImages,
       };
       console.log(filteredMovie);
-      console.log(
-        movie.images.filter((image) => image !== NoImage).length
-      );
+      console.log(filteredImages.length);
+      console.log(movie.releaseDay);
+      _addMovie(filteredMovie);
     } else {
       alert("Invalid input: fields cannot contain only spaces.");
     }
   };
+
+  const _addMovie = async (movie) => {
+    try {
+      const form_data = new FormData();
+      form_data.append("imageFiles", movie.images);
+      form_data.append("movie-info", {
+        "description": movie.content,
+        "duration": movie.duration,
+        "name": movie.title,
+        "releaseDay": movie.releaseDay,
+        "genreIds": [movie.genre],
+        "imagePaths": [],
+        "director": movie.director,
+        "nation": movie.country,
+        "actors": movie.actors,
+    });
+
+      const res = await addMovieRequest(localStorage.getItem('accessToken'), form_data);
+      console.log("Add movie response: ", res);
+    } catch (error) {
+      console.error("Add movie error: ", error);
+      throw error;
+    }
+  }
 
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
@@ -106,11 +196,13 @@ function AddMovie() {
     }
   };
 
+  
+
   return (
     <>
       <div className="flex-1 bg-[#092B4B] pt-[111px]">
         <div className="bg-white py-[40px]">
-          <div className="w-[90%] mx-auto p-6 bg-white rounded-md shadow-md">
+          <div className="w-[75%] mx-auto p-6 bg-white rounded-md shadow-md">
             <h2 className="text-3xl font-bold text-center text-green-600 mb-4">
               THÊM PHIM MỚI
             </h2>
@@ -122,7 +214,7 @@ function AddMovie() {
                 Thông tin
               </h1>
             </div>
-            <div className="grid grid-cols-1 gap-x-2 py-4 text-2xl w-full">
+            <div className="grid grid-cols-1 gap-x-2 py-4 text-xl w-full">
               {/* <div className="flex items-center py-2 text-2xl font-semibold">
                 <div className="w-[50%] flex items-center gap-[7px] mr-[20px]">
                   <IonIcon
@@ -140,7 +232,7 @@ function AddMovie() {
                 </div>
               </div> */}
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Tên bộ phim</span>
+                <span className="font-bold mr-[00px] w-[40%]">Tên bộ phim</span>
                 <input
                   type="text"
                   name="title"
@@ -151,7 +243,7 @@ function AddMovie() {
               </div>
 
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Đạo diễn:</span>
+                <span className="font-bold mr-[00px] w-[40%]">Đạo diễn:</span>
                 <input
                   type="text"
                   name="director"
@@ -162,7 +254,7 @@ function AddMovie() {
               </div>
 
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Diễn viên:</span>
+                <span className="font-bold mr-[00px] w-[40%]">Diễn viên:</span>
                 <input
                   type="text"
                   name="actors"
@@ -173,29 +265,32 @@ function AddMovie() {
               </div>
 
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Thể loại:</span>
-                <input
-                  type="text"
-                  name="genre"
-                  value={movie.genre}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-
-              <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Thời lượng:</span>
+                <span className="font-bold mr-[00px] w-[40%]">Thời lượng:</span>
                 <input
                   type="text"
                   name="duration"
                   value={movie.duration}
                   onChange={handleChange}
+                  maxLength={5}
                   className="w-full px-3 py-2 border rounded-md"
+                  onKeyPress={(e) => {
+                    if (!/[0-9]/.test(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onPaste={(e) => {
+                    const paste = (
+                      e.clipboardData || window.clipboardData
+                    ).getData("text");
+                    if (!/^\d+$/.test(paste)) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </div>
 
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Quốc gia:</span>
+                <span className="font-bold mr-[00px] w-[40%]">Quốc gia:</span>
                 <input
                   type="text"
                   name="country"
@@ -204,8 +299,8 @@ function AddMovie() {
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
-              <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Ngôn ngữ:</span>
+              {/* <div className="flex items-center py-2 justify-center mb-4">
+                <span className="font-bold mr-[00px] w-[40%]">Ngôn ngữ:</span>
                 <input
                   type="text"
                   name="language"
@@ -213,11 +308,30 @@ function AddMovie() {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border rounded-md"
                 />
-              </div>
+              </div> */}
 
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Loại phim:</span>
+                <span className="font-bold mr-[00px] w-[40%]">Thể loại:</span>
                 <select
+                  name="genre"
+                  value={movie.genre}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-md"
+                >
+                  <option value={-1} disabled hidden>
+                    Chọn thể loại phim
+                  </option>
+                  {movieGenres.map((genre) => (
+                    <option key={genre.id} value={Number(genre.id)}>
+                      {genre.name + " - " + genre.description}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* <div className="flex items-start py-2 justify-center mb-4">
+                <span className="font-bold mr-[00px] w-[40%]">Giờ chiếu:</span> */}
+                {/* <select
                   name="type"
                   value={movie.type}
                   onChange={handleChange}
@@ -234,15 +348,39 @@ function AddMovie() {
                       {type}
                     </option>
                   ))}
-                </select>
+                </select> */}
+                {/* <DatePicker
+                  selected={releaseDate}
+                  onChange={(date) => setReleaseDate(date)}
+                  className={'form-control form-control-sm w-full px-3 py-2 border rounded-md'}
+                  dateFormat="yyyy-MM-dd"
+                /> */}
+              {/* </div> */}
+
+
+              <div className="flex items-center py-2 justify-center mb-4">
+                <span className="font-bold mr-[00px] w-[40%]">Ngày khởi chiếu:</span>
+                <div className=" flex w-[100%] bg-white items-start justify-start self-start">
+                <DatePicker
+                  selected={releaseDate}
+                  onChange={handleDateChange}
+                  className={'form-control form-control-sm w-[100%] px-3 py-2 border rounded-md items-start justify-start self-start'}
+                  dateFormat="yyyy-MM-dd"
+                />
+                </div>
+                
               </div>
+
+
+
+
               <div className="flex items-start py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">Nội dung:</span>
+                <span className="font-bold mr-[00px] w-[40%]">Nội dung:</span>
                 <textarea
                   name="content"
                   value={movie.content}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-5 border rounded-md overflow-y-auto"
                   rows="5"
                 ></textarea>
               </div>
@@ -303,7 +441,7 @@ function AddMovie() {
               </div>
             </div>
 
-            <div className="py-4 text-2xl w-full mb-[100px]">
+            {/* <div className="py-4 text-2xl w-full mb-[100px]">
               <div
                 id="description-title"
                 className="flex text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-left"
@@ -322,7 +460,7 @@ function AddMovie() {
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="flex justify-center gap-20">
               <button
@@ -348,9 +486,6 @@ function AddMovie() {
                 Lưu
               </button>
             </div>
-
-
-
           </div>
         </div>
       </div>
