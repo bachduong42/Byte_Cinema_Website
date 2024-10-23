@@ -63,7 +63,7 @@ function FilmManagement() {
         }
     }, [activeTab, listAllMovie, listMovie, listMovieUpComing]);
     return (
-        <div className="flex min-h-[850px] h-auto   flex-col px-[130px] w-full mt-[150px]">
+        <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px]">
             <div className="flex justify-between w-full h-full">
                 <Search searchResult={searchResult} setSearchResult={setSearchResult}></Search>
                 <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} onClick={handleAddClick}>
@@ -102,9 +102,15 @@ function FilmManagement() {
                 </ul>
                 <Button className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base" leftIcon={<MdFilterList />}>Sắp xếp</Button>
             </div>
-            <div className="w-full grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">
+            <div className="w-full grid lg:grid-cols-6 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">
                 {filteredMovies.map((movie) => (
-                    <MovieCard infor={movie} key={movie.id} cardInfor admin></MovieCard>
+                    <MovieCard
+                        infor={movie}
+                        key={movie.id}
+                        cardInfor
+                        admin
+                        happening={listMovie.some(m => m.id === movie.id)}
+                    />
                 ))}
             </div>
         </div>

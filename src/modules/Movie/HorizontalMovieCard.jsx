@@ -8,9 +8,29 @@ function HorizontalMovieCard({ infor, className, cardInfor = false }) {
     navigate(`/movie/${infor.id}`);
   };
 
+  function convertDurationToMinutes(duration) {
+    if (duration) {
+      const hours = duration.match(/(\d+)H/);
+      const minutes = duration.match(/(\d+)M/);
+
+      const totalMinutes =
+        (hours ? parseInt(hours[1]) * 60 : 0) +
+        (minutes ? parseInt(minutes[1]) : 0);
+      return totalMinutes;
+    }
+    return ''
+  }
+
+    function getGenres(genres) {
+      if (genres) {
+        return genres.map((genre) => genre.name).join(", ");
+      }
+      return ''
+    }
+
   return (
     <div
-      className={`relative group cursor-pointer bg-white m-[20px]  flex flex-col flex-1 overflow-hidden`}
+      className={`relative group cursor-pointer bg-white m-[20px] mt-8 flex flex-col flex-1 overflow-hidden`}
       onClick={handleCardClick}
     >
       <div className="flex flex-row overflow-hidden">
@@ -18,25 +38,25 @@ function HorizontalMovieCard({ infor, className, cardInfor = false }) {
           <Image
             src={infor.imagePaths[0]}
             alt={infor.imagePaths[0]}
-            className=" h-full w- overflow-hidden object-cover"
+            className=" h-full w-[100%] overflow-hidden object-cover"
           />
         </div>
-        <div className="p-4 text-left justify-center items-center">
-          <p className="text-3xl font-bold">{infor.name}</p>
+        <div className="w-2/3 p-4 text-left justify-center items-center">
+          <p className="text-2xl font-bold">{infor.name}</p>
           <div className="text-xl">
             {/* <p className="text-[#008e28]">{infor.type}</p> */}
             <p className="text-gray-600 py-2">
               <span className="font-bold">Thời lượng: </span>
-              {infor.length}
+              {`${convertDurationToMinutes(infor.duration)} phút`}
             </p>
             <p className="text-gray-600 py-2">
               <span className="font-bold">Quốc gia: </span>
               {infor.nation}
             </p>
-            {/* <p className="text-gray-600 py-2">
-              <span className="font-bold">Ngôn ngữ: </span>
-              {infor.language}
-            </p> */}
+            <p className="text-gray-600 py-2">
+              <span className="font-bold">Thể loại: </span>
+              {getGenres(infor.movieGenres)}
+            </p>
           </div>
         </div>
       </div>

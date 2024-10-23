@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../config";
 import Button from "../../components/Button/Button";
-function MovieCard({ infor, className, cardInfor = false, admin = false }) {
+function MovieCard({ infor, className, cardInfor = false, admin = false, happening = false }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -31,7 +31,8 @@ function MovieCard({ infor, className, cardInfor = false, admin = false }) {
           </div>
           {admin ?
             <>
-              <div className="text-[#FE9051] font-semibold">ĐÃ ĐĂNG</div>
+              {happening ? <div className="text-[#FE9051] font-semibold">ĐANG CHIẾU</div> : <div className="text-[#FE9051] font-semibold">SẮP CHIẾU</div>}
+
             </>
             :
             <>
@@ -46,7 +47,7 @@ function MovieCard({ infor, className, cardInfor = false, admin = false }) {
             </>}
           {admin ?
             (
-              <div className="flex   gap-2">
+              <div className="flex gap-2">
                 <button text className="text-white text-[14px]">Xem chi tiết</button>
                 <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
                   Xem lịch chiếu
