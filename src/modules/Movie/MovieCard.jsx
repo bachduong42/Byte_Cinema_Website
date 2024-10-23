@@ -11,12 +11,26 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
     navigate(`/movie/${infor.id}`);
   };
 
+  function convertDurationToMinutes(duration) {
+    if (duration) {
+      const hours = duration.match(/(\d+)H/);
+      const minutes = duration.match(/(\d+)M/);
+
+      const totalMinutes =
+        (hours ? parseInt(hours[1]) * 60 : 0) +
+        (minutes ? parseInt(minutes[1]) : 0);
+      return totalMinutes;
+    }
+    return "";
+  }
+
   return (
     <div
-      className={`relative ${className} group cursor-pointer ${cardInfor
-        ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
-        : ""
-        }`}
+      className={`relative ${className} group cursor-pointer ${
+        cardInfor
+          ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
+          : ""
+      }`}
       onClick={handleCardClick}
     >
       <Image
@@ -29,12 +43,15 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
           <div className="text-[#FDB6B6] text-[14px] nunito-text font-extrabold pt-5">
             {infor.name}
           </div>
-          {admin ?
+          {admin ? (
             <>
-              {happening ? <div className="text-[#FE9051] font-semibold">ĐANG CHIẾU</div> : <div className="text-[#FE9051] font-semibold">SẮP CHIẾU</div>}
-
+              {happening ? (
+                <div className="text-[#FE9051] font-semibold">ĐANG CHIẾU</div>
+              ) : (
+                <div className="text-[#FE9051] font-semibold">SẮP CHIẾU</div>
+              )}
             </>
-            :
+          ) : (
             <>
               <div className="flex gap-2 text-white text-[10px] nunito-text font-extrabold">
                 <div>Thể loại:</div>
@@ -42,27 +59,26 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
               </div>
               <div className="flex gap-2 text-white text-[10px] nunito-text font-extrabold">
                 <div>Thời lượng:</div>
-                <div>{infor.duration}</div>
+                <div> {`${convertDurationToMinutes(infor.duration)} phút`}</div>
               </div>
-            </>}
-          {admin ?
-            (
-              <div className="flex gap-2">
-                <button text className="text-white text-[14px]">Xem chi tiết</button>
-                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
-                  Xem lịch chiếu
-                </button>
-              </div>
-            ) :
-            (
-              <button className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
-                Mua vé
+            </>
+          )}
+          {admin ? (
+            <div className="flex gap-2">
+              <button text className="text-white text-[14px]">
+                Xem chi tiết
               </button>
-            )}
-
+              <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+                Xem lịch chiếu
+              </button>
+            </div>
+          ) : (
+            <button className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+              Mua vé
+            </button>
+          )}
         </div>
-      )
-      }
+      )}
     </div>
   );
 }
