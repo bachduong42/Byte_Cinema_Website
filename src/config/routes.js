@@ -5,6 +5,7 @@ const routes = {
   movie: "movie/:id",
   resetPass: "/reset-password",
   filmManagement: "/film-management",
+  addFilm: "/film-management/add",
   theaterManagement: "/theater-management",
   showtimeManagement: "/showtime-management"
 };
