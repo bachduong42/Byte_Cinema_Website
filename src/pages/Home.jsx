@@ -43,6 +43,7 @@ const Home = () => {
         const res = await getListMovie();
         console.log(res);
         setListMovie(res.data);
+        console.log(res.data)
     }
     useEffect(() => {
         fetchMovie();
@@ -169,8 +170,7 @@ const Home = () => {
                     <div className="text-[30px] text-white w-[15%] text-start font-semibold">Đang chiếu</div>
                     <hr className="border-t-2 border-[#0DB1F6] border w-[85%]" />
                 </div>
-
-                <div className="flex flex-row w-full gap-[50px] mt-[80px] pl-[40px]">
+                <div className="flex flex-row w-full gap-[50px] mt-[80px]">
                     <Swiper
                         ref={swiperRef}
                         spaceBetween={30}

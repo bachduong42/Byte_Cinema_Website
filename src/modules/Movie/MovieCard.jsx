@@ -22,7 +22,7 @@ function MovieCard({ infor, className, cardInfor = false, admin = false }) {
       <Image
         src={infor.imagePaths[0]}
         alt=""
-        className="w-full h-full object-cover  "
+        className="w-full h-full object-cover"
       />
       {cardInfor && (
         <div className="absolute flex flex-col items-center gap-2 bg-[#12739dcc] w-full bottom-0  h-2/5  opacity-0 transform  translate-y-1 group-hover:opacity-100 group-hover:translate-y-1 transition-transform duration-300 ease-in-out">
