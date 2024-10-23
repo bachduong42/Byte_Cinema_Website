@@ -310,7 +310,7 @@ if (isLoading) {
                     className="flex justify-center text-base text-[#c0c1c4] font-medium px-0 pt-[20px] gap-[0.7rem] text-left"
                   >
                     <h1 className="text-[#58636e] text-3xl font-medium text-left">
-                      Phim đang chiếu
+                      Phim sắp chiếu
                     </h1>
                   </div>
                   <div>
