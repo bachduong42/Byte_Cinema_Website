@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NoImage from "../assets/images/no-image.svg";
 import { getMovieGenres } from "../services/getMovieGenres";
 import DatePicker from "react-datepicker";
@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addMovieRequest } from "../services/addMovie";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-
+import { UserContext } from "../contexts/UserContext";
 function AddMovie() {
   const [movie, setMovie] = useState({
     title: "",
@@ -21,13 +21,13 @@ function AddMovie() {
     images: [NoImage],
     poster: null,
     posterPreview: null,
-    // trailer: "",
+    trailer: "",
   });
   const [movieGenres, setMovieGenres] = useState([]);
 
   const [releaseDate, setReleaseDate] = useState(new Date());
   const navigate = useNavigate();
-
+  const { checkLoginSession, logout } = useContext(UserContext);
   const isSubmitButtonEnabled =
     !movie.title ||
     !movie.director ||
@@ -40,15 +40,17 @@ function AddMovie() {
     // !movie.type ||
     !movie.content ||
     !movie.poster ||
-    // !movie.trailer ||
+    !movie.trailer ||
     movie.images.filter((image) => image !== NoImage).length === 0;
   let access_token = "";
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
+        const sessionValid = await checkLoginSession();
+        if (!sessionValid) return;
+
         access_token = localStorage.getItem("accessToken");
-        console.log("Access token: ", access_token);
         const res = await getMovieGenres(access_token);
         if (res && Array.isArray(res)) {
           setMovieGenres(res);
@@ -60,13 +62,13 @@ function AddMovie() {
       }
     };
     fetchGenres();
-  }, []);
+  }, [checkLoginSession]);
 
   // const movieTypes = ["18+", "PG-13", "Mọi lứa tuổi"];
 
   // console.log("Access_token: ", access_token);
 
-  
+
   // const handleSave = (e) => {
   //   e.preventDefault();
   //   console.log(movie.images);
@@ -120,8 +122,14 @@ function AddMovie() {
     return Array.isArray(imageFiles) && imageFiles.every(file => file instanceof File);
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+    const sessionValid = await checkLoginSession();
+    if (!sessionValid) {
+      toast.error("Session expired. Please log in again.");
+      logout();
+      return;
+    }
     if (isInputValid()) {
       const filteredImages = movie.images.filter((image) => image !== NoImage);
       if (!filteredImages.includes(movie.poster)) {
@@ -133,7 +141,7 @@ function AddMovie() {
         images: filteredImages,
       };
       console.log(filteredMovie);
-      console.log(filteredImages.length); 
+      console.log(filteredImages.length);
       console.log(movie.releaseDay);
       const imageFiles = filteredMovie.images.map(image => image.file);
       if (isImageFilesArray(imageFiles)) {
@@ -168,7 +176,8 @@ function AddMovie() {
           director: _movie.director,
           nation: _movie.country,
           actors: _movie.actors,
-        })], {'type': 'application/json'})
+          trailer: _movie.trailer
+        })], { 'type': 'application/json' })
       );
 
       const res = await addMovieRequest(
@@ -527,7 +536,7 @@ function AddMovie() {
               </div>
             </div>
 
-            {/* <div className="py-4 text-2xl w-full mb-[100px]">
+            <div className="py-4 text-2xl w-full mb-[100px]">
               <div
                 id="description-title"
                 className="flex text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-left"
@@ -546,7 +555,7 @@ function AddMovie() {
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
-            </div> */}
+            </div>
 
             <div className="flex justify-center gap-20">
               <button

@@ -34,27 +34,27 @@ const Movie = () => {
     return `${formattedDay}/${formattedMonth}/${year} ${formattedHours}:${formattedMinutes}`;
   }
 
- function groupScreeningsByDate(screenings) {
-   if (screenings) {
-     const grouped = screenings.reduce((acc, screening) => {
-       const date = screening.startTime.split("T")[0]; 
-       if (!acc[date]) {
-         acc[date] = []; 
-       }
-       acc[date].push(screening); 
-       return acc;
-     }, {});
-     return Object.entries(grouped).map(([date, screenings]) => {
-       const [year, month, day] = date.split("-"); 
-       const formattedDate = `${day}/${month}`; 
+  function groupScreeningsByDate(screenings) {
+    if (screenings) {
+      const grouped = screenings.reduce((acc, screening) => {
+        const date = screening.startTime.split("T")[0];
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        acc[date].push(screening);
+        return acc;
+      }, {});
+      return Object.entries(grouped).map(([date, screenings]) => {
+        const [year, month, day] = date.split("-");
+        const formattedDate = `${day}/${month}`;
 
-       return {
-         date: formattedDate, 
-         screenings,
-       };
-     });
-   }
- }
+        return {
+          date: formattedDate,
+          screenings,
+        };
+      });
+    }
+  }
 
   const fetchMovie = async () => {
     const res = await getUpComingFilm();
@@ -67,7 +67,7 @@ const Movie = () => {
 
   useEffect(() => {
     async function getMovie() {
-    setIsLoading(true);
+      setIsLoading(true);
       const movie = await getDetailFilm(id);
       if (movie) {
         setMovie(movie);
@@ -90,7 +90,7 @@ const Movie = () => {
     return videoId;
   };
 
-  const embedUrl = `https://www.youtube.com/embed/${getYouTubeEmbedUrl(
+  const pathTrailer = `https://www.youtube.com/embed/${getYouTubeEmbedUrl(
     movie.trailer
   )}?autoplay=1`;
 
@@ -118,13 +118,13 @@ const Movie = () => {
     return ''
   }
 
-if (isLoading) {
-  return (
-    <div className="flex justify-center items-center w-full h-[500px]">
-      <FadeLoader loading={isLoading} />
-    </div>
-  );
-}
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-[500px]">
+        <FadeLoader loading={isLoading} />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -135,9 +135,8 @@ if (isLoading) {
               <div
                 className="absolute inset-0 bg-cover bg-center filter blur-xl"
                 style={{
-                  backgroundImage: `url(${
-                    movie.imagePaths ? movie.imagePaths[0] : null
-                  })`,
+                  backgroundImage: `url(${movie.imagePaths ? movie.imagePaths[0] : null
+                    })`,
                 }}
               ></div>
               <img
