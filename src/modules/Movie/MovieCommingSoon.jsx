@@ -18,7 +18,7 @@ function MovieCommingSoon({ infor }) {
 
     return (
         <div className="w-full flex cursor-pointer gap-[100px]">
-            <Image src={infor.imagePaths[0]} className="w-1/2 h-[456px] object-cover" onClick={handleCardClick}></Image>
+            <Image src={infor.imagePaths[1]} className="w-1/2 h-[456px] object-cover" onClick={handleCardClick}></Image>
             <div className="flex flex-col items-start gap-[20px]">
                 <div className="text-[#0DB1F6] text-[20px] font-extrabold nunito-text">{infor.movieGenres[0].name}</div>
                 <div className="text-white text-[40px] anton-text" onClick={handleCardClick}>{infor.name}</div>
