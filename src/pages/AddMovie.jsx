@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NoImage from "../assets/images/no-image.svg";
 import { getMovieGenres } from "../services/getMovieGenres";
 import DatePicker from "react-datepicker";
@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addMovieRequest } from "../services/addMovie";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-
+import { UserContext } from "../contexts/UserContext";
 function AddMovie() {
   const [movie, setMovie] = useState({
     title: "",
@@ -21,13 +21,13 @@ function AddMovie() {
     images: [NoImage],
     poster: null,
     posterPreview: null,
-    // trailer: "",
+    trailer: "",
   });
   const [movieGenres, setMovieGenres] = useState([]);
 
   const [releaseDate, setReleaseDate] = useState(new Date());
   const navigate = useNavigate();
-
+  const { checkLoginSession, logout } = useContext(UserContext);
   const isSubmitButtonEnabled =
     !movie.title ||
     !movie.director ||
@@ -40,15 +40,17 @@ function AddMovie() {
     // !movie.type ||
     !movie.content ||
     !movie.poster ||
-    // !movie.trailer ||
+    !movie.trailer ||
     movie.images.filter((image) => image !== NoImage).length === 0;
   let access_token = "";
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
+        const sessionValid = await checkLoginSession();
+        if (!sessionValid) return;
+
         access_token = localStorage.getItem("accessToken");
-        console.log("Access token: ", access_token);
         const res = await getMovieGenres(access_token);
         if (res && Array.isArray(res)) {
           setMovieGenres(res);
@@ -60,13 +62,13 @@ function AddMovie() {
       }
     };
     fetchGenres();
-  }, []);
+  }, [checkLoginSession]);
 
   // const movieTypes = ["18+", "PG-13", "Mọi lứa tuổi"];
 
   // console.log("Access_token: ", access_token);
 
-  
+
   // const handleSave = (e) => {
   //   e.preventDefault();
   //   console.log(movie.images);
@@ -117,25 +119,37 @@ function AddMovie() {
   };
 
   const isImageFilesArray = (imageFiles) => {
-    return Array.isArray(imageFiles) && imageFiles.every(file => file instanceof File);
+    return (
+      Array.isArray(imageFiles) &&
+      imageFiles.every((file) => file instanceof File)
+    );
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+    const sessionValid = await checkLoginSession();
+    if (!sessionValid) {
+      toast.error("Session expired. Please log in again.");
+      logout();
+      return;
+    }
     if (isInputValid()) {
       const filteredImages = movie.images.filter((image) => image !== NoImage);
       if (!filteredImages.includes(movie.poster)) {
         filteredImages.unshift(movie.poster);
       }
-      filteredImages[0] = { file: movie.poster, imagePreview: movie.posterPreview };
+      filteredImages[0] = {
+        file: movie.poster,
+        imagePreview: movie.posterPreview,
+      };
       const filteredMovie = {
         ...movie,
         images: filteredImages,
       };
       console.log(filteredMovie);
-      console.log(filteredImages.length); 
+      console.log(filteredImages.length);
       console.log(movie.releaseDay);
-      const imageFiles = filteredMovie.images.map(image => image.file);
+      const imageFiles = filteredMovie.images.map((image) => image.file);
       if (isImageFilesArray(imageFiles)) {
         _addMovie(filteredMovie);
       } else {
@@ -158,17 +172,23 @@ function AddMovie() {
       });
       form_data.append(
         "movie-info",
-        new Blob([JSON.stringify({
-          description: _movie.content,
-          duration: _movie.duration,
-          name: _movie.title,
-          releaseDay: _movie.releaseDay,
-          genreIds: [_movie.genre],
-          imagePaths: [],
-          director: _movie.director,
-          nation: _movie.country,
-          actors: _movie.actors,
-        })], {'type': 'application/json'})
+        new Blob(
+          [
+            JSON.stringify({
+              description: _movie.content,
+              duration: _movie.duration,
+              name: _movie.title,
+              releaseDay: _movie.releaseDay,
+              genreIds: [_movie.genre],
+              imagePaths: [],
+              director: _movie.director,
+              nation: _movie.country,
+              actors: _movie.actors,
+              pathTrailer: _movie.trailer,
+            }),
+          ],
+          { type: "application/json" }
+        )
       );
 
       const res = await addMovieRequest(
@@ -176,14 +196,14 @@ function AddMovie() {
         form_data
       );
       toast.success("Thêm phim thành công", {
-        autoClose: 1000
+        autoClose: 1000,
       });
       console.log("Add movie response: ", res);
       navigate("/film-management");
     } catch (error) {
       console.error("Add movie error: ", error);
       toast.error("Có lỗi xảy ra, vui lòng thử lại", {
-        autoClose: 1000
+        autoClose: 1000,
       });
       throw error;
     }
@@ -243,6 +263,19 @@ function AddMovie() {
       setMovie({ ...movie, poster: file, posterPreview });
     }
   };
+
+  const getYouTubeEmbedUrl = (url) => {
+    const videoId = url?.split("v=")[1];
+    const ampersandPosition = videoId?.indexOf("&");
+    if (ampersandPosition !== -1) {
+      return videoId?.substring(0, ampersandPosition);
+    }
+    return videoId;
+  };
+
+  const embedUrl = `https://www.youtube.com/embed/${getYouTubeEmbedUrl(
+    movie.trailer
+  )}?autoplay=1`;
 
   return (
     <>
@@ -527,7 +560,7 @@ function AddMovie() {
               </div>
             </div>
 
-            {/* <div className="py-4 text-2xl w-full mb-[100px]">
+            <div className="py-4 text-2xl w-full mb-[100px]">
               <div
                 id="description-title"
                 className="flex text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-left"
@@ -537,7 +570,9 @@ function AddMovie() {
                 </h1>
               </div>
               <div className="flex items-center py-2 justify-center mb-4">
-                <span className="font-bold mr-[20px] w-[50%]">YouTube trailer link :</span>
+                <span className="font-bold mr-[20px] w-[50%]">
+                  YouTube trailer link :
+                </span>
                 <input
                   type="text"
                   name="trailer"
@@ -546,7 +581,21 @@ function AddMovie() {
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
-            </div> */}
+              <div
+                className="trailer-video w-full h-[50vh] items-center justify-center flex-1 flex"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <iframe
+                  className="w-full h-full"
+                  // src="https://www.youtube.com/embed/ZgE25SPP2I8?autoplay=1"
+                  src={embedUrl}
+                  title={movie.title}
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
 
             <div className="flex justify-center gap-20">
               <button
