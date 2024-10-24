@@ -90,8 +90,8 @@ const Movie = () => {
     return videoId;
   };
 
-  const pathTrailer = `https://www.youtube.com/embed/${getYouTubeEmbedUrl(
-    movie.trailer
+  const embedUrl = `https://www.youtube.com/embed/${getYouTubeEmbedUrl(
+    movie.pathTrailer
   )}?autoplay=1`;
 
   if (!movie) {
