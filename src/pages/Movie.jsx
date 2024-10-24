@@ -271,7 +271,7 @@ const Movie = () => {
                         </h1>
                       </div>
                       <div className="flex gap-4">
-                        {movie.imagePaths.map((imagePath, index) => (
+                        {movie.imagePaths.slice(1).map((imagePath, index) => (
                           <img
                             key={index}
                             src={imagePath}
