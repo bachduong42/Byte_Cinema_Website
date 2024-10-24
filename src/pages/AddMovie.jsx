@@ -27,7 +27,7 @@ function AddMovie() {
 
   const [releaseDate, setReleaseDate] = useState(new Date());
   const navigate = useNavigate();
-  const { checkLoginSession, logout } = useContext(UserContext);
+  // const { checkLoginSession, logout } = useContext(UserContext);
   const isSubmitButtonEnabled =
     !movie.title ||
     !movie.director ||
@@ -62,7 +62,7 @@ function AddMovie() {
       }
     };
     fetchGenres();
-  }, [checkLoginSession]);
+  }, []);
 
   // const movieTypes = ["18+", "PG-13", "Mọi lứa tuổi"];
 
