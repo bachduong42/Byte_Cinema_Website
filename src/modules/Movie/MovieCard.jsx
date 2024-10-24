@@ -26,11 +26,10 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
 
   return (
     <div
-      className={`relative ${className} group cursor-pointer ${
-        cardInfor
-          ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
-          : ""
-      }`}
+      className={`relative ${className} group cursor-pointer ${cardInfor
+        ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
+        : ""
+        }`}
       onClick={handleCardClick}
     >
       <Image
@@ -69,7 +68,7 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
                 Xem chi tiết
               </button>
               <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
-                Xem lịch chiếu
+                Chỉnh sửa
               </button>
             </div>
           ) : (
