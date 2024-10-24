@@ -47,8 +47,8 @@ function AddMovie() {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const sessionValid = await checkLoginSession();
-        if (!sessionValid) return;
+        // const sessionValid = await checkLoginSession();
+        // if (!sessionValid) return;
 
         access_token = localStorage.getItem("accessToken");
         const res = await getMovieGenres(access_token);
@@ -127,12 +127,12 @@ function AddMovie() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const sessionValid = await checkLoginSession();
-    if (!sessionValid) {
-      toast.error("Session expired. Please log in again.");
-      logout();
-      return;
-    }
+    // const sessionValid = await checkLoginSession();
+    // if (!sessionValid) {
+    //   toast.error("Session expired. Please log in again.");
+    //   logout();
+    //   return;
+    // }
     if (isInputValid()) {
       const filteredImages = movie.images.filter((image) => image !== NoImage);
       if (!filteredImages.includes(movie.poster)) {
