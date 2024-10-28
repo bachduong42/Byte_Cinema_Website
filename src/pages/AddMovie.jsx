@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addMovieRequest } from "../services/addMovie";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
 function AddMovie() {
   const [movie, setMovie] = useState({
     title: "",

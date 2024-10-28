@@ -23,6 +23,9 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
     }
     return "";
   }
+  const handleUpdate = () => {
+    navigate(`/update-movie/${infor.id}`)
+  }
 
   return (
     <div
@@ -67,7 +70,9 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
               <button text className="text-white text-[14px]">
                 Xem chi tiết
               </button>
-              <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+              <button
+                onClick={handleUpdate}
+                className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
                 Chỉnh sửa
               </button>
             </div>

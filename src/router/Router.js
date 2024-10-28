@@ -9,7 +9,7 @@ import TheaterManagement from "../pages/TheaterManagement";
 import ShowTimeManagement from "../pages/ShowTimeManagement";
 import AddMovie from "../pages/AddMovie";
 import DetailedMovieList from "../pages/DetailedMovieList";
-
+import UpdateMovie from "../pages/UpdateMovie"
 const publicRoutes = [
   { path: config.routes.home, component: Home },
   { path: config.routes.categories, component: Categories },
@@ -20,6 +20,7 @@ const publicRoutes = [
   { path: config.routes.showtimeManagement, component: ShowTimeManagement },
   { path: config.routes.addFilm, component: AddMovie },
   { path: config.routes.detailedMovieList, component: DetailedMovieList },
+  { path: config.routes.updateMovie, component: UpdateMovie },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };
