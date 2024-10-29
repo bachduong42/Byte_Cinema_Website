@@ -11,6 +11,7 @@ import { getDetailFilm } from "../services/getDetailFilm";
 function UpdateMovie() {
     const { id } = useParams();
     // const [movie, setMovie] = useState({});
+    const [releaseDate, setReleaseDate] = useState(new Date());
     const [movie, setMovie] = useState({
         name: "",
         director: "",
@@ -40,19 +41,20 @@ function UpdateMovie() {
                     ...movieData,
                     genre: movieData.movieGenres[0].id + 1,
                     posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
-                    images: imagePaths.length > 1 ? imagePaths.slice(0) : []
+                    images: imagePaths.slice(1).map(path => ({ imagePreview: path })),
+                    // images: imagePaths.length > 1 ? imagePaths.slice(1) : [],
                 }));
             }
-            console.log("lolo", movie.images)
+
             // setIsLoading(false)
         }
         getMovie();
 
     }, [id]);
-    // console.log("movie", movie)
+    console.log("lolo", movie.images)
     const [movieGenres, setMovieGenres] = useState([]);
 
-    const [releaseDate, setReleaseDate] = useState(new Date());
+
     const navigate = useNavigate();
     // const { checkLoginSession, logout } = useContext(UserContext);
     const isSubmitButtonEnabled =
@@ -197,15 +199,35 @@ function UpdateMovie() {
         }
     }
 
+    // const handleImageChange = (e, index) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         const imagePreview = URL.createObjectURL(file);
+    //         const newImages = [...movie.images];
+    //         newImages[index] = { file, imagePreview };
+    //         if (newImages.length < 6 && newImages[index] !== NoImage) {
+    //             newImages.push(NoImage);
+    //         }
+    //         setMovie({
+    //             ...movie,
+    //             images: newImages,
+    //         });
+    //     }
+    // };
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
         if (file) {
             const imagePreview = URL.createObjectURL(file);
             const newImages = [...movie.images];
+
+            // Update the specific index with the new file and its preview
             newImages[index] = { file, imagePreview };
-            if (newImages.length < 6 && newImages[index] !== NoImage) {
-                newImages.push(NoImage);
+
+            // If there's a need to add a placeholder for further uploads (optional)
+            if (newImages.length < 6 && !newImages.some(img => img.imagePreview === NoImage)) {
+                newImages.push({ imagePreview: NoImage });
             }
+
             setMovie({
                 ...movie,
                 images: newImages,
