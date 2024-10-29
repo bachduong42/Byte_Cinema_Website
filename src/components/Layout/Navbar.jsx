@@ -14,7 +14,6 @@ import ConfirmOtp from "../../modules/auth/ConfirmOtp";
 import Tippy from '@tippyjs/react/headless';
 import { MdLogin, MdOutlinePerson, MdOutlineSettings } from "react-icons/md";
 const Navbar = React.memo(() => {
-    console.log("re-render")
     const location = useLocation();
     const [activeButton, setActiveButton] = useState('/');
     const [isScrolled, setIsScrolled] = useState(false);

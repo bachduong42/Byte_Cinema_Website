@@ -33,9 +33,10 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
         ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
         : ""
         }`}
-      onClick={handleCardClick}
+
     >
       <Image
+        onClick={handleCardClick}
         src={infor.imagePaths[0]}
         alt=""
         className="w-full h-full object-cover"

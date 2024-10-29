@@ -5,66 +5,69 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addMovieRequest } from "../services/addMovie";
 import { toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { updateMovieRequest } from "../services/updateMovie";
+import { getDetailFilm } from "../services/getDetailFilm";
 function UpdateMovie() {
     const { id } = useParams();
-    const [movie, setMovie] = useState({});
-    // const [movie, setMovie] = useState({
-    //     title: "",
-    //     director: "",
-    //     actors: "",
-    //     genre: 0,
-    //     duration: "",
-    //     country: "",
-    //     // language: "",
-    //     releaseDay: new Date().toISOString(),
-    //     content: "",
-    //     images: [NoImage],
-    //     poster: null,
-    //     posterPreview: null,
-    //     trailer: "",
-    // });
+    // const [movie, setMovie] = useState({});
+    const [movie, setMovie] = useState({
+        name: "",
+        director: "",
+        actors: "",
+        genre: 0,
+        duration: "",
+        nation: "",
+        // language: "",
+        releaseDay: new Date().toISOString(),
+        content: "",
+        images: [NoImage],
+        poster: null,
+        posterPreview: null,
+        pathTrailer: "",
+    });
+    console.log(id)
     useEffect(() => {
         async function getMovie() {
             // setIsLoading(true);
-            const movie = await getDetailFilm(id);
-            if (movie) {
-                setMovie(movie);
+            const movieData = await getDetailFilm(id);
+
+            if (movieData) {
+                const imagePaths = movieData.imagePaths || [];
+                console.log("Number of images:", imagePaths.length);
+                setMovie(prevMovie => ({
+                    ...prevMovie,
+                    ...movieData,
+                    genre: movieData.movieGenres[0].id + 1,
+                    posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
+                    images: imagePaths.length > 1 ? imagePaths.slice(0) : []
+                }));
             }
+            console.log("lolo", movie.images)
             // setIsLoading(false)
         }
         getMovie();
-    }, [id]);
 
+    }, [id]);
+    // console.log("movie", movie)
     const [movieGenres, setMovieGenres] = useState([]);
 
     const [releaseDate, setReleaseDate] = useState(new Date());
     const navigate = useNavigate();
     // const { checkLoginSession, logout } = useContext(UserContext);
     const isSubmitButtonEnabled =
-        movie.title !== movieProps.title ||
-        movie.director !== movieProps.director ||
-        movie.actors !== movieProps.actors ||
-        movie.genre !== movieProps.genre ||
-        movie.duration !== movieProps.duration ||
-        movie.country !== movieProps.country ||
-        movie.releaseDay !== movieProps.releaseDay ||
-        movie.content !== movieProps.content ||
-        movie.poster !== movieProps.poster ||
-        movie.trailer !== movieProps.trailer ||
-        !movie.title ||
+        !movie.name ||
         !movie.director ||
         !movie.actors ||
         !movie.genre ||
         !movie.duration ||
-        !movie.country ||
+        !movie.nation ||
         !movie.releaseDay ||
         // !movie.language ||
         // !movie.type ||
         !movie.content ||
         !movie.poster ||
-        !movie.trailer ||
+        !movie.pathTrailer ||
         movie.images.filter((image) => image !== NoImage).length === 0;
     let access_token = "";
 
@@ -72,7 +75,6 @@ function UpdateMovie() {
         const fetchGenres = async () => {
             try {
                 access_token = localStorage.getItem("accessToken");
-                console.log("Access token: ", access_token);
                 const res = await getMovieGenres(access_token);
                 if (res && Array.isArray(res)) {
                     setMovieGenres(res);
@@ -162,14 +164,14 @@ function UpdateMovie() {
                         JSON.stringify({
                             description: _movie.content,
                             duration: _movie.duration,
-                            name: _movie.title,
+                            name: _movie.name,
                             releaseDay: _movie.releaseDay,
                             genreIds: [_movie.genre],
                             imagePaths: [],
                             director: _movie.director,
-                            nation: _movie.country,
+                            nation: _movie.nation,
                             actors: _movie.actors,
-                            pathTrailer: _movie.trailer,
+                            pathTrailer: _movie.pathTrailer,
                         }),
                     ],
                     { type: "application/json" }
@@ -231,7 +233,7 @@ function UpdateMovie() {
     };
 
     const embedUrl = `https://www.youtube.com/embed/${getYouTubeEmbedUrl(
-        movie.trailer
+        movie.pathTrailer
     )}?autoplay=1`;
 
     return (
@@ -255,8 +257,8 @@ function UpdateMovie() {
                                 <span className="font-bold mr-[00px] w-[40%]">Tên bộ phim</span>
                                 <input
                                     type="text"
-                                    name="title"
-                                    value={movie.title}
+                                    name="name"
+                                    value={movie.name}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border rounded-md "
                                 />
@@ -313,8 +315,8 @@ function UpdateMovie() {
                                 <span className="font-bold mr-[00px] w-[40%]">Quốc gia:</span>
                                 <input
                                     type="text"
-                                    name="country"
-                                    value={movie.country}
+                                    name="nation"
+                                    value={movie.nation}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border rounded-md"
                                 />
@@ -343,7 +345,7 @@ function UpdateMovie() {
                                 </span>
                                 <div className=" flex w-[100%] bg-white items-start justify-start self-start">
                                     <DatePicker
-                                        selected={releaseDate}
+                                        selected={movie.releaseDay}
                                         onChange={handleDateChange}
                                         className={
                                             "form-control form-control-sm w-[100%] px-3 py-2 border rounded-md items-start justify-start self-start"
@@ -356,8 +358,8 @@ function UpdateMovie() {
                             <div className="flex items-start py-2 justify-center mb-4">
                                 <span className="font-bold mr-[00px] w-[40%]">Nội dung:</span>
                                 <textarea
-                                    name="content"
-                                    value={movie.content}
+                                    name="description"
+                                    value={movie.description}
                                     onChange={handleChange}
                                     className="w-full px-3 py-5 border rounded-md overflow-y-auto"
                                     rows="5"
@@ -398,8 +400,6 @@ function UpdateMovie() {
                             </div>
 
                             <div className="grid grid-cols-3 gap-2 p-2 w-2/3 h-full">
-
-
                                 {movie.images.map((image, index) => (
                                     <div
                                         key={index}
@@ -444,8 +444,8 @@ function UpdateMovie() {
                                 </span>
                                 <input
                                     type="text"
-                                    name="trailer"
-                                    value={movie.trailer}
+                                    name="pathTrailer"
+                                    value={movie.pathTrailer}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border rounded-md"
                                 />
@@ -458,7 +458,7 @@ function UpdateMovie() {
                                     className="w-full h-full"
                                     // src="https://www.youtube.com/embed/ZgE25SPP2I8?autoplay=1"
                                     src={embedUrl}
-                                    title={movie.title}
+                                    title={movie.name}
                                     frameBorder="0"
                                     allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture; web-share"
                                     allowFullScreen
