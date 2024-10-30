@@ -124,7 +124,7 @@ const Navbar = React.memo(() => {
                 Quản lý phim
               </Button>
               <Button
-                href={`manage-schedules`}
+                href={`/manage-schedules`}
                 active={activeButton === "/showtime-management"}
                 className="lg:text-xl md:text-base"
                 onClick={() => setActiveButton("/showtime-management")}

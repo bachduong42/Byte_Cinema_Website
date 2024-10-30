@@ -62,6 +62,8 @@ function ScheduleManagement() {
       setFilteredMovies(listMovie);
     } else if (activeTab === "Sắp chiếu") {
       setFilteredMovies(listMovieUpComing);
+    } else if (activeTab === "Lọc theo ngày") {
+      // call api lọc theo ngày
     }
   }, [activeTab, listAllMovie, listMovie, listMovieUpComing]);
   return (
@@ -116,6 +118,20 @@ function ScheduleManagement() {
               Sắp chiếu
             </a>
           </li>
+          <li class="me-2">
+            <a
+              href="#"
+              onClick={() => handleTabClick("Lọc theo ngày")}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${
+                activeTab === "Lọc theo ngày"
+                  ? "text-white bg-[#092B4B] active"
+                  : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
+              }`}
+              aria-current={activeTab === "Lọc theo ngày" ? "page" : undefined}
+            >
+              Lọc theo ngày
+            </a>
+          </li>
         </ul>
         <Button
           className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base"
@@ -132,7 +148,7 @@ function ScheduleManagement() {
             cardInfor
             admin
             happening={listMovie.some((m) => m.id === movie.id)}
-            type='schedule'
+            type="schedule"
           />
         ))}
       </div>
