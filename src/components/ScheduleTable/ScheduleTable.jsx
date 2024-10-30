@@ -1,44 +1,40 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-const data = [
-  {
-    key: "1",
-    showDate: "11-10-2024",
-    showTime: "10:00",
-    screenRoom: "Phòng 1",
-    price: 100000,
-    placed: "35/40",
-  },
-  {
-    key: "1",
-    showDate: "31-10-2024",
-    showTime: "10:00",
-    screenRoom: "Phòng 4",
-    price: 100000,
-    placed: "0",
-  },
-  {
-    key: "3",
-    showDate: "30-10-2024",
-    showTime: "12:00",
-    screenRoom: "Phòng 2",
-    price: 100000,
-    placed: "0",
-  },
-  {
-    key: "4",
-    showDate: "11-10-2024",
-    showTime: "10:00",
-    screenRoom: "Phòng 1",
-    price: 100000,
-    placed: "35/40",
-  },
-];
-const ScheduleTable = () => {
+
+const ScheduleTable = ({ data, roomData }) => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
+
+  const dataTable = data.map((screening, index) => {
+    const startTime = new Date(screening.startTime);
+    const showDate = startTime.toLocaleDateString("en-GB");
+    const showTime = startTime.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return {
+      key: index + 1,
+      showDate,
+      showTime,
+      screenRoom: screening.auditoriumName,
+      price: screening.ticketPrice,
+      placed: "0",
+    };
+  });
+
+  const uniqueShowDates = [...new Set(dataTable.map((item) => item.showDate))];
+  const showDateFilters = uniqueShowDates.map((date) => ({
+    text: date,
+    value: date,
+  }));
+
+  const uniqueRoomData = roomData?.filter(
+    (room, index, self) => index === self.findIndex((r) => r.name === room.name)
+  );
+
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
     setFilteredInfo(filters);
@@ -57,16 +53,7 @@ const ScheduleTable = () => {
       dataIndex: "showDate",
       key: "showDate",
       width: "20%",
-      filters: [
-        {
-          text: "11-10-2024",
-          value: "11-10-2024",
-        },
-        {
-          text: "30-10-2024",
-          value: "30-10-2024",
-        },
-      ],
+      filters: showDateFilters,
       filteredValue: filteredInfo.showDate || null,
       onFilter: (value, record) => record.showDate.includes(value),
       ellipsis: true,
@@ -75,23 +62,17 @@ const ScheduleTable = () => {
       title: "Giờ chiếu",
       dataIndex: "showTime",
       width: "15%",
-      key: "showTime"
+      key: "showTime",
     },
     {
       title: "Phòng chiếu",
       width: "15%",
       dataIndex: "screenRoom",
       key: "screenRoom",
-      filters: [
-        {
-          text: "Phòng 1",
-          value: "Phòng 1",
-        },
-        {
-          text: "Phòng 2",
-          value: "Phòng 2",
-        },
-      ],
+      filters: uniqueRoomData.map((room) => ({
+        text: room.name,
+        value: room.name,
+      })),
       filteredValue: filteredInfo.screenRoom || null,
       onFilter: (value, record) => record.screenRoom.includes(value),
     },
@@ -99,6 +80,8 @@ const ScheduleTable = () => {
       title: "Giá vé",
       dataIndex: "price",
       key: "price",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: "Vé đã đặt",
@@ -135,9 +118,7 @@ const ScheduleTable = () => {
     },
   ];
   return (
-    <>
-      <Table columns={columns} dataSource={data} onChange={handleChange} />
-    </>
+    <Table columns={columns} dataSource={dataTable} onChange={handleChange} />
   );
 };
-export default ScheduleTable;
+export default memo(ScheduleTable);

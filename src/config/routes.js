@@ -10,6 +10,7 @@ const routes = {
   showtimeManagement: "/showtime-management",
   detailedMovieList: "/movies/:type",
   movieShchedules: "/schedule-movie/:id",
+  manageSchedules: "/manage-schedules",
 };
 
 export default routes;

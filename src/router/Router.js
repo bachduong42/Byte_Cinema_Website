@@ -11,6 +11,7 @@ import AddMovie from "../pages/AddMovie";
 import DetailedMovieList from "../pages/DetailedMovieList";
 import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import MovieSchedules from "../pages/MovieSchedules";
+import ScheduleManagement from "../pages/ScheduleManagement";
 
 const publicRoutes = [
   { path: config.routes.home, component: Home },
@@ -23,6 +24,7 @@ const publicRoutes = [
   { path: config.routes.addFilm, component: AddMovie },
   { path: config.routes.detailedMovieList, component: DetailedMovieList },
   { path: config.routes.movieShchedules, component: MovieSchedules },
+  { path: config.routes.manageSchedules, component: ScheduleManagement },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };
