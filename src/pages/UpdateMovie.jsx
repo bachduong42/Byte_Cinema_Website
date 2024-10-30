@@ -21,42 +21,41 @@ function UpdateMovie() {
         nation: "",
         // language: "",
         releaseDay: new Date().toISOString(),
-        content: "",
+        description: "",
         images: [NoImage],
         poster: null,
         posterPreview: null,
         pathTrailer: "",
     });
-    console.log(id)
+    // console.log(id)
     useEffect(() => {
         async function getMovie() {
             // setIsLoading(true);
             const movieData = await getDetailFilm(id);
-
+            const imagePaths = movieData.imagePaths || [];
+            const initialImages = imagePaths.slice(1, 6).map((path) => ({ imagePreview: path }));
+            // while (initialImages.length < 6) {
+            //     initialImages.push({ imagePreview: NoImage });
+            // }
             if (movieData) {
-                const imagePaths = movieData.imagePaths || [];
-                console.log("Number of images:", imagePaths.length);
+                // console.log("Number of images:", imagePaths.length);
                 setMovie(prevMovie => ({
                     ...prevMovie,
                     ...movieData,
                     genre: movieData.movieGenres[0].id + 1,
                     posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
-                    images: imagePaths.slice(1).map(path => ({ imagePreview: path })),
-                    // images: imagePaths.length > 1 ? imagePaths.slice(1) : [],
+                    images: initialImages,
                 }));
             }
-
-            // setIsLoading(false)
         }
+
         getMovie();
 
     }, [id]);
-    console.log("lolo", movie.images)
     const [movieGenres, setMovieGenres] = useState([]);
 
 
     const navigate = useNavigate();
-    // const { checkLoginSession, logout } = useContext(UserContext);
     const isSubmitButtonEnabled =
         !movie.name ||
         !movie.director ||
@@ -67,7 +66,7 @@ function UpdateMovie() {
         !movie.releaseDay ||
         // !movie.language ||
         // !movie.type ||
-        !movie.content ||
+        !movie.description ||
         !movie.poster ||
         !movie.pathTrailer ||
         movie.images.filter((image) => image !== NoImage).length === 0;
@@ -120,12 +119,12 @@ function UpdateMovie() {
             imageFiles.every((file) => file instanceof File)
         );
     };
-
     const handleSave = async (e) => {
         e.preventDefault();
 
         if (isInputValid()) {
             const filteredImages = movie.images.filter((image) => image !== NoImage);
+            console.log(filteredImages)
             if (!filteredImages.includes(movie.poster)) {
                 filteredImages.unshift(movie.poster);
             }
@@ -137,9 +136,9 @@ function UpdateMovie() {
                 ...movie,
                 images: filteredImages,
             };
-            console.log(filteredMovie);
-            console.log(filteredImages.length);
-            console.log(movie.releaseDay);
+            // console.log(filteredMovie);
+            // console.log(filteredImages.length);
+            // console.log(movie.releaseDay);
             const imageFiles = filteredMovie.images.map((image) => image.file);
             if (isImageFilesArray(imageFiles)) {
                 handleUpdateMovie(filteredMovie);
@@ -164,12 +163,12 @@ function UpdateMovie() {
                 new Blob(
                     [
                         JSON.stringify({
-                            description: _movie.content,
+                            description: _movie.description,
                             duration: _movie.duration,
                             name: _movie.name,
                             releaseDay: _movie.releaseDay,
                             genreIds: [_movie.genre],
-                            imagePaths: [],
+                            // imagePaths: [],
                             director: _movie.director,
                             nation: _movie.nation,
                             actors: _movie.actors,
@@ -185,11 +184,11 @@ function UpdateMovie() {
                 form_data,
                 id
             );
-            toast.success("Cập nhật phim thành công", {
-                autoClose: 1000,
-            });
-            console.log("update movie response: ", res);
-            navigate("/film-management");
+            // toast.success("Cập nhật phim thành công", {
+            //     autoClose: 1000,
+            // });
+            // console.log("update movie response: ", res);
+            // navigate("/film-management");
         } catch (error) {
             console.error("UPdate movie error: ", error);
             toast.error("Có lỗi xảy ra, vui lòng thử lại", {
@@ -199,43 +198,22 @@ function UpdateMovie() {
         }
     }
 
-    // const handleImageChange = (e, index) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         const imagePreview = URL.createObjectURL(file);
-    //         const newImages = [...movie.images];
-    //         newImages[index] = { file, imagePreview };
-    //         if (newImages.length < 6 && newImages[index] !== NoImage) {
-    //             newImages.push(NoImage);
-    //         }
-    //         setMovie({
-    //             ...movie,
-    //             images: newImages,
-    //         });
-    //     }
-    // };
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
         if (file) {
             const imagePreview = URL.createObjectURL(file);
             const newImages = [...movie.images];
-
-            // Update the specific index with the new file and its preview
             newImages[index] = { file, imagePreview };
-
-            // If there's a need to add a placeholder for further uploads (optional)
-            if (newImages.length < 6 && !newImages.some(img => img.imagePreview === NoImage)) {
-                newImages.push({ imagePreview: NoImage });
+            if (newImages.length < 6 && newImages[index] !== NoImage) {
+                newImages.push(NoImage);
             }
-
             setMovie({
                 ...movie,
                 images: newImages,
             });
         }
+        console.log(movie.images);
     };
-
-
     const handlePosterChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -324,7 +302,7 @@ function UpdateMovie() {
                                     }}
                                     onPaste={(e) => {
                                         const paste = (
-                                            e.clipboardData || window.clipboardData
+                                            e.clipboardData || window.Clipboard
                                         ).getData("text");
                                         if (!/^\d+$/.test(paste)) {
                                             e.preventDefault();
@@ -439,13 +417,14 @@ function UpdateMovie() {
                                                 alt={`Image ${index}`}
                                                 className="w-full h-full object-contain"
                                             />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gray-200 border border-gray-300 rounded-md px-3">
-                                                <span className="text-gray-500">
-                                                    Click to upload image
-                                                </span>
-                                            </div>
-                                        )}
+                                        )
+                                            : (
+                                                <div className="w-full h-full flex items-center justify-center bg-gray-200 border border-gray-300 rounded-md px-3">
+                                                    <span className="text-gray-500">
+                                                        Click to upload image
+                                                    </span>
+                                                </div>
+                                            )}
                                     </div>
                                 ))}
                             </div>
