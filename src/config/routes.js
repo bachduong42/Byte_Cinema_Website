@@ -8,8 +8,9 @@ const routes = {
   addFilm: "/film-management/add",
   theaterManagement: "/theater-management",
   showtimeManagement: "/showtime-management",
-  detailedMovieList: '/movies/:type',
-  updateMovie: '/update-movie/:id'
+  detailedMovieList: "/movies/:type",
+  movieShchedules: "/schedule-movie/:id",
+  manageSchedules: "/manage-schedules",
 };
 
 export default routes;

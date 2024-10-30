@@ -4,11 +4,22 @@ import PropTypes from 'prop-types';
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../config";
 import Button from "../../components/Button/Button";
-function MovieCard({ infor, className, cardInfor = false, admin = false, happening = false }) {
+function MovieCard({
+  infor,
+  className,
+  cardInfor = false,
+  admin = false,
+  happening = false,
+  type,
+}) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/movie/${infor.id}`);
+    if (type === "schedule") {
+      navigate(`/schedule-movie/${infor.id}`)
+    } else {
+      navigate(`/movie/${infor.id}`);
+    }
   };
 
   function convertDurationToMinutes(duration) {
@@ -29,11 +40,11 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
 
   return (
     <div
-      className={`relative ${className} group cursor-pointer ${cardInfor
+      className={`relative min-w-[200px] ${className} group cursor-pointer ${cardInfor
         ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
         : ""
         }`}
-
+      onClick={handleCardClick}
     >
       <Image
         onClick={handleCardClick}
@@ -71,11 +82,11 @@ function MovieCard({ infor, className, cardInfor = false, admin = false, happeni
               <button text className="text-white text-[14px]">
                 Xem chi tiết
               </button>
-              <button
-                onClick={handleUpdate}
-                className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
-                Chỉnh sửa
-              </button>
+              {!type && (
+                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+                  Chỉnh sửa
+                </button>
+              )}
             </div>
           ) : (
             <button className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
