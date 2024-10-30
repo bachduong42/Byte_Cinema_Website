@@ -44,7 +44,6 @@ function MovieCard({
         ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
         : ""
         }`}
-      onClick={handleCardClick}
     >
       <Image
         onClick={handleCardClick}
@@ -83,7 +82,7 @@ function MovieCard({
                 Xem chi tiết
               </button>
               {!type && (
-                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]" onClick={handleUpdate}>
                   Chỉnh sửa
                 </button>
               )}

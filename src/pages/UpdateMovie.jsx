@@ -21,61 +21,74 @@ function UpdateMovie() {
         nation: "",
         // language: "",
         releaseDay: new Date().toISOString(),
-        content: "",
+        description: "",
         images: [NoImage],
         poster: null,
         posterPreview: null,
         pathTrailer: "",
     });
-    console.log(id)
-    useEffect(() => {
+    // console.log(id)
+   useEffect(() => {
         async function getMovie() {
             // setIsLoading(true);
             const movieData = await getDetailFilm(id);
-
+            const imagePaths = movieData.imagePaths || [];
+            const initialImages = await Promise.all(imagePaths.slice(1, 6).map(async (path) => {
+                const response = await fetch(path);
+                const blob = await response.blob();
+                return { file: new File([blob], `image.jpg`, { type: "image/jpeg"  }), imagePreview: path };
+            }));
+           
+            if (initialImages.length < 6) {
+                initialImages.push({ imagePreview: NoImage });
+            }
             if (movieData) {
-                const imagePaths = movieData.imagePaths || [];
-                console.log("Number of images:", imagePaths.length);
+                let posterFile = null;
+                if (imagePaths && imagePaths.length > 1) {
+                    const response = await fetch(imagePaths[0], {mode: "cors"});
+                    const blob = await response.blob();
+                    posterFile = new File([blob], "poster.jpg", { type: "image/jpeg"});
+                }
+                // // Convert imagePaths to blobs
+                // const imageBlobs = await Promise.all(imagePaths.map(async (path) => {
+                //     const response = await fetch(path, {mode: "no-cors"});
+                //     return await response.blob();
+                // }));
+                // console.log("Number of images:", imagePaths.length);
                 setMovie(prevMovie => ({
                     ...prevMovie,
                     ...movieData,
                     genre: movieData.movieGenres[0].id + 1,
                     posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
-                    images: imagePaths.slice(1).map(path => ({ imagePreview: path })),
-                    // images: imagePaths.length > 1 ? imagePaths.slice(1) : [],
+                    // poster:  imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
+                    poster: posterFile,
+                    images: initialImages,
                 }));
+                
             }
-            // const updatedImageFolder = await Promise.all(
-            //     imageFolder.map(async (item) => {
-            //       const blobUrl = await urlToBlob(item.imagePreview);
-            //       return {
-            //         ...item,
-            //         imagePreview: blobUrl,
-            //       };
-            //     })
-            //   );
-            // setIsLoading(false)
         }
+
         getMovie();
+        console.log("Initial movie1: ", movie);
 
     }, [id]);
-    console.log("lolo", movie.images)
+
+    
     const [movieGenres, setMovieGenres] = useState([]);
 
 
     const navigate = useNavigate();
-    // const { checkLoginSession, logout } = useContext(UserContext);
     const isSubmitButtonEnabled =
         !movie.name ||
         !movie.director ||
         !movie.actors ||
-        !movie.genre ||
+        // !movie.genre ||
         !movie.duration ||
         !movie.nation ||
         !movie.releaseDay ||
         // !movie.language ||
         // !movie.type ||
-        !movie.content ||
+        !movie.description ||
         !movie.poster ||
         !movie.pathTrailer ||
         movie.images.filter((image) => image !== NoImage).length === 0;
@@ -122,18 +135,33 @@ function UpdateMovie() {
             .every((value) => value.trim() !== "");
     };
 
-    const isImageFilesArray = (imageFiles) => {
-        return (
-            Array.isArray(imageFiles) &&
-            imageFiles.every((file) => file instanceof File)
-        );
-    };
+    // const isImageFilesArray = (imageFiles) => {
+    //     return (
+    //         Array.isArray(imageFiles) &&
+    //         imageFiles.every((file) => file instanceof File)
+    //     );
+    // };
 
+    const isImageFilesArray = (imageFiles) => {
+        if (!Array.isArray(imageFiles)) {
+            console.error("imageFiles is not an array");
+            return false;
+        }
+    
+        const invalidFiles = imageFiles.filter(file => !(file instanceof File));
+        if (invalidFiles.length > 0) {
+            console.error("Invalid files found:", invalidFiles);
+            return false;
+        }
+    
+        return true;
+    };
     const handleSave = async (e) => {
         e.preventDefault();
 
         if (isInputValid()) {
-            const filteredImages = movie.images.filter((image) => image !== NoImage);
+            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg');
+            console.log("Filtered: ",filteredImages)
             if (!filteredImages.includes(movie.poster)) {
                 filteredImages.unshift(movie.poster);
             }
@@ -146,11 +174,12 @@ function UpdateMovie() {
                 images: filteredImages,
             };
             console.log(filteredMovie);
-            console.log(filteredImages.length);
-            console.log(movie.releaseDay);
+            // console.log(filteredImages.length);
+            // console.log(movie.releaseDay);
             const imageFiles = filteredMovie.images.map((image) => image.file);
             if (isImageFilesArray(imageFiles)) {
                 handleUpdateMovie(filteredMovie);
+                // console.log("Valid image files.");
             } else {
                 alert("Invalid image files.");
             }
@@ -172,7 +201,7 @@ function UpdateMovie() {
                 new Blob(
                     [
                         JSON.stringify({
-                            description: _movie.content,
+                            description: _movie.description,
                             duration: _movie.duration,
                             name: _movie.name,
                             releaseDay: _movie.releaseDay,
@@ -196,8 +225,8 @@ function UpdateMovie() {
             toast.success("Cập nhật phim thành công", {
                 autoClose: 1000,
             });
-            console.log("update movie response: ", res);
-            navigate("/film-management");
+            // console.log("update movie response: ", res);
+            // navigate("/film-management");
         } catch (error) {
             console.error("UPdate movie error: ", error);
             toast.error("Có lỗi xảy ra, vui lòng thử lại", {
@@ -207,43 +236,22 @@ function UpdateMovie() {
         }
     }
 
-    // const handleImageChange = (e, index) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         const imagePreview = URL.createObjectURL(file);
-    //         const newImages = [...movie.images];
-    //         newImages[index] = { file, imagePreview };
-    //         if (newImages.length < 6 && newImages[index] !== NoImage) {
-    //             newImages.push(NoImage);
-    //         }
-    //         setMovie({
-    //             ...movie,
-    //             images: newImages,
-    //         });
-    //     }
-    // };
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
         if (file) {
             const imagePreview = URL.createObjectURL(file);
             const newImages = [...movie.images];
-
-            // Update the specific index with the new file and its preview
             newImages[index] = { file, imagePreview };
-
-            // If there's a need to add a placeholder for further uploads (optional)
-            if (newImages.length < 6 && !newImages.some(img => img.imagePreview === NoImage)) {
-                newImages.push({ imagePreview: NoImage });
+            if (newImages.length < 6 && newImages[index] !== NoImage) {
+                newImages.push(NoImage);
             }
-
             setMovie({
                 ...movie,
                 images: newImages,
             });
         }
+        console.log(movie.images);
     };
-
-
     const handlePosterChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -332,7 +340,7 @@ function UpdateMovie() {
                                     }}
                                     onPaste={(e) => {
                                         const paste = (
-                                            e.clipboardData || window.clipboardData
+                                            e.clipboardData || window.Clipboard
                                         ).getData("text");
                                         if (!/^\d+$/.test(paste)) {
                                             e.preventDefault();
@@ -447,13 +455,14 @@ function UpdateMovie() {
                                                 alt={`Image ${index}`}
                                                 className="w-full h-full object-contain"
                                             />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gray-200 border border-gray-300 rounded-md px-3">
-                                                <span className="text-gray-500">
-                                                    Click to upload image
-                                                </span>
-                                            </div>
-                                        )}
+                                        )
+                                            : (
+                                                <div className="w-full h-full flex items-center justify-center bg-gray-200 border border-gray-300 rounded-md px-3">
+                                                    <span className="text-gray-500">
+                                                        Click to upload image
+                                                    </span>
+                                                </div>
+                                            )}
                                     </div>
                                 ))}
                             </div>
@@ -490,7 +499,7 @@ function UpdateMovie() {
                                     src={embedUrl}
                                     title={movie.name}
                                     frameBorder="0"
-                                    allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture; web-share"
+                                    allow="encrypted-media; accelerometer; gyroscope; picture-in-picture; web-share"
                                     allowFullScreen
                                 ></iframe>
                             </div>
