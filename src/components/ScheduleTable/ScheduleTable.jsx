@@ -2,8 +2,8 @@ import React, { memo, useRef, useState } from "react";
 import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import ModalAddScreening from "../Modal/ModalAddScreening";
 import ModalDelScreening from "../Modal/ModalDeleteScreening";
+import ModalEditScreening from "../Modal/ModalEditScreening";
 
 const ScheduleTable = ({ data, roomData }) => {
   const [filteredInfo, setFilteredInfo] = useState({});
@@ -134,7 +134,7 @@ const ScheduleTable = ({ data, roomData }) => {
   return (
     <>
       <Table columns={columns} dataSource={dataTable} onChange={handleChange} />
-      {openModalUpdate && <ModalAddScreening handleClose={() => setOpenModalUpdate(false)} idScreening={idScreening}></ModalAddScreening>}
+      {openModalUpdate && <ModalEditScreening handleClose={() => setOpenModalUpdate(false)} idScreening={idScreening}></ModalEditScreening>}
       {openModalDel && <ModalDelScreening handleClose={() => setOpenModalDel(false)}></ModalDelScreening>}
     </>
   );

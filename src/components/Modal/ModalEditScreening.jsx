@@ -6,7 +6,7 @@ import { faCalendar, faClock } from "@fortawesome/free-solid-svg-icons";
 import { getAllAuditorium } from "../../services/getAllAuditorium";
 import { getDetailFilm } from "../../services/getDetailFilm";
 import { getScreeningRequest } from "../../services/getScreening";
-function ModalAddScreening({ handleClose, idScreening }) {
+function ModalEditScreening({ handleClose, idScreening }) {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [price, setPrice] = useState(0);
@@ -227,4 +227,4 @@ function ModalAddScreening({ handleClose, idScreening }) {
     );
 }
 
-export default ModalAddScreening;
+export default ModalEditScreening;
