@@ -46,6 +46,9 @@ function AddMovie() {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
+        // const sessionValid = await checkLoginSession();
+        // if (!sessionValid) return;
+
         access_token = localStorage.getItem("accessToken");
         console.log("Access token: ", access_token);
         const res = await getMovieGenres(access_token);
@@ -228,6 +231,12 @@ function AddMovie() {
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error("Vui lòng upload ảnh đúng định dạng", {
+          autoClose: 1000,
+        });
+        return;
+      }
       const imagePreview = URL.createObjectURL(file);
       const newImages = [...movie.images];
       newImages[index] = { file, imagePreview };
@@ -255,6 +264,12 @@ function AddMovie() {
   const handlePosterChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error("Vui lòng upload ảnh đúng định dạng", {
+          autoClose: 1000,
+        });
+        return;
+      }
       const posterPreview = URL.createObjectURL(file);
 
       setMovie({ ...movie, poster: file, posterPreview });
