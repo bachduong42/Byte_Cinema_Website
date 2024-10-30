@@ -16,6 +16,7 @@ const ScheduleTable = ({ data, roomData }) => {
     });
 
     return {
+      id: screening.id,
       key: index + 1,
       showDate,
       showTime,
@@ -24,6 +25,8 @@ const ScheduleTable = ({ data, roomData }) => {
       placed: "0",
     };
   });
+
+  console.log(dataTable)
 
   const uniqueShowDates = [...new Set(dataTable.map((item) => item.showDate))];
   const showDateFilters = uniqueShowDates.map((date) => ({
@@ -94,8 +97,8 @@ const ScheduleTable = ({ data, roomData }) => {
       key: "update",
       render: (_, record) => (
         <button
-          id={record.showtimeId}
-          onClick={() => handleUpdate(record.showtimeId)}
+          id={record.id}
+          onClick={() => handleUpdate(record.id)}
           className="text-[orange] rounded px-4 py-2 text-[18px]"
         >
           <FontAwesomeIcon icon={faEdit} />
@@ -108,8 +111,8 @@ const ScheduleTable = ({ data, roomData }) => {
       key: "delete",
       render: (_, record) => (
         <button
-          id={record.showtimeId}
-          onClick={() => handleUpdate(record.showtimeId)}
+          id={record.id}
+          onClick={() => handleUpdate(record.id)}
           className="text-[red] rounded px-4 py-2 text-[18px]"
         >
           <FontAwesomeIcon icon={faTrash} />
