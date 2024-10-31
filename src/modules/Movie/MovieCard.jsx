@@ -17,8 +17,10 @@ function MovieCard({
   const handleCardClick = () => {
     if (type === "schedule") {
       navigate(`/schedule-movie/${infor.id}`)
+    } else if (type == "update") {
+      // handleUpdate();
     } else {
-      navigate(`/movie/${infor.id}`);
+      // navigate(`/movie/${infor.id}`);
     }
   };
 
@@ -37,6 +39,9 @@ function MovieCard({
   const handleUpdate = () => {
     navigate(`/update-movie/${infor.id}`)
   }
+  const handleViewDetail = () => {
+    navigate(`/movie/${infor.id}`)
+  }
 
   return (
     <div
@@ -44,9 +49,10 @@ function MovieCard({
         ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
         : ""
         }`}
+      onClick={handleCardClick}
     >
       <Image
-        onClick={handleCardClick}
+
         src={infor.imagePaths[0]}
         alt=""
         className="w-full h-full object-cover"
@@ -78,11 +84,13 @@ function MovieCard({
           )}
           {admin ? (
             <div className="flex gap-2">
-              <button text className="text-white text-[14px]">
+              <button
+                onClick={handleViewDetail} text className="text-white text-[14px]">
                 Xem chi tiết
               </button>
-              {!type && (
-                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]" onClick={handleUpdate}>
+              {type === "update" && (
+                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]"
+                  onClick={handleUpdate}>
                   Chỉnh sửa
                 </button>
               )}

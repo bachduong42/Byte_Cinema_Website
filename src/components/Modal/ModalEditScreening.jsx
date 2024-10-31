@@ -14,7 +14,7 @@ function ModalEditScreening({ handleClose, idScreening }) {
     const [roomData, setRoomData] = useState(null);
     const [screeningData, setScreeningData] = useState(null);
     const [reLoad, setReload] = useState(false);
-    console.log(idScreening);
+    console.log(idScreening.current);
 
     const [errors, setErrors] = useState({
         date: "",
@@ -61,10 +61,13 @@ function ModalEditScreening({ handleClose, idScreening }) {
             try {
                 const bearer = localStorage.getItem("accessToken");
                 const rooms = await getAllAuditorium(bearer);
-                const screenings = await getScreeningRequest(bearer, idScreening);
+                const screenings = await getScreeningRequest(bearer, idScreening.current);
                 setRoomData(rooms);
-                setScreeningData(screenings);
-                console.log(screenings)
+                setScreeningData(screenings.data);
+                console.log(rooms);
+                console.log(screenings.data)
+                setPrice(screeningData.ticketPrice);
+                setRoom(screeningData.auditoriumName)
             } catch (e) {
                 console.error(e);
             }

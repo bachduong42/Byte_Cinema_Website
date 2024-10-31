@@ -110,6 +110,7 @@ function FilmManagement() {
                         cardInfor
                         admin
                         happening={listMovie.some(m => m.id === movie.id)}
+                        type="update"
                     />
                 ))}
             </div>
