@@ -219,8 +219,8 @@ function UpdateMovie() {
             toast.success("Cập nhật phim thành công", {
                 autoClose: 1000,
             });
-            // console.log("update movie response: ", res);
-            // navigate("/film-management");
+            console.log("update movie response: ", res);
+            navigate("/film-management");
         } catch (error) {
             console.error("UPdate movie error: ", error);
             toast.error("Có lỗi xảy ra, vui lòng thử lại", {
