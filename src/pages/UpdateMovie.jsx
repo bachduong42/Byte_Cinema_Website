@@ -154,7 +154,7 @@ function UpdateMovie() {
         e.preventDefault();
 
         if (isInputValid()) {
-            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg');
+            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg' && !image.imagePreview.endsWith('.svg'));
             console.log("Filtered: ", filteredImages)
             if (!filteredImages.includes(movie.poster)) {
                 filteredImages.unshift(movie.poster);
@@ -219,8 +219,8 @@ function UpdateMovie() {
             toast.success("Cập nhật phim thành công", {
                 autoClose: 1000,
             });
-            console.log("update movie response: ", res);
-            navigate("/film-management");
+            // console.log("update movie response: ", res);
+            // navigate("/film-management");
         } catch (error) {
             console.error("UPdate movie error: ", error);
             toast.error("Có lỗi xảy ra, vui lòng thử lại", {
@@ -233,6 +233,12 @@ function UpdateMovie() {
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
         if (file) {
+            if (!file.type.startsWith('image/')) {
+                toast.error("Vui lòng upload ảnh đúng định dạng", {
+                  autoClose: 1000,
+                });
+                return;
+              }
             const imagePreview = URL.createObjectURL(file);
             const newImages = [...movie.images];
             newImages[index] = { file, imagePreview };
@@ -249,6 +255,12 @@ function UpdateMovie() {
     const handlePosterChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (!file.type.startsWith('image/')) {
+                toast.error("Vui lòng upload ảnh đúng định dạng", {
+                  autoClose: 1000,
+                });
+                return;
+              }
             const posterPreview = URL.createObjectURL(file);
 
             setMovie({ ...movie, poster: file, posterPreview });
