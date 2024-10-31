@@ -6,7 +6,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addMovieRequest } from "../services/addMovie";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
 function AddMovie() {
   const [movie, setMovie] = useState({
     title: "",
@@ -232,6 +231,12 @@ function AddMovie() {
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error("Vui lòng upload ảnh đúng định dạng", {
+          autoClose: 1000,
+        });
+        return;
+      }
       const imagePreview = URL.createObjectURL(file);
       const newImages = [...movie.images];
       newImages[index] = { file, imagePreview };
@@ -259,6 +264,12 @@ function AddMovie() {
   const handlePosterChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error("Vui lòng upload ảnh đúng định dạng", {
+          autoClose: 1000,
+        });
+        return;
+      }
       const posterPreview = URL.createObjectURL(file);
 
       setMovie({ ...movie, poster: file, posterPreview });

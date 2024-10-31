@@ -1,6 +1,6 @@
 import * as httpRequest from "../utils/httpRequest";
 
-export const getDetailFilm = async (id) => {
+const getDetailFilm = async (id) => {
   try {
     const res = await httpRequest.get(`movies/${id}`);
     return res.data;
@@ -8,3 +8,5 @@ export const getDetailFilm = async (id) => {
     console.log("Faied to get movie by Id", error);
   }
 };
+
+export { getDetailFilm }

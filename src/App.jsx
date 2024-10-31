@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { publicRoutes } from "./router"
 import DefaultLayout from "./components/Layout/DefaultLayout"
 import ScrollToTop from './utils/ScrollToTop';
+import { useEffect } from 'react';
 function App() {
   return (
     <Router>

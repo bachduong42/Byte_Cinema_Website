@@ -17,3 +17,21 @@ code {
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #f8f6f6 inset;
 }
+
+.react-datepicker-wrapper{
+  flex: 1;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+table{
+  font-size: 16px;
+}
+
+th{
+  font-size: 17px;
+}
