@@ -3,7 +3,6 @@ import NoImage from "../assets/images/no-image.svg";
 import { getMovieGenres } from "../services/getMovieGenres";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addMovieRequest } from "../services/addMovie";
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import { updateMovieRequest } from "../services/updateMovie";
@@ -219,8 +218,8 @@ function UpdateMovie() {
             toast.success("Cập nhật phim thành công", {
                 autoClose: 1000,
             });
-            // console.log("update movie response: ", res);
-            // navigate("/film-management");
+            console.log("update movie response: ", res);
+            navigate("/film-management");
         } catch (error) {
             console.error("UPdate movie error: ", error);
             toast.error("Có lỗi xảy ra, vui lòng thử lại", {
@@ -235,10 +234,10 @@ function UpdateMovie() {
         if (file) {
             if (!file.type.startsWith('image/')) {
                 toast.error("Vui lòng upload ảnh đúng định dạng", {
-                  autoClose: 1000,
+                    autoClose: 1000,
                 });
                 return;
-              }
+            }
             const imagePreview = URL.createObjectURL(file);
             const newImages = [...movie.images];
             newImages[index] = { file, imagePreview };
@@ -257,10 +256,10 @@ function UpdateMovie() {
         if (file) {
             if (!file.type.startsWith('image/')) {
                 toast.error("Vui lòng upload ảnh đúng định dạng", {
-                  autoClose: 1000,
+                    autoClose: 1000,
                 });
                 return;
-              }
+            }
             const posterPreview = URL.createObjectURL(file);
 
             setMovie({ ...movie, poster: file, posterPreview });
