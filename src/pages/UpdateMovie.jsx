@@ -52,6 +52,7 @@ function UpdateMovie() {
                 setMovie(prevMovie => ({
                     ...prevMovie,
                     ...movieData,
+                    duration: convertDurationToMinutes(movieData.duration),
                     genre: movieData.movieGenres[0].id + 1,
                     posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
                     poster: posterFile,
@@ -111,6 +112,16 @@ function UpdateMovie() {
             ...movie,
             [name]: typeof movie[name] === "number" ? Number(value) : value,
         });
+    };
+
+    const convertDurationToMinutes = (duration) => {
+        const hoursMatch = duration.match(/(\d+)H/);
+        const minutesMatch = duration.match(/(\d+)M/);
+
+        const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+        const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+
+        return (hours * 60 + minutes).toString();
     };
 
     const handleDateChange = (date) => {
