@@ -32,7 +32,7 @@ function UpdateMovie() {
             // setIsLoading(true);
             const movieData = await getDetailFilm(id);
             const imagePaths = movieData.imagePaths || [];
-            const initialImages = await Promise.all(imagePaths.slice(1, 6).map(async (path) => {
+            const initialImages = await Promise.all(imagePaths.slice(1, 7).map(async (path) => {
                 const response = await fetch(path);
                 const blob = await response.blob();
                 return { file: new File([blob], `image.jpg`, { type: "image/jpeg" }), imagePreview: path };
@@ -52,6 +52,7 @@ function UpdateMovie() {
                 setMovie(prevMovie => ({
                     ...prevMovie,
                     ...movieData,
+                    duration: convertDurationToMinutes(movieData.duration),
                     genre: movieData.movieGenres[0].id + 1,
                     posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
                     poster: posterFile,
@@ -113,6 +114,16 @@ function UpdateMovie() {
         });
     };
 
+    const convertDurationToMinutes = (duration) => {
+        const hoursMatch = duration.match(/(\d+)H/);
+        const minutesMatch = duration.match(/(\d+)M/);
+
+        const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+        const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+
+        return (hours * 60 + minutes).toString();
+    };
+
     const handleDateChange = (date) => {
         const isoString = date.toISOString();
         setMovie({
@@ -153,7 +164,8 @@ function UpdateMovie() {
         e.preventDefault();
 
         if (isInputValid()) {
-            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg' && !image.imagePreview.endsWith('.svg'));
+            console.log("Pre-filtered: ", movie.images)
+            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg' && image.imagePreview !== null && image.file instanceof File  && !image.imagePreview.endsWith('.svg') && !(typeof image === 'string' && image.endsWith('.svg')));
             console.log("Filtered: ", filteredImages)
             if (!filteredImages.includes(movie.poster)) {
                 filteredImages.unshift(movie.poster);
