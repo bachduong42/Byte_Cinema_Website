@@ -27,8 +27,8 @@ function UpdateMovie() {
         posterPreview: null,
         pathTrailer: "",
     });
-    // console.log(id)
-   useEffect(() => {
+
+    useEffect(() => {
         async function getMovie() {
             // setIsLoading(true);
             const movieData = await getDetailFilm(id);
@@ -36,35 +36,29 @@ function UpdateMovie() {
             const initialImages = await Promise.all(imagePaths.slice(1, 6).map(async (path) => {
                 const response = await fetch(path);
                 const blob = await response.blob();
-                return { file: new File([blob], `image.jpg`, { type: "image/jpeg"  }), imagePreview: path };
+                return { file: new File([blob], `image.jpg`, { type: "image/jpeg" }), imagePreview: path };
             }));
-           
+
             if (initialImages.length < 6) {
                 initialImages.push({ imagePreview: NoImage });
             }
             if (movieData) {
                 let posterFile = null;
                 if (imagePaths && imagePaths.length > 1) {
-                    const response = await fetch(imagePaths[0], {mode: "cors"});
+                    const response = await fetch(imagePaths[0], { mode: "cors" });
                     const blob = await response.blob();
-                    posterFile = new File([blob], "poster.jpg", { type: "image/jpeg"});
+                    posterFile = new File([blob], "poster.jpg", { type: "image/jpeg" });
                 }
-                // // Convert imagePaths to blobs
-                // const imageBlobs = await Promise.all(imagePaths.map(async (path) => {
-                //     const response = await fetch(path, {mode: "no-cors"});
-                //     return await response.blob();
-                // }));
-                // console.log("Number of images:", imagePaths.length);
+
                 setMovie(prevMovie => ({
                     ...prevMovie,
                     ...movieData,
                     genre: movieData.movieGenres[0].id + 1,
                     posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
-                    // poster:  imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
                     poster: posterFile,
                     images: initialImages,
                 }));
-                
+
             }
         }
 
@@ -73,7 +67,7 @@ function UpdateMovie() {
 
     }, [id]);
 
-    
+
     const [movieGenres, setMovieGenres] = useState([]);
 
 
@@ -147,13 +141,13 @@ function UpdateMovie() {
             console.error("imageFiles is not an array");
             return false;
         }
-    
+
         const invalidFiles = imageFiles.filter(file => !(file instanceof File));
         if (invalidFiles.length > 0) {
             console.error("Invalid files found:", invalidFiles);
             return false;
         }
-    
+
         return true;
     };
     const handleSave = async (e) => {
@@ -161,7 +155,7 @@ function UpdateMovie() {
 
         if (isInputValid()) {
             const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg');
-            console.log("Filtered: ",filteredImages)
+            console.log("Filtered: ", filteredImages)
             if (!filteredImages.includes(movie.poster)) {
                 filteredImages.unshift(movie.poster);
             }

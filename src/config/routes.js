@@ -11,6 +11,7 @@ const routes = {
   detailedMovieList: "/movies/:type",
   movieShchedules: "/schedule-movie/:id",
   manageSchedules: "/manage-schedules",
+  updateMovie: '/update-movie/:id'
 };
 
 export default routes;
