@@ -32,7 +32,7 @@ function UpdateMovie() {
             // setIsLoading(true);
             const movieData = await getDetailFilm(id);
             const imagePaths = movieData.imagePaths || [];
-            const initialImages = await Promise.all(imagePaths.slice(1, 6).map(async (path) => {
+            const initialImages = await Promise.all(imagePaths.slice(1, 7).map(async (path) => {
                 const response = await fetch(path);
                 const blob = await response.blob();
                 return { file: new File([blob], `image.jpg`, { type: "image/jpeg" }), imagePreview: path };
