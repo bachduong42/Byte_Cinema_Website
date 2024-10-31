@@ -154,7 +154,7 @@ function UpdateMovie() {
 
         if (isInputValid()) {
             console.log("Pre-filtered: ", movie.images)
-            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg' && !image.imagePreview.endsWith('.svg') && !(typeof image === 'string' && image.endsWith('.svg')));
+            const filteredImages = movie.images.filter(image => image.imagePreview !== '/src/assets/images/no-image.svg' && image !== '/src/assets/images/no-image.svg' && image.imagePreview !== null && image.file instanceof File  && !image.imagePreview.endsWith('.svg') && !(typeof image === 'string' && image.endsWith('.svg')));
             console.log("Filtered: ", filteredImages)
             if (!filteredImages.includes(movie.poster)) {
                 filteredImages.unshift(movie.poster);
