@@ -89,16 +89,25 @@ function MovieSchedules() {
     if (!validateForm()) {
       return;
     }
-    const datePart = selectedDate.toISOString().split("T")[0];
-    const timePart = selectedTime.toTimeString().split(" ")[0];
-    const combinedDateTime = `${datePart}T${timePart}Z`;
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth(); 
+    const day = selectedDate.getDate();
+    const hours = selectedTime.getHours();
+    const minutes = selectedTime.getMinutes();
+    const combinedDateTime = new Date(
+      Date.UTC(year, month, day, hours, minutes)
+    );
 
-    const combinedDateTimeDate = new Date(combinedDateTime);
     const releaseDate = new Date(filmData.releaseDay);
 
     try {
-      if (combinedDateTimeDate >= releaseDate) {
-        const data = await addSchedule(combinedDateTime, price, id, room);
+      if (combinedDateTime.toISOString() >= releaseDate.toISOString()) {
+        const data = await addSchedule(
+          combinedDateTime.toISOString(),
+          price,
+          id,
+          room
+        );
         if (data) {
           toast.success("Thêm lịch chiếu thành công", {
             autoClose: 800,
@@ -116,8 +125,10 @@ function MovieSchedules() {
           );
         }
       } else {
-        const dateStr = "2024-09-30";
-        const [year, month, day] = dateStr.split("-");
+        const releaseDayFormat = new Date(releaseDate);
+        const year = releaseDayFormat.getFullYear();
+        const month = (releaseDayFormat.getMonth() + 1).toString().padStart(2, "0"); 
+        const day = releaseDayFormat.getDate().toString().padStart(2, "0"); 
         const formattedDate = `${day}-${month}-${year}`;
         setErrors({
           ...errors,
@@ -273,7 +284,7 @@ function MovieSchedules() {
         <h3 className="text-[#092B4B] font-medium text-[26px] float-left mb-4">
           Danh sách xuất chiếu
         </h3>
-        {screeningData && (
+        {screeningData && screeningData && (
           <ScheduleTable data={screeningData} roomData={roomData} />
         )}
       </div>

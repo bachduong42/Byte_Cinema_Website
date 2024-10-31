@@ -48,7 +48,7 @@ export const UserProvider = ({ children }) => {
                 <div className="modal">
                     <div className="modal-content">
                         <p>Your session has expired. Please login again.</p>
-                        <button onClick={() => setIsTokenExpired(false)}>Close</button>
+                    <button onClick={() => setIsTokenExpired(false)}>Close</button>
                     </div>
                 </div>
             )}

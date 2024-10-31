@@ -90,7 +90,7 @@ function ScheduleManagement() {
               Tất cả
             </a>
           </li>
-          <li class="me-2">
+          <li className="me-2">
             <a
               href="#"
               onClick={() => handleTabClick("Đang chiếu")}

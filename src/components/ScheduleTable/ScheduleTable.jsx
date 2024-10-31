@@ -12,12 +12,13 @@ const ScheduleTable = ({ data, roomData }) => {
   const [openModalDel, setOpenModalDel] = useState(false);
 
   const idScreening = useRef();
-  const dataTable = data.map((screening, index) => {
-    const startTime = new Date(screening.startTime);
+  const dataTable = data?.map((screening, index) => {
+    const startTime = new Date(screening.startTime)
     const showDate = startTime.toLocaleDateString("en-GB");
     const showTime = startTime.toLocaleTimeString("en-GB", {
       hour: "2-digit",
       minute: "2-digit",
+      timeZone: "UTC",
     });
 
     return {
@@ -31,9 +32,7 @@ const ScheduleTable = ({ data, roomData }) => {
     };
   });
 
-  console.log(dataTable)
-
-  const uniqueShowDates = [...new Set(dataTable.map((item) => item.showDate))];
+  const uniqueShowDates = [...new Set(dataTable?.map((item) => item.showDate))];
   const showDateFilters = uniqueShowDates.map((date) => ({
     text: date,
     value: date,
