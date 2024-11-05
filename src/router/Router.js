@@ -14,6 +14,7 @@ import MovieSchedules from "../pages/MovieSchedules";
 import ScheduleManagement from "../pages/ScheduleManagement";
 
 import UpdateMovie from "../pages/UpdateMovie"
+import BookTicket from "../pages/BookTicket";
 const publicRoutes = [
   { path: config.routes.home, component: Home },
   { path: config.routes.categories, component: Categories },
@@ -27,6 +28,7 @@ const publicRoutes = [
   { path: config.routes.movieShchedules, component: MovieSchedules },
   { path: config.routes.manageSchedules, component: ScheduleManagement },
   { path: config.routes.updateMovie, component: UpdateMovie },
+  { path: config.routes.bookTicket, component: BookTicket },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };
