@@ -15,7 +15,6 @@ import Tippy from '@tippyjs/react/headless';
 import { MdLogin, MdOutlinePerson, MdOutlineSettings } from "react-icons/md";
 import { config } from "@fortawesome/fontawesome-svg-core";
 const Navbar = React.memo(() => {
-  console.log("re-render");
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -90,13 +89,12 @@ const Navbar = React.memo(() => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${
-        !isHome
-          ? "bg-[#092B4B]"
-          : isScrolled
+      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
+        ? "bg-[#092B4B]"
+        : isScrolled
           ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
           : ""
-      }`}
+        }`}
     >
       <div className="flex gap-x-14 items-center">
         <div className="flex flex-col items-start">
@@ -211,12 +209,13 @@ const Navbar = React.memo(() => {
           )}
         >
           <div
-            onMouseEnter={() => {
-              setShowMenu(true);
-            }}
+
             className="flex  items-center"
           >
             <img
+              onMouseEnter={() => {
+                setShowMenu(true);
+              }}
               src={noImage}
               alt=""
               className="w-[60px] h-[60px] rounded-[90px] cursor-pointer"

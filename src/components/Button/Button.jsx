@@ -41,7 +41,7 @@ function Button({
             {...props}
         >
             {leftIcon && <span className="text-[20px]">{leftIcon}</span>}
-            <span>{children}</span>
+            <span >{children}</span>
             {rightIcon && <span className="">{rightIcon}</span>}</Comp>
     );
 }

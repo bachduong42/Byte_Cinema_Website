@@ -80,11 +80,10 @@ function ScheduleManagement() {
             <a
               href="#"
               onClick={() => handleTabClick("Tất cả")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${
-                activeTab === "Tất cả"
-                  ? "text-white bg-[#092B4B] active"
-                  : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-              }`}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Tất cả"
+                ? "text-white bg-[#092B4B] active"
+                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
+                }`}
               aria-current={activeTab === "Tất cả" ? "page" : undefined}
             >
               Tất cả
@@ -94,11 +93,10 @@ function ScheduleManagement() {
             <a
               href="#"
               onClick={() => handleTabClick("Đang chiếu")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${
-                activeTab === "Đang chiếu"
-                  ? "text-white bg-[#092B4B] active"
-                  : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-              }`}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Đang chiếu"
+                ? "text-white bg-[#092B4B] active"
+                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
+                }`}
               aria-current={activeTab === "Đang chiếu" ? "page" : undefined}
             >
               Đang chiếu
@@ -108,11 +106,10 @@ function ScheduleManagement() {
             <a
               href="#"
               onClick={() => handleTabClick("Sắp chiếu")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${
-                activeTab === "Sắp chiếu"
-                  ? "text-white bg-[#092B4B] active"
-                  : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-              }`}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Sắp chiếu"
+                ? "text-white bg-[#092B4B] active"
+                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
+                }`}
               aria-current={activeTab === "Sắp chiếu" ? "page" : undefined}
             >
               Sắp chiếu
@@ -122,11 +119,10 @@ function ScheduleManagement() {
             <a
               href="#"
               onClick={() => handleTabClick("Lọc theo ngày")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${
-                activeTab === "Lọc theo ngày"
-                  ? "text-white bg-[#092B4B] active"
-                  : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-              }`}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Lọc theo ngày"
+                ? "text-white bg-[#092B4B] active"
+                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
+                }`}
               aria-current={activeTab === "Lọc theo ngày" ? "page" : undefined}
             >
               Lọc theo ngày
