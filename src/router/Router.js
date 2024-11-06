@@ -25,7 +25,7 @@ const publicRoutes = [
   { path: config.routes.showtimeManagement, component: ShowTimeManagement },
   { path: config.routes.addFilm, component: AddMovie },
   { path: config.routes.detailedMovieList, component: DetailedMovieList },
-  { path: config.routes.movieShchedules, component: MovieSchedules },
+  { path: config.routes.movieSchedules, component: MovieSchedules },
   { path: config.routes.manageSchedules, component: ScheduleManagement },
   { path: config.routes.updateMovie, component: UpdateMovie },
   { path: config.routes.bookTicket, component: BookTicket },

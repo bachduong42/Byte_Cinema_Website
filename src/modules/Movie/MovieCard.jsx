@@ -85,7 +85,7 @@ function MovieCard({
           {admin ? (
             <div className="flex gap-2">
               <button
-                onClick={handleViewDetail} text className="text-white text-[14px]">
+                onClick={handleViewDetail} className="text-white text-[14px]">
                 Xem chi tiết
               </button>
               {type === "update" && (

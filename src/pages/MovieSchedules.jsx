@@ -1,9 +1,8 @@
 import { faCalendar, faClock, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Link, useParams } from "react-router-dom";
-import Button from "../components/Button/Button";
 import ScheduleTable from "../components/ScheduleTable/ScheduleTable";
 import { getDetailFilm } from "../services/getDetailFilm";
 import { getAllAuditorium } from "../services/getAllAuditorium";
@@ -19,6 +18,8 @@ function MovieSchedules() {
   const [roomData, setRoomData] = useState(null);
   const [screeningData, setScreeningData] = useState(null);
   const [reLoad, setReload] = useState(false);
+  const [endTime, setEndTime] = useState(null);
+  const [type, setType] = useState(null);
   const { id } = useParams();
   const [errors, setErrors] = useState({
     date: "",
@@ -74,12 +75,40 @@ function MovieSchedules() {
       }
     }
     getFilmData();
-  }, [reLoad]);
+  }, [reLoad, type]);
+
+  function convertDurationToMinutes(duration) {
+    let hours = 0;
+    let minutes = 0;
+
+    const hoursMatch = duration.match(/(\d+)H/);
+    const minutesMatch = duration.match(/(\d+)M/);
+
+    if (hoursMatch) {
+      hours = parseInt(hoursMatch[1], 10);
+    }
+
+    if (minutesMatch) {
+      minutes = parseInt(minutesMatch[1], 10);
+    }
+
+    return hours * 60 + minutes;
+  }
+
+  useEffect(() => {
+    if (selectedTime && filmData?.duration) {
+      const durationInMinutes = convertDurationToMinutes(filmData.duration);
+      const totalDuration = durationInMinutes + 30;
+      const endDate = new Date(selectedTime.getTime() + totalDuration * 60000);
+      setEndTime(endDate);
+    }
+  }, [selectedTime, filmData?.duration]);
 
   const handleCancel = (e) => {
     if (e) e.preventDefault();
     setSelectedDate(null);
     setSelectedTime(null);
+    setEndTime(null);
     setPrice(0);
     setRoom("");
   };
@@ -90,7 +119,7 @@ function MovieSchedules() {
       return;
     }
     const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth(); 
+    const month = selectedDate.getMonth();
     const day = selectedDate.getDate();
     const hours = selectedTime.getHours();
     const minutes = selectedTime.getMinutes();
@@ -119,7 +148,7 @@ function MovieSchedules() {
           toast.error(
             "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
             {
-              autoClose: 800,
+              autoClose: 1500,
               position: "top-right",
             }
           );
@@ -127,15 +156,21 @@ function MovieSchedules() {
       } else {
         const releaseDayFormat = new Date(releaseDate);
         const year = releaseDayFormat.getFullYear();
-        const month = (releaseDayFormat.getMonth() + 1).toString().padStart(2, "0"); 
-        const day = releaseDayFormat.getDate().toString().padStart(2, "0"); 
+        const month = (releaseDayFormat.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+        const day = releaseDayFormat.getDate().toString().padStart(2, "0");
         const formattedDate = `${day}-${month}-${year}`;
         setErrors({
           ...errors,
           date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
         });
       }
-    } catch (message) { }
+    } catch (message) {}
+  };
+
+  const handleChange = (type) => {
+    setType(type);
   };
 
   return (
@@ -162,7 +197,7 @@ function MovieSchedules() {
           </Link>
           <form className="mt-5">
             <div className="grid grid-cols-2 gap-5">
-              <div className="flex flex-col items-start row-span-4">
+              <div className="flex flex-col items-start">
                 <span className="mb-3 text-[17px]">Ngày chiếu</span>
                 <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
                   <DatePicker
@@ -185,33 +220,51 @@ function MovieSchedules() {
                   <span className="text-red-500">{errors.date}</span>
                 )}
               </div>
-              <div className="flex flex-col items-start row-span-4">
-                <span className="mb-3 text-[17px]">Giờ chiếu</span>
-                <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
-                  <DatePicker
-                    selected={selectedTime}
-                    onChange={(date) => {
-                      setSelectedTime(date);
-                      setErrors({ ...errors, time: "" });
-                    }}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={10}
-                    timeCaption="Time"
-                    dateFormat="HH:mm"
-                    placeholderText="HH:mm"
-                    className="w-full text-[18px] outline-none border border-gray-300 rounded-[8px] p-2"
-                  />
-                  <FontAwesomeIcon
-                    icon={faClock}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                  />
+              <div className="flex gap-x-3">
+                <div className="flex flex-col items-start">
+                  <span className="mb-3 text-[17px]">Giờ chiếu</span>
+                  <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
+                    <DatePicker
+                      selected={selectedTime}
+                      onChange={(date) => {
+                        setSelectedTime(date);
+                        setErrors({ ...errors, time: "" });
+                      }}
+                      showTimeSelect
+                      showTimeSelectOnly
+                      timeIntervals={10}
+                      timeCaption="Time"
+                      dateFormat="HH:mm"
+                      placeholderText="HH:mm"
+                      className="w-full text-[18px] outline-none border border-gray-300 rounded-[8px] p-2"
+                    />
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    />
+                  </div>
+                  {errors.time && (
+                    <span className="text-red-500">{errors.time}</span>
+                  )}
                 </div>
-                {errors.time && (
-                  <span className="text-red-500">{errors.time}</span>
-                )}
+                <div className="flex flex-col items-start">
+                  <span className="mb-3 text-[17px]">Giờ kết thúc</span>
+                  <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
+                    <DatePicker
+                      readOnly
+                      selected={endTime}
+                      dateFormat="HH:mm"
+                      placeholderText="HH:mm"
+                      className="w-full text-[18px] outline-none border border-gray-300 rounded-[8px] p-2 bg-gray-100"
+                    />
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col items-start row-span-4">
+              <div className="flex flex-col items-start">
                 <span className="mb-3 text-[17px]">Phòng chiếu</span>
                 <select
                   required
@@ -233,7 +286,7 @@ function MovieSchedules() {
                   <span className="text-red-500">{errors.room}</span>
                 )}
               </div>
-              <div className="flex flex-col items-start row-span-4">
+              <div className="flex flex-col items-start">
                 <span className="mb-3 text-[17px]">Giá vé</span>
                 <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
                   <input
@@ -284,8 +337,12 @@ function MovieSchedules() {
         <h3 className="text-[#092B4B] font-medium text-[26px] float-left mb-4">
           Danh sách xuất chiếu
         </h3>
-        {screeningData && screeningData && (
-          <ScheduleTable data={screeningData} roomData={roomData} />
+        {screeningData && roomData && (
+          <ScheduleTable
+            data={screeningData}
+            roomData={roomData}
+            handleReload={handleChange}
+          />
         )}
       </div>
     </div>

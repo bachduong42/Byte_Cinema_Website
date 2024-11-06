@@ -9,10 +9,10 @@ const routes = {
   theaterManagement: "/theater-management",
   showtimeManagement: "/showtime-management",
   detailedMovieList: "/movies/:type",
-  movieShchRedules: "/schedule-movie/:id",
+  movieSchedules: "/schedule-movie/:id",
   manageSchedules: "/manage-schedules",
-  updateMovie: '/update-movie/:id',
-  bookTicket: '/book-a-ticket'
+  updateMovie: "/update-movie/:id",
+  bookTicket: "/book-a-ticket",
 };
 
 export default routes;
