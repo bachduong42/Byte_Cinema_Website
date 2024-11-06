@@ -14,7 +14,8 @@ const routes = {
   updateMovie: '/update-movie/:id',
   bookTicket: '/book-a-ticket',
   paymentSuccess: '/payment-success/:transactionId',
-  paymentFailure: '/payment-failure/:transactionId'
+  paymentFailure: '/payment-failure/:transactionId',
+  bookMovieTicket: '/book-movie-ticket/:id',
 };
 
 export default routes;

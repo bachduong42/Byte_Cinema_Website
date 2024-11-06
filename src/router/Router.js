@@ -27,12 +27,13 @@ const publicRoutes = [
   { path: config.routes.showtimeManagement, component: ShowTimeManagement },
   { path: config.routes.addFilm, component: AddMovie },
   { path: config.routes.detailedMovieList, component: DetailedMovieList },
-  { path: config.routes.movieShchedules, component: MovieSchedules },
+  { path: config.routes.movieShchRedules, component: MovieSchedules },
   { path: config.routes.manageSchedules, component: ScheduleManagement },
   { path: config.routes.updateMovie, component: UpdateMovie },
   { path: config.routes.bookTicket, component: BookTicket },
   { path: config.routes.paymentSuccess, component: BillSuccessfull },
   { path: config.routes.paymentFailure, component: BillFailure },
+  { path: config.routes.bookMovieTicket, component: BookTicket },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };

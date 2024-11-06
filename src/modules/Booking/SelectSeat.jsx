@@ -1,4 +1,7 @@
-function SelectSeat({ rows, seatsPerRow, listSeats, setListSeats }) {
+import BookingMovieSchedule from "../../components/MovieSchedule/BookingMovieSchedule";
+
+function SelectSeat({ rows, seatsPerRow, listSeats, setListSeats, schedule, onClick }) {
+
     const handleSeatClick = (seat) => {
         setListSeats((prevSeats) => {
             if (prevSeats.includes(seat)) {
@@ -6,18 +9,54 @@ function SelectSeat({ rows, seatsPerRow, listSeats, setListSeats }) {
             } else {
                 return [...prevSeats, seat];
             }
-        })
+        });
     }
+
+    
+
+    function groupScreeningsByDate(screenings) {
+        if (screenings) {
+          const grouped = screenings.reduce((acc, screening) => {
+            const date = screening.startTime.split("T")[0];
+            if (!acc[date]) {
+              acc[date] = [];
+            }
+            acc[date].push(screening);
+            return acc;
+          }, {});
+          return Object.entries(grouped).map(([date, screenings]) => {
+            const [year, month, day] = date.split("-");
+            const formattedDate = `${day}/${month}`;
+    
+            return {
+              date: formattedDate,
+              screenings,
+            };
+          });
+        }
+    }
+
+
+    // const seatsByRow = rows.reduce((acc, seat) => {
+    //     if (!acc[seat.seatRow]) {
+    //       acc[seat.seatRow] = [];
+    //     }
+    //     acc[seat.seatRow].push(seat);
+    //     return acc;
+    //   }, {});
+
+      
     return (
         <>
             <div className="flex w-full bg-[#d9e9f0] rounded-md h-[80px] mb-5 items-center px-5 justify-between">
                 <div className="font-bold text-[#092b4b]">Đổi suất chiếu</div>
-                <div className="flex gap-3">
+                {/* <div className="flex gap-3">
                     <div className="bg-[#092b4b] cursor-pointer  text-white rounded-md px-5 py-2">11:30</div>
                     <div className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white cursor-pointer  rounded-md px-5 py-2">12:30</div>
                     <div className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white cursor-pointer  rounded-md px-5 py-2">16:30</div>
                     <div className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white  cursor-pointer rounded-md px-5 py-2">14:30</div>
-                </div>
+                </div> */}
+                <BookingMovieSchedule data={groupScreeningsByDate(schedule)} onClick={onClick} />
             </div>
             <div className="flex justify-between">
                 <span className="text-xl mb-[15px] font-semibold text-[#092b4b]">Chọn ghế</span>
