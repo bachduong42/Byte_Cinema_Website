@@ -2,14 +2,31 @@ import { MdCheckCircle } from "react-icons/md";
 import logo from "../../assets/images/logo.png"
 import Image from "../../components/Image/Image";
 import Bill from "./Bill";
-function BillSuccessfull({ listSeats, billSuccess }) {
+import { useState } from "react";
+function BillSuccessfull() {
+    const [listSeats, setListSeats] = useState(["C2", " C4"]);
     return (
-        <div className="flex flex-col w-full justify-center">
-            <div className="flex gap-2 items-center justify-center">
-                <MdCheckCircle className="text-[#008E28] text-[25px]" />
-                <span className="text-[#008E28] font-semibold text-[25px]">ĐẶT VÉ THÀNH CÔNG</span>
+        <div className="flex flex-col w-full justify-center  mt-[115px]  lg:px-16 pt-5 pb-10 ">
+            <div className="text-3xl mb-[15px] font-bold text-[#092b4b] text-start">Đặt vé</div>
+            <div className="w-full justify-center items-center flex flex-col gap-2">
+                <div className="w-[80%] h-[15px] border border-gray rounded-[23px] bg-[#ced5db] text-center flex">
+                    <div className="w-1/4 h-full bg-[#284662] rounded-s-3xl"></div>
+                    <div className={`w-1/4 h-full bg-[#284662]`}></div>
+                    <div className={`w-1/4 h-full  bg-[#284662]`}></div>
+                    <div className={`w-1/4 h-full bg-[#284662]`}></div>
+                </div>
+                <div className="w-[80%] h-[15px]  text-center flex">
+                    <div className="w-1/4 h-full font-bold text-[18px] text-[#092b4b]">Chọn suất</div>
+                    <div className="w-1/4 h-full font-semibold text-[18px] text-[#092b4b]">Chọn ghế</div>
+                    <div className="w-1/4 h-full font-semibold text-[18px] text-[#092b4b]">Xác nhận</div>
+                    <div className="w-1/4 h-full font-semibold text-[18px] text-[#092b4b]">Thanh toán</div>
+                </div>
             </div>
-            <div className="w-full flex justify-center">
+            <div className="flex gap-2 items-center justify-center mt-5">
+                <MdCheckCircle className="text-[#008E28] text-[30px]" />
+                <span className="text-[#008E28] font-semibold text-[30px]">ĐẶT VÉ THÀNH CÔNG</span>
+            </div>
+            <div className="w-full flex justify-center mt-5">
                 <div className="w-[30%] h-[800px] flex flex-col">
                     <div className="flex w-full h-[130px] justify-between bg-[#092B4B] py-3 px-2">
                         <div className="flex flex-col items-start ">
@@ -33,7 +50,7 @@ function BillSuccessfull({ listSeats, billSuccess }) {
                         </div>
                     </div>
                     <div className="w-full h-[370px]">
-                        <Bill listSeats={listSeats} billSuccess={billSuccess}></Bill>
+                        <Bill listSeats={listSeats} billSuccess={true}></Bill>
                     </div>
                 </div>
             </div>

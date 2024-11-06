@@ -4,7 +4,7 @@ import Button from "../components/Button/Button";
 import Bill from "../modules/Booking/Bill";
 import SelectSeat from "../modules/Booking/SelectSeat";
 import ConfirmSeat from "../modules/Booking/ConfirmSeat";
-import BillSuccessfull from "../modules/Booking/BillSuccesfull";
+// import BillSuccessfull from "../modules/Booking/BillSuccesfull";
 function BookTicket() {
     const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
     const seatsPerRow = 10;
@@ -47,21 +47,21 @@ function BookTicket() {
                 <div className={`flex flex-col px-10 ${currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "}`}>
                     {currentStep === 1 && <SelectSeat rows={rows} seatsPerRow={seatsPerRow} listSeats={listSeats} setListSeats={setListSeats}></SelectSeat>}
                     {currentStep == 2 && <ConfirmSeat></ConfirmSeat>}
-                    {currentStep == 4 && <BillSuccessfull listSeats={listSeats} billSuccess></BillSuccessfull>}
+                    {/* {currentStep == 4 && <BillSuccessfull listSeats={listSeats} billSuccess></BillSuccessfull>} */}
                     <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
-                    {currentStep !== 4 &&
-                        <div className="flex gap-16 pt-3 justify-center mt-5">
-                            <button
-                                onClick={handleBackPage}
-                                className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] ">Quay lại</button>
-                            <Button
-                                disabled={listSeats.length === 0}
-                                onClick={handleNextPage}
-                                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${listSeats.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}>
-                                {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}</Button>
-                        </div>}
+
+                    <div className="flex gap-16 pt-3 justify-center mt-5">
+                        <button
+                            onClick={handleBackPage}
+                            className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] ">Quay lại</button>
+                        <Button
+                            disabled={listSeats.length === 0}
+                            onClick={handleNextPage}
+                            className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${listSeats.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}>
+                            {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}</Button>
+                    </div>
                 </div>
-                {currentStep !== 4 && <Bill listSeats={listSeats}></Bill>}
+                <Bill listSeats={listSeats}></Bill>
 
             </div>
         </div>
