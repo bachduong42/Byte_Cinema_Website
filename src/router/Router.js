@@ -33,6 +33,7 @@ const publicRoutes = [
   { path: config.routes.bookTicket, component: BookTicket },
   { path: config.routes.paymentSuccess, component: BillSuccessfull },
   { path: config.routes.paymentFailure, component: BillFailure },
+  { path: config.routes.bookMovieTicket, component: BookTicket },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };

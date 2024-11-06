@@ -4,6 +4,9 @@ import Button from "../components/Button/Button";
 import Bill from "../modules/Booking/Bill";
 import SelectSeat from "../modules/Booking/SelectSeat";
 import ConfirmSeat from "../modules/Booking/ConfirmSeat";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDetailFilm } from "../services/getDetailFilm";
+import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 // import BillSuccessfull from "../modules/Booking/BillSuccesfull";
 function BookTicket() {
     const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
@@ -54,18 +57,22 @@ function BookTicket() {
                     <div className="flex gap-16 pt-3 justify-center mt-5">
                         <button
                             onClick={handleBackPage}
-                            className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] ">Quay lại</button>
+                            className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] "
+                        >
+                            Quay lại
+                        </button>
                         <Button
                             disabled={listSeats.length === 0}
                             onClick={handleNextPage}
-                            className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${listSeats.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}>
-                            {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}</Button>
+                            className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${listSeats.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+                                }`}
+                        >
+                            {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}
+                        </Button>
                     </div>
                 </div>
-                <Bill listSeats={listSeats}></Bill>
-
             </div>
-        </div >
+        </div>
     );
 }
 
