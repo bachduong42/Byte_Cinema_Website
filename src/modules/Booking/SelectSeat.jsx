@@ -1,13 +1,25 @@
-function SelectSeat({ rows, seatsPerRow, listSeats, setListSeats }) {
-    const handleSeatClick = (seat) => {
-        setListSeats((prevSeats) => {
-            if (prevSeats.includes(seat)) {
-                return prevSeats.filter((s) => s !== seat);
+function SelectSeat({ rows, seatsPerRow, listSeats, setListSeats, listSeatIds, setlistSeatIds }) {
+    const handleSeatClick = (row, seatNumber) => {
+        const seatLabel = `${row}${seatNumber}`;
+        const seatId = ((rows.indexOf(row)) * seatsPerRow) + seatNumber;
+        const seatExists = listSeatIds.includes(seatId);
+        setlistSeatIds((prevIds) => {
+            if (seatExists) {
+                return prevIds.filter((id) => id !== seatId);
             } else {
-                return [...prevSeats, seat];
+                return [...prevIds, seatId];
             }
-        })
-    }
+        });
+        setListSeats((prevSeats) => {
+            if (seatExists) {
+                return prevSeats.filter((label) => label !== seatLabel);
+            } else {
+                return [...prevSeats, seatLabel];
+            }
+        });
+
+    };
+
     return (
         <>
             <div className="flex w-full bg-[#d9e9f0] rounded-md h-[80px] mb-5 items-center px-5 justify-between">
@@ -31,13 +43,15 @@ function SelectSeat({ rows, seatsPerRow, listSeats, setListSeats }) {
                         <div className="w-5">{row}</div>
                         <div className="grid grid-cols-10 gap-3">
                             {Array.from({ length: seatsPerRow }, (_, index) => {
-                                const seat = `${row}${index + 1}`;
-                                const isSelected = listSeats.includes(seat);
+                                const seatNumber = index + 1;
+                                const seatLabel = `${row}${seatNumber}`;
+                                const seatId = (rows.indexOf(row) * seatsPerRow) + seatNumber;
+                                const isSelected = listSeatIds.includes(seatId);
                                 return (
                                     <button
-                                        onClick={() => handleSeatClick(seat)}
-                                        key={`${row}${index + 1}`}
-                                        className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${isSelected ? "bg-[#F75900] text-white font-semibold" : "hover:bg-[#F75900]"} flex justify-center items-center`}>{index + 1}</button>
+                                        onClick={() => handleSeatClick(row, seatNumber)}
+                                        key={seatLabel}
+                                        className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${isSelected ? "bg-[#F75900] text-white font-semibold" : "hover:bg-[#F75900]"} flex justify-center items-center`}>  {seatNumber}</button>
                                 )
                             })}
                         </div>

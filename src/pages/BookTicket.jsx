@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button/Button";
 import Bill from "../modules/Booking/Bill";
 import SelectSeat from "../modules/Booking/SelectSeat";
@@ -11,6 +11,7 @@ function BookTicket() {
     const [currentStep, setCurrentStep] = useState(1);
     const [slideDirection, setSlideDirection] = useState('');
     const [listSeats, setListSeats] = useState([]);
+    const [listIdSeats, setListIdSeats] = useState([]);
     const handleNextPage = () => {
         setSlideDirection('next');
         setTimeout(() => {
@@ -24,8 +25,8 @@ function BookTicket() {
             setCurrentStep((prev) => prev - 1);
         }, 300);
     }
-
-
+    console.log(listIdSeats);
+    console.log(listSeats);
     return (
         <div className="min-h-[800px] h-auto flex flex-col mt-[115px] justify-start w-full lg:px-16 pt-5 pb-10">
             <div className="text-3xl mb-[15px] font-bold text-[#092b4b] text-start">Đặt vé</div>
@@ -45,7 +46,7 @@ function BookTicket() {
             </div>
             <div className="flex flex-row gap-5 w-full h-full mt-10">
                 <div className={`flex flex-col px-10 ${currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "}`}>
-                    {currentStep === 1 && <SelectSeat rows={rows} seatsPerRow={seatsPerRow} listSeats={listSeats} setListSeats={setListSeats}></SelectSeat>}
+                    {currentStep === 1 && <SelectSeat rows={rows} seatsPerRow={seatsPerRow} listSeats={listSeats} setListSeats={setListSeats} listSeatIds={listIdSeats} setlistSeatIds={setListIdSeats} ></SelectSeat>}
                     {currentStep == 2 && <ConfirmSeat></ConfirmSeat>}
                     {/* {currentStep == 4 && <BillSuccessfull listSeats={listSeats} billSuccess></BillSuccessfull>} */}
                     <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
@@ -64,7 +65,7 @@ function BookTicket() {
                 <Bill listSeats={listSeats}></Bill>
 
             </div>
-        </div>
+        </div >
     );
 }
 
