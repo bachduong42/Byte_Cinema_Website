@@ -198,7 +198,9 @@ function MovieSchedules() {
           <form className="mt-5">
             <div className="grid grid-cols-2 gap-5">
               <div className="flex flex-col items-start">
-                <span className="mb-3 text-[17px]">Ngày chiếu</span>
+                <div className="mb-3 text-[17px]">
+                  Ngày chiếu<span className="text-[red] ml-1">*</span>
+                </div>
                 <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
                   <DatePicker
                     minDate={new Date()}
@@ -222,7 +224,9 @@ function MovieSchedules() {
               </div>
               <div className="flex gap-x-3">
                 <div className="flex flex-col items-start">
-                  <span className="mb-3 text-[17px]">Giờ chiếu</span>
+                  <div className="mb-3 text-[17px]">
+                    Giờ chiếu<span className="text-[red] ml-1">*</span>
+                  </div>
                   <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
                     <DatePicker
                       selected={selectedTime}
@@ -265,7 +269,9 @@ function MovieSchedules() {
                 </div>
               </div>
               <div className="flex flex-col items-start">
-                <span className="mb-3 text-[17px]">Phòng chiếu</span>
+                <div className="mb-3 text-[17px]">
+                  Phòng chiếu<span className="text-[red] ml-1">*</span>
+                </div>
                 <select
                   required
                   value={room || ""}
@@ -287,7 +293,9 @@ function MovieSchedules() {
                 )}
               </div>
               <div className="flex flex-col items-start">
-                <span className="mb-3 text-[17px]">Giá vé</span>
+                <div className="mb-3 text-[17px]">
+                  Giá vé<span className="text-[red] ml-1">*</span>
+                </div>
                 <div className="relative w-full flex border border-gray-300 rounded-[8px] h-[46px]">
                   <input
                     value={price}
