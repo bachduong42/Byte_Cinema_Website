@@ -82,8 +82,13 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
       toast.success("Đăng nhập thành công", {
         autoClose: 1000
       });
+      if (user.roleId === 1) {
+        navigate("/film-management")
+      } else {
+        navigate("/")
+      }
       // window.location.reload();
-      navigate("/film-management")
+
       closeLoginModal();
     } catch (error) {
       if (error.response && error.response.data) {
