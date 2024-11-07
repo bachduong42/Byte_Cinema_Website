@@ -23,12 +23,18 @@ export const UserProvider = ({ children }) => {
 
     const login = (user) => {
         // console.log(user.data.user);
+        if (user && user.data.user.role === "ADMIN") {
+            localStorage.setItem("isAdmin", true);
+        } else {
+            localStorage.setItem("isAdmin", false);
+        }
         setUser(user.data.user);
         localStorage.setItem('isLogin', true);
     };
 
     const logout = () => {
         setUser(null);
+        localStorage.removeItem('isAdmin')
         localStorage.removeItem('isLogin');
         localStorage.removeItem('accessToken');
 

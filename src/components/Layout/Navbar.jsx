@@ -19,6 +19,7 @@ const Navbar = React.memo(() => {
   const [activeButton, setActiveButton] = useState("/");
   const [isScrolled, setIsScrolled] = useState(false);
   const isLogin = localStorage.getItem("isLogin");
+  // const isAdmin = localStorage.getItem("isAdmin");
   const [loginModalRef, setLoginModalRef] = useState(null);
   const [registerModalRef, setRegisterModalRef] = useState(null);
   const [forgetPasswordModalRef, setForgetPasswordModalRef] = useState(null);
@@ -28,19 +29,11 @@ const Navbar = React.memo(() => {
 
   const navigate = useNavigate();
   const { user, logout } = useContext(UserContext);
-  const [isAdmin, setIsAdmin] = useState(false);
+  // const [isAdmin, setIsAdmin] = useState(false);
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
 
   useEffect(() => {
     console.log(user);
-    if (user) {
-      if (user.role === "ADMIN") {
-        setIsAdmin(true);
-      } else if (user.role === "USER") {
-        setIsAdmin(false);
-      }
-    } else {
-      setIsAdmin(false);
-    }
     setActiveButton(location.pathname);
   }, [location.pathname]);
   useEffect(() => {

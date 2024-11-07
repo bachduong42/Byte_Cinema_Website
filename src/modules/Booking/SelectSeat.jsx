@@ -72,8 +72,8 @@ function SelectSeat({
 
   return (
     <>
-      <div className="flex w-full bg-[#d9e9f0] rounded-md h-[80px] mb-5 items-center px-5 justify-between">
-        <div className="font-bold text-[#092b4b]">Đổi suất chiếu</div>
+      <div className="flex w-full bg-[#d9e9f0] rounded-md h-[180px] mb-5 items-center px-5 justify-between">
+        <div className="font-bold text-[#092b4b] text-[20px]">Đổi suất chiếu</div>
         {/* <div className="flex gap-3">
                     <div className="bg-[#092b4b] cursor-pointer  text-white rounded-md px-5 py-2">11:30</div>
                     <div className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white cursor-pointer  rounded-md px-5 py-2">12:30</div>
@@ -109,11 +109,10 @@ function SelectSeat({
                   <button
                     onClick={() => handleSeatClick(row, seatNumber)}
                     key={seatLabel}
-                    className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${
-                      isSelected
-                        ? "bg-[#F75900] text-white font-semibold"
-                        : "hover:bg-[#F75900]"
-                    } flex justify-center items-center`}
+                    className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${isSelected
+                      ? "bg-[#F75900] text-white font-semibold"
+                      : "hover:bg-[#F75900]"
+                      } flex justify-center items-center`}
                   >
                     {" "}
                     {seatNumber}

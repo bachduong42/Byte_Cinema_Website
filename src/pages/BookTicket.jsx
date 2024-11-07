@@ -15,7 +15,7 @@ function BookTicket() {
   const [movie, setMovie] = useState({});
   const [screeningId, setScreeningId] = useState(0);
   //   const [auditorium, setAuditorium] = useState(null);
-    // const [testSeats2, setTestSeats2] = useState([{ id: 91 }, { id: 92 }]);
+  // const [testSeats2, setTestSeats2] = useState([{ id: 91 }, { id: 92 }]);
   const [testSeats, setTestSeats] = useState([]);
   const [listIdSeats, setListIdSeats] = useState([]);
   const [selectedTicketPrice, setSelectedTicketPrice] = useState(0);
@@ -40,7 +40,7 @@ function BookTicket() {
 
   useEffect(() => {
     setTestSeats(listIdSeats.map((_id) => ({ id: _id })));
-  },[listIdSeats]);
+  }, [listIdSeats]);
 
   //   useEffect(() => {
   //     async function fetchAuditorium() {
@@ -113,7 +113,7 @@ function BookTicket() {
       console.log("Create Booking response: ", response);
     } catch (error) {
       console.error("Booking: ", error);
-      toast.error("Có lỗi xảy ra, vui lòng thử lại", {
+      toast.error("Ghế này đã được đặt, vui lòng chọn ghế khác !!!", {
         autoClose: 1000,
       });
       throw error;
@@ -130,23 +130,19 @@ function BookTicket() {
           <div className="w-[80%] h-[15px] border border-gray rounded-[23px] bg-[#ced5db] text-center flex">
             <div className="w-1/4 h-full bg-[#284662] rounded-s-3xl"></div>
             <div
-              className={`w-1/4 h-full ${
-                currentStep === 2 || currentStep === 4 || currentStep === 3
-                  ? "bg-[#284662]"
-                  : "bg-[#576f85]"
-              }`}
+              className={`w-1/4 h-full ${currentStep === 2 || currentStep === 4 || currentStep === 3
+                ? "bg-[#284662]"
+                : "bg-[#576f85]"
+                }`}
             ></div>
             <div
-              className={`w-1/4 h-full ${
-                currentStep === 2 ? "bg-[#576f85]" : ""
-              } ${
-                currentStep === 4 || currentStep === 3 ? "bg-[#284662]" : ""
-              }`}
+              className={`w-1/4 h-full ${currentStep === 2 ? "bg-[#576f85]" : ""
+                } ${currentStep === 4 || currentStep === 3 ? "bg-[#284662]" : ""
+                }`}
             ></div>
             <div
-              className={`w-1/4 h-full ${
-                currentStep === 4 ? "bg-[#284662]" : ""
-              } ${currentStep === 3 ? "bg-[#576f85]" : ""}`}
+              className={`w-1/4 h-full ${currentStep === 4 ? "bg-[#284662]" : ""
+                } ${currentStep === 3 ? "bg-[#576f85]" : ""}`}
             ></div>
           </div>
           <div className="w-[80%] h-[15px]  text-center flex">
@@ -166,9 +162,8 @@ function BookTicket() {
         </div>
         <div className="flex flex-row gap-5 w-full h-full mt-10">
           <div
-            className={`flex flex-col px-10 ${
-              currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "
-            }`}
+            className={`flex flex-col px-10 ${currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "
+              }`}
           >
             {currentStep === 1 && movie?.screenings && (
               <SelectSeat
@@ -180,8 +175,8 @@ function BookTicket() {
                 onClick={handleSelectScreening}
                 listSeatIds={listIdSeats}
                 setlistSeatIds={setListIdSeats}
-                // chosenSeats={chosenSeats}
-                // setChosenSeats={setChosenSeats}
+              // chosenSeats={chosenSeats}
+              // setChosenSeats={setChosenSeats}
               ></SelectSeat>
             )}
             {currentStep == 2 && <ConfirmSeat></ConfirmSeat>}
@@ -200,9 +195,8 @@ function BookTicket() {
                 onClick={
                   currentStep == 2 ? handleCreateBooking : handleNextPage
                 }
-                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${
-                    disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}
               </Button>

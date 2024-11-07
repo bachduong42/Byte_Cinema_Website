@@ -6,12 +6,13 @@ import Button from "../components/Button/Button";
 import MovieCard from "../modules/Movie/MovieCard";
 import { getListMovie } from "../services/getListMovie";
 import { useNavigate } from "react-router-dom";
+import ModalDeleteMovie from "../components/Modal/ModalDeleteMovie";
 
 function FilmManagement() {
     const [searchResult, setSearchResult] = useState([]);
 
     const [activeTab, setActiveTab] = useState('Tất cả');
-
+    const [openModalDelMovie, setOpenModalDelMovie] = useState(false);
     const navigate = useNavigate();
 
     const handleAddClick = () => {
@@ -25,6 +26,7 @@ function FilmManagement() {
     const [listMovie, setListMovie] = useState([]);
     const [listMovieUpComing, setListMovieUpComing] = useState([])
     const [filteredMovies, setFilteredMovies] = useState([]);
+    const [idmovieToDelete, setIdMovieToDelete] = useState(null);
     const fetchMovie = async () => {
         try {
             const res = await getListMovie();
@@ -62,6 +64,16 @@ function FilmManagement() {
             setFilteredMovies(listMovieUpComing);
         }
     }, [activeTab, listAllMovie, listMovie, listMovieUpComing]);
+
+    const handleOpenDeleteModal = (id) => {
+        setIdMovieToDelete(id);
+        setOpenModalDelMovie(true);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setOpenModalDelMovie(false);
+        setIdMovieToDelete(null);
+    };
     return (
         <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">
             <div className="flex justify-between w-full h-full">
@@ -111,9 +123,15 @@ function FilmManagement() {
                         admin
                         happening={listMovie.some(m => m.id === movie.id)}
                         type="update"
+                        onDelete={() => handleOpenDeleteModal(movie.id)}
                     />
                 ))}
             </div>
+            {openModalDelMovie &&
+                <ModalDeleteMovie
+                    handleClose={handleCloseDeleteModal}
+                    idDel={idmovieToDelete}>
+                </ModalDeleteMovie>}
         </div>
     );
 }
