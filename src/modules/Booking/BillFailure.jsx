@@ -1,10 +1,8 @@
-import { MdCheckCircle } from "react-icons/md";
+import { MdCancel, MdCheckCircle } from "react-icons/md";
+
 import logo from "../../assets/images/logo.png"
 import Image from "../../components/Image/Image";
-import Bill from "./Bill";
-import { useState } from "react";
-function BillSuccessfull() {
-    const [listSeats, setListSeats] = useState(["C2", " C4"]);
+function BillFailure() {
     return (
         <div className="flex flex-col w-full justify-center  mt-[115px]  lg:px-16 pt-5 pb-10 ">
             <div className="text-3xl mb-[15px] font-bold text-[#092b4b] text-start">Đặt vé</div>
@@ -22,14 +20,14 @@ function BillSuccessfull() {
                     <div className="w-1/4 h-full font-semibold text-[18px] text-[#092b4b]">Thanh toán</div>
                 </div>
             </div>
-            <div className="flex gap-2 items-center justify-center mt-5">
-                <MdCheckCircle className="text-[#008E28] text-[30px]" />
-                <span className="text-[#008E28] font-semibold text-[30px]">ĐẶT VÉ THÀNH CÔNG</span>
+            <div className="flex gap-2 items-center justify-center mt-20">
+                <MdCancel className="text-[#9E0000] text-[30px]" />
+                <span className="text-[#9E0000] font-semibold text-[30px]">ĐẶT VÉ KHÔNG THÀNH CÔNG</span>
             </div>
             <div className="w-full flex justify-center mt-5">
-                <div className="w-[30%] h-[800px] flex flex-col">
-                    <div className="flex w-full h-[130px] justify-between bg-[#092B4B] py-3 px-2">
-                        <div className="flex flex-col items-start ">
+                <div className="w-[50%] h-[800px] flex flex-col items-center">
+                    <div className="flex w-[150px] h-[150px] bg-[#092B4B] py-3 px-2  rounded-full">
+                        <div className="flex flex-col justify-center items-center mx-auto ">
                             <Image
                                 src={logo}
                                 alt={logo}
@@ -42,20 +40,21 @@ function BillSuccessfull() {
                                 Cinema
                             </div>
                         </div>
-                        <div className="flex flex-col text-end">
-                            <span className="text-[25px] text-white font-bold">VÉ XEM PHIM</span>
-                            <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
-                            <div className="justify-end text-white text-end flex">Đặt lúc: 12:00 , 22/09/2024</div>
-                            <div className="text-white text-end flex">Người đặt: Nguyễn Trần Thu Phương</div>
-                        </div>
+
                     </div>
-                    <div className="w-full h-[370px]">
-                        <Bill listSeats={listSeats} billSuccess={true}></Bill>
+                    <div className="text-[25px] justify-start flex flex-col gap-3 text-start mt-5">
+                        <div>Trường hợp giao dịch chưa thành công, quý khách vui lòng không thực hiện giao dịch online lần nữa và tới rạp BYTES Cinema để mua vé.</div>
+
+                        <div>Chúng tôi cam kết sẽ hoàn lại 100% giá trị giao dịch lỗi đã bị trừ tiền sau khi đội ngũ CSKH kiểm tra và xác nhận.</div>
+
+                        <div>Nếu có thắc mắc vui lòng liên hệ với chúng tôi qua Hotline:<b> 003.064.1546.</b></div>
                     </div>
+                    <div className="w-full text-end flex text-[30px] font-bold mt-10 justify-end">BYTES Cinema.</div>
+
                 </div>
             </div>
         </div>
     );
 }
 
-export default BillSuccessfull;
+export default BillFailure;

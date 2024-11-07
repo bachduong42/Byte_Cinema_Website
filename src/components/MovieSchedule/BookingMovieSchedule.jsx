@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-const MovieSchedule = ({ data }) => {
+const BookingMovieSchedule = ({ data, onClick }) => {
   const [selectedDate, setSelectedDate] = useState(data[0]);
 
   function getTimeFromDateTime(dateTime) {
@@ -32,11 +32,10 @@ const MovieSchedule = ({ data }) => {
         {selectedDate?.screenings.map((slot, index) => (
           <div
             key={index}
-            className="text-center border p-2 rounded-lg w-[25%]"
+            className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white  cursor-pointer rounded-md px-5 py-2"
+            onClick={() => onClick(slot.id, slot.ticketPrice, slot.startTime)}
           >
-            <div className="text-gray-600">
               {getTimeFromDateTime(slot.startTime)}
-            </div>
             {/* <div className="text-green-500 font-bold">{`${slot.ticketPrice}.000đ`}</div> */}
           </div>
         ))}
@@ -45,4 +44,4 @@ const MovieSchedule = ({ data }) => {
   );
 };
 
-export default MovieSchedule;
+export default BookingMovieSchedule;

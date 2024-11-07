@@ -43,6 +43,10 @@ function MovieCard({
     navigate(`/movie/${infor.id}`)
   }
 
+  const handleBookingClick = () => {
+    navigate(`/book-movie-ticket/${infor.id}`)
+  }
+
   return (
     <div
       className={`relative min-w-[200px] ${className} group cursor-pointer ${cardInfor
@@ -96,7 +100,7 @@ function MovieCard({
               )}
             </div>
           ) : (
-            <button className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
+            <button onClick={handleBookingClick} className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">
               Mua vé
             </button>
           )}

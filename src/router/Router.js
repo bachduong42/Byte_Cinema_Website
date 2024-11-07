@@ -9,12 +9,13 @@ import TheaterManagement from "../pages/TheaterManagement";
 import ShowTimeManagement from "../pages/ShowTimeManagement";
 import AddMovie from "../pages/AddMovie";
 import DetailedMovieList from "../pages/DetailedMovieList";
-import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import MovieSchedules from "../pages/MovieSchedules";
 import ScheduleManagement from "../pages/ScheduleManagement";
 
 import UpdateMovie from "../pages/UpdateMovie"
 import BookTicket from "../pages/BookTicket";
+import BillSuccessfull from "../modules/Booking/BillSuccesfull";
+import BillFailure from "../modules/Booking/BillFailure";
 const publicRoutes = [
   { path: config.routes.home, component: Home },
   { path: config.routes.categories, component: Categories },
@@ -29,6 +30,9 @@ const publicRoutes = [
   { path: config.routes.manageSchedules, component: ScheduleManagement },
   { path: config.routes.updateMovie, component: UpdateMovie },
   { path: config.routes.bookTicket, component: BookTicket },
+  { path: config.routes.paymentSuccess, component: BillSuccessfull },
+  { path: config.routes.paymentFailure, component: BillFailure },
+  { path: config.routes.bookMovieTicket, component: BookTicket },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };
