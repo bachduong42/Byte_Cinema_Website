@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import { Link, useNavigate } from "react-router-dom";
 import config from "../../config";
 import Button from "../../components/Button/Button";
+import { useState } from "react";
+import Login from "../auth/Login";
+import ModalNotifyLogin from "../../components/Modal/ModalNotifyLogin";
+import { toast } from "react-toastify";
 function MovieCard({
   infor,
   className,
@@ -11,9 +15,11 @@ function MovieCard({
   admin = false,
   happening = false,
   type,
+  onDelete
 }) {
   const navigate = useNavigate();
-
+  const isLogin = localStorage.getItem("isLogin");
+  // const [openLogin, setOpenLogin] = useState(false);
   const handleCardClick = () => {
     if (type === "schedule") {
       navigate(`/schedule-movie/${infor.id}`)
@@ -44,7 +50,18 @@ function MovieCard({
   }
 
   const handleBookingClick = () => {
-    navigate(`/book-movie-ticket/${infor.id}`)
+    if (isLogin) {
+      navigate(`/book-movie-ticket/${infor.id}`)
+    } else {
+      toast.info("Vui lòng đăng nhập để đặt vé!", {
+        autoClose: 1000,
+        position: "top-center",
+      });
+    }
+
+  }
+  const handleDeleteFilm = () => {
+    onDelete();
   }
 
   return (
@@ -87,16 +104,25 @@ function MovieCard({
             </>
           )}
           {admin ? (
-            <div className="flex gap-2">
-              <button
-                onClick={handleViewDetail} className="text-white text-[14px]">
-                Xem chi tiết
-              </button>
-              {type === "update" && (
-                <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]"
-                  onClick={handleUpdate}>
-                  Chỉnh sửa
+            <div className="flex flex-col gap-2">
+              <div className="flex">
+                <button
+                  onClick={handleViewDetail} className="text-white text-[14px]">
+                  Xem chi tiết
                 </button>
+                {type === "update" && (
+                  <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]"
+                    onClick={handleUpdate}>
+                    Chỉnh sửa
+                  </button>
+                )}
+              </div>
+              {type === "update" && (
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleDeleteFilm}
+                    className="bg-[#9E0000] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">Xoá</button></div>
+
               )}
             </div>
           ) : (
@@ -105,7 +131,8 @@ function MovieCard({
             </button>
           )}
         </div>
-      )}
+      )
+      }
     </div>
   );
 }
