@@ -62,9 +62,10 @@ function ScheduleManagement() {
       setFilteredMovies(listMovie);
     } else if (activeTab === "Sắp chiếu") {
       setFilteredMovies(listMovieUpComing);
-    } else if (activeTab === "Lọc theo ngày") {
-      // call api lọc theo ngày
     }
+    // else if (activeTab === "Lọc theo ngày") {
+    //   // call api lọc theo ngày
+    // }
   }, [activeTab, listAllMovie, listMovie, listMovieUpComing]);
   return (
     <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">
@@ -75,8 +76,8 @@ function ScheduleManagement() {
         ></Search>
       </div>
       <div className="w-full flex justify-between mt-5">
-        <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400  gap-3">
-          <li class="me-2">
+        <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400  gap-3">
+          <li className="me-2">
             <a
               href="#"
               onClick={() => handleTabClick("Tất cả")}
@@ -102,7 +103,7 @@ function ScheduleManagement() {
               Đang chiếu
             </a>
           </li>
-          <li class="me-2">
+          <li className="me-2">
             <a
               href="#"
               onClick={() => handleTabClick("Sắp chiếu")}
@@ -115,7 +116,7 @@ function ScheduleManagement() {
               Sắp chiếu
             </a>
           </li>
-          <li class="me-2">
+          {/* <li className="me-2">
             <a
               href="#"
               onClick={() => handleTabClick("Lọc theo ngày")}
@@ -127,7 +128,7 @@ function ScheduleManagement() {
             >
               Lọc theo ngày
             </a>
-          </li>
+          </li> */}
         </ul>
         <Button
           className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base"

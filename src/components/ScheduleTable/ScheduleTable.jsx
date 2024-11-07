@@ -5,7 +5,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ModalDelScreening from "../Modal/ModalDeleteScreening";
 import ModalEditScreening from "../Modal/ModalEditScreening";
 
-const ScheduleTable = ({ data, roomData }) => {
+const ScheduleTable = ({ data, roomData, handleReload }) => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
@@ -13,19 +13,24 @@ const ScheduleTable = ({ data, roomData }) => {
 
   const idScreening = useRef();
   const dataTable = data?.map((screening, index) => {
-    const startTime = new Date(screening.startTime)
+    const startTime = new Date(screening.startTime);
     const showDate = startTime.toLocaleDateString("en-GB");
     const showTime = startTime.toLocaleTimeString("en-GB", {
       hour: "2-digit",
       minute: "2-digit",
       timeZone: "UTC",
     });
-
+    const endTime = new Date(screening.endTime).toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "UTC",
+    });
     return {
       id: screening.id,
       key: index + 1,
       showDate,
       showTime,
+      endTime,
       screenRoom: screening.auditoriumName,
       price: screening.ticketPrice,
       placed: "0",
@@ -48,14 +53,13 @@ const ScheduleTable = ({ data, roomData }) => {
     setSortedInfo(sorter);
   };
   const handleUpdate = (id) => {
-    setOpenModalUpdate(true);
-    console.log("helo", id);
     idScreening.current = id;
-
-  }
-  const handleDel = () => {
+    setOpenModalUpdate(true);
+  };
+  const handleDel = (id) => {
+    idScreening.current = id;
     setOpenModalDel(true);
-  }
+  };
   const columns = [
     {
       title: "STT",
@@ -68,7 +72,7 @@ const ScheduleTable = ({ data, roomData }) => {
       title: "Ngày chiếu",
       dataIndex: "showDate",
       key: "showDate",
-      width: "20%",
+      width: "15%",
       filters: showDateFilters,
       filteredValue: filteredInfo.showDate || null,
       onFilter: (value, record) => record.showDate.includes(value),
@@ -77,8 +81,14 @@ const ScheduleTable = ({ data, roomData }) => {
     {
       title: "Giờ chiếu",
       dataIndex: "showTime",
-      width: "15%",
+      width: "10%",
       key: "showTime",
+    },
+    {
+      title: "Giờ kết thúc",
+      dataIndex: "endTime",
+      width: "10%",
+      key: "endTime",
     },
     {
       title: "Phòng chiếu",
@@ -135,9 +145,26 @@ const ScheduleTable = ({ data, roomData }) => {
   ];
   return (
     <>
-      <Table columns={columns} dataSource={dataTable} onChange={handleChange} />
-      {openModalUpdate && <ModalEditScreening handleClose={() => setOpenModalUpdate(false)} idScreening={idScreening}></ModalEditScreening>}
-      {openModalDel && <ModalDelScreening handleClose={() => setOpenModalDel(false)}></ModalDelScreening>}
+      <Table
+        columns={columns}
+        dataSource={dataTable}
+        onChange={handleChange}
+        pagination={{ pageSize: 8, position: ["bottomCenter"] }}
+      />
+      {openModalUpdate && (
+        <ModalEditScreening
+          handleReload={handleReload}
+          handleClose={() => setOpenModalUpdate(false)}
+          idScreening={idScreening.current}
+        ></ModalEditScreening>
+      )}
+      {openModalDel && (
+        <ModalDelScreening
+          handleReload={handleReload}
+          idDel={idScreening.current}
+          handleClose={() => setOpenModalDel(false)}
+        ></ModalDelScreening>
+      )}
     </>
   );
 };
