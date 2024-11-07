@@ -112,8 +112,8 @@ function BookTicket() {
       //   navigate("/film-management");
       console.log("Create Booking response: ", response);
     } catch (error) {
-      console.error("Booking: ", error);
-      toast.error("Ghế này đã được đặt, vui lòng chọn ghế khác !!!", {
+      console.error("Booking error: ", error.response?.data?.message || error.message);
+      toast.error(`${error.response?.data?.message || error.message}`, {
         autoClose: 1000,
       });
       throw error;
