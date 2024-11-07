@@ -25,10 +25,22 @@ const Navbar = React.memo(() => {
   const [changePasswordModalRef, setChangePasswordModalRef] = useState(null);
   const [confirmOtpModalRef, setConfirmOtpModalRef] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
+
   const navigate = useNavigate();
   const { user, logout } = useContext(UserContext);
+  const [isAdmin, setIsAdmin] = useState(false);
+
   useEffect(() => {
+    console.log(user);
+    if (user) {
+      if (user.role === "ADMIN") {
+        setIsAdmin(true);
+      } else if (user.role === "USER") {
+        setIsAdmin(false);
+      }
+    } else {
+      setIsAdmin(false);
+    }
     setActiveButton(location.pathname);
   }, [location.pathname]);
   useEffect(() => {

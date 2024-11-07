@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [email, setEmail] = useState(null)
     const [isTokenExpired, setIsTokenExpired] = useState(false);
-   
+
     const checkLoginSession = useCallback(async () => {
         if (document.cookie) return true;
         const response = await refreshToken();
@@ -22,7 +22,8 @@ export const UserProvider = ({ children }) => {
     }, [])
 
     const login = (user) => {
-        setUser(user);
+        // console.log(user.data.user);
+        setUser(user.data.user);
         localStorage.setItem('isLogin', true);
     };
 
@@ -30,7 +31,7 @@ export const UserProvider = ({ children }) => {
         setUser(null);
         localStorage.removeItem('isLogin');
         localStorage.removeItem('accessToken');
-        
+
     };
 
     const saveEmail = (email) => {
@@ -48,7 +49,7 @@ export const UserProvider = ({ children }) => {
                 <div className="modal">
                     <div className="modal-content">
                         <p>Your session has expired. Please login again.</p>
-                    <button onClick={() => setIsTokenExpired(false)}>Close</button>
+                        <button onClick={() => setIsTokenExpired(false)}>Close</button>
                     </div>
                 </div>
             )}
