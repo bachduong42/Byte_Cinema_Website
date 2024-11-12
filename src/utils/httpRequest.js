@@ -15,9 +15,9 @@ export const post = async (path, body = {}, options = {}) => {
     return response.data;
 }
 
-export const PUT = async (path, body = {}, options = {}) => {
-  const response = await httpRequest.put(path, body, options);
-  return response.data;
+export const put = async (path, body = {}, options = {}) => {
+    const response = await httpRequest.put(path, body, options);
+    return response.data;
 };
 
 export const DELETE = async (path, options = {}) => {
