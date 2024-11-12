@@ -8,6 +8,7 @@ import { getDetailFilm } from "../services/getDetailFilm";
 import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import { toast } from "react-toastify";
 import { createBookingRequest } from "../services/createBooking";
+import { paymentRequest } from "../services/payment";
 // import BillSuccessfull from "../modules/Booking/BillSuccesfull";
 function BookTicket() {
   const { id } = useParams();
@@ -15,12 +16,13 @@ function BookTicket() {
   const [movie, setMovie] = useState({});
   const [screeningId, setScreeningId] = useState(0);
   //   const [auditorium, setAuditorium] = useState(null);
-    // const [testSeats2, setTestSeats2] = useState([{ id: 91 }, { id: 92 }]);
+  // const [testSeats2, setTestSeats2] = useState([{ id: 91 }, { id: 92 }]);
   const [testSeats, setTestSeats] = useState([]);
   const [listIdSeats, setListIdSeats] = useState([]);
   const [selectedTicketPrice, setSelectedTicketPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [billStartTime, setBillStartTime] = useState(null);
+  const [bookingId, setBookingId] = useState(0);
 
   useEffect(() => {
     async function getMovie() {
@@ -40,7 +42,28 @@ function BookTicket() {
 
   useEffect(() => {
     setTestSeats(listIdSeats.map((_id) => ({ id: _id })));
-  },[listIdSeats]);
+  }, [listIdSeats]);
+
+  useEffect(() => {
+    async function fetchPayment() {
+      setIsLoading(true);
+      if (bookingId !== 0) {
+        console.log("Current Booking ID: ", bookingId);
+        const res = await paymentRequest(
+          localStorage.getItem("accessToken"),
+          bookingId
+        );
+        if (res !== undefined) {
+          console.log("Payment response: ", res);
+          console.log("Payment URL: ", res.paymentUrl);
+          window.open(res.paymentUrl, "_blank");
+      }
+      }
+      setIsLoading(false);
+      setBookingId(0);
+    }
+    fetchPayment();
+  }, [bookingId]);
 
   //   useEffect(() => {
   //     async function fetchAuditorium() {
@@ -106,14 +129,34 @@ function BookTicket() {
         }
       );
       handleNextPage();
+
+      console.log("Create Booking response: ", response);
+      setBookingId(response.data.bookingId);
+
+      // setTimeout(() => {
+      //   setBookingId(response.data.bookingId);
+      //   console.log("Booking ID: ", response.data.bookingId);
+      // }, 2000);
+      // const res = await paymentRequest(
+      //   localStorage.getItem("accessToken"),
+      //   bookingId
+      // );
+      // console.log("Payment response: ", res);
+
+      // const vnPayUrl = res.data.paymentUrl;
+      // console.log("VNPay URL: ", vnPayUrl);
+
+      // const vnPayUrl = await paymentRequest()
       //   window.open("https://www.google.com", "_blank");
 
       // window.location.reload();
       //   navigate("/film-management");
-      console.log("Create Booking response: ", response);
     } catch (error) {
-      console.error("Booking error: ", error.response?.data?.message || error.message);
-      toast.error( `${error.response?.data?.message || error.message}`, {
+      console.error(
+        "Booking error: ",
+        error.response?.data?.message || error.message
+      );
+      toast.error(`${error.response?.data?.message || error.message}`, {
         autoClose: 1000,
       });
       throw error;
@@ -185,6 +228,7 @@ function BookTicket() {
               ></SelectSeat>
             )}
             {currentStep == 2 && <ConfirmSeat></ConfirmSeat>}
+            {/* {currentStep == 3 && <ConfirmSeat></ConfirmSeat>} */}
             {/* {currentStep == 4 && <BillSuccessfull listSeats={listSeats} billSuccess></BillSuccessfull>} */}
             <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
 
@@ -201,7 +245,7 @@ function BookTicket() {
                   currentStep == 2 ? handleCreateBooking : handleNextPage
                 }
                 className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${
-                    disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
+                  disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
                 {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}
