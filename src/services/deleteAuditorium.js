@@ -1,16 +1,14 @@
 import * as httpRequest from "../utils/httpRequest";
 
-const deleteScreening = async (id) => {
+export const deleteAuditorium = async (id) => {
   try {
-    const res = await httpRequest.DELETE(`/delete-screening/${id}`, {
+    const res = await httpRequest.DELETE(`/auditorium/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-    return res;
+    return res.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message
   }
 };
-
-export { deleteScreening };
