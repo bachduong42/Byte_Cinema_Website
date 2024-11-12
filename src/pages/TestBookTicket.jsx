@@ -6,18 +6,16 @@ import ConfirmSeat from "../modules/Booking/ConfirmSeat";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDetailFilm } from "../services/getDetailFilm";
 import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 import { createBookingRequest } from "../services/createBooking";
 // import BillSuccessfull from "../modules/Booking/BillSuccesfull";
-function BookTicket() {
+function TestBookTicket() {
   const { id } = useParams();
 
   const [movie, setMovie] = useState({});
-  const [screeningId, setScreeningId] = useState(0);
-  //   const [auditorium, setAuditorium] = useState(null);
-  // const [testSeats2, setTestSeats2] = useState([{ id: 91 }, { id: 92 }]);
-  const [testSeats, setTestSeats] = useState([]);
-  const [listIdSeats, setListIdSeats] = useState([]);
+  const [screeningId, setScreeningId] = useState(1);
+//   const [auditorium, setAuditorium] = useState(null);
+  const [testSeats, setTestSeats] = useState([{"id": 92}]);
   const [selectedTicketPrice, setSelectedTicketPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [billStartTime, setBillStartTime] = useState(null);
@@ -38,35 +36,28 @@ function BookTicket() {
     console.log(screeningId);
   }, [screeningId]);
 
-  useEffect(() => {
-    setTestSeats(listIdSeats.map((_id) => ({ id: _id })));
-  }, [listIdSeats]);
-
-  //   useEffect(() => {
-  //     async function fetchAuditorium() {
-  //       const response = await fetch("http://localhost:8080/api/v1/auditorium/1");
-  //       const result = await response.json();
-  //       if (result.statusCode === 200) {
-  //         setAuditorium(result.data);
-  //       }
-  //     }
-  //     fetchAuditorium();
-  //   }, []);
+//   useEffect(() => {
+//     async function fetchAuditorium() {
+//       const response = await fetch("http://localhost:8080/api/v1/auditorium/1");
+//       const result = await response.json();
+//       if (result.statusCode === 200) {
+//         setAuditorium(result.data);
+//       }
+//     }
+//     fetchAuditorium();
+//   }, []);
 
   const handleSelectScreening = (id, ticketPrice, startTime) => {
     setScreeningId(id);
     setSelectedTicketPrice(ticketPrice);
     setBillStartTime(startTime);
-  };
+  }
 
   const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
   const seatsPerRow = 10;
   const [currentStep, setCurrentStep] = useState(1);
   const [slideDirection, setSlideDirection] = useState("");
   const [listSeats, setListSeats] = useState([]);
-
-  const disableNextPageButton = listSeats.length === 0 || screeningId === 0;
-
   const handleNextPage = () => {
     if (currentStep < 4) {
       setSlideDirection("next");
@@ -77,46 +68,38 @@ function BookTicket() {
       console.log(currentStep);
     }
   };
-
+  
   const handleBackPage = () => {
     if (currentStep > 0) {
       setSlideDirection("prev");
       setTimeout(() => {
         setCurrentStep((prev) => prev - 1);
       }, 300);
-      console.log(listIdSeats);
-      console.log(listSeats);
     }
   };
 
+
   const handleCreateBooking = async (event) => {
     event.preventDefault();
-    console.log("Screening Id:", screeningId);
-    console.log("Seats:", testSeats);
+    console.log('Screening Id:', screeningId);
+    console.log('Seats:', testSeats);
     try {
-      const response = await createBookingRequest(
-        localStorage.getItem("accessToken"),
-        screeningId,
-        testSeats
-      );
-      toast.success(
-        "Đặt ghế thành công. Vui lòng hoàn thành thủ tục thanh toán",
-        {
-          autoClose: 1000,
-        }
-      );
+      const response = await createBookingRequest(localStorage.getItem("accessToken"), screeningId, testSeats);
+      toast.success("Đặt ghế thành công. Vui lòng hoàn thành thủ tục thanh toán", {
+        autoClose: 1000
+      });
       handleNextPage();
-      //   window.open("https://www.google.com", "_blank");
+      window.open("https://www.google.com", "_blank");
 
       // window.location.reload();
-      //   navigate("/film-management");
-      console.log("Create Booking response: ", response);
+    //   navigate("/film-management");
+    console.log("Create Booking response: ", response);
     } catch (error) {
-      console.error("Booking error: ", error.response?.data?.message || error.message);
-      toast.error(`${error.response?.data?.message || error.message}`, {
-        autoClose: 1000,
-      });
-      throw error;
+        console.error("Booking: ", error);
+        toast.error("Có lỗi xảy ra, vui lòng thử lại", {
+            autoClose: 1000,
+        });
+        throw error;
     }
   };
 
@@ -130,19 +113,23 @@ function BookTicket() {
           <div className="w-[80%] h-[15px] border border-gray rounded-[23px] bg-[#ced5db] text-center flex">
             <div className="w-1/4 h-full bg-[#284662] rounded-s-3xl"></div>
             <div
-              className={`w-1/4 h-full ${currentStep === 2 || currentStep === 4 || currentStep === 3
-                ? "bg-[#284662]"
-                : "bg-[#576f85]"
-                }`}
+              className={`w-1/4 h-full ${
+                currentStep === 2 || currentStep === 4 || currentStep === 3
+                  ? "bg-[#284662]"
+                  : "bg-[#576f85]"
+              }`}
             ></div>
             <div
-              className={`w-1/4 h-full ${currentStep === 2 ? "bg-[#576f85]" : ""
-                } ${currentStep === 4 || currentStep === 3 ? "bg-[#284662]" : ""
-                }`}
+              className={`w-1/4 h-full ${
+                currentStep === 2 ? "bg-[#576f85]" : ""
+              } ${
+                currentStep === 4 || currentStep === 3 ? "bg-[#284662]" : ""
+              }`}
             ></div>
             <div
-              className={`w-1/4 h-full ${currentStep === 4 ? "bg-[#284662]" : ""
-                } ${currentStep === 3 ? "bg-[#576f85]" : ""}`}
+              className={`w-1/4 h-full ${
+                currentStep === 4 ? "bg-[#284662]" : ""
+              } ${currentStep === 3 ? "bg-[#576f85]" : ""}`}
             ></div>
           </div>
           <div className="w-[80%] h-[15px]  text-center flex">
@@ -162,8 +149,9 @@ function BookTicket() {
         </div>
         <div className="flex flex-row gap-5 w-full h-full mt-10">
           <div
-            className={`flex flex-col px-10 ${currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "
-              }`}
+            className={`flex flex-col px-10 ${
+              currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "
+            }`}
           >
             {currentStep === 1 && movie?.screenings && (
               <SelectSeat
@@ -173,10 +161,8 @@ function BookTicket() {
                 setListSeats={setListSeats}
                 schedule={movie.screenings}
                 onClick={handleSelectScreening}
-                listSeatIds={listIdSeats}
-                setlistSeatIds={setListIdSeats}
-              // chosenSeats={chosenSeats}
-              // setChosenSeats={setChosenSeats}
+                // chosenSeats={chosenSeats}
+                // setChosenSeats={setChosenSeats}
               ></SelectSeat>
             )}
             {currentStep == 2 && <ConfirmSeat></ConfirmSeat>}
@@ -191,12 +177,11 @@ function BookTicket() {
                 Quay lại
               </button>
               <Button
-                disabled={disableNextPageButton}
-                onClick={
-                  currentStep == 2 ? handleCreateBooking : handleNextPage
-                }
-                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                disabled={listSeats.length === 0}
+                onClick={currentStep == 2 ? handleCreateBooking : handleNextPage}
+                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${
+                  listSeats.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}
               </Button>
@@ -220,4 +205,4 @@ function BookTicket() {
   );
 }
 
-export default BookTicket;
+export default TestBookTicket;

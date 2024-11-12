@@ -79,11 +79,20 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
       localStorage.setItem('accessToken', access_token);
       const user = await getUser();
       login(user);
+      console.log(user.data.user);
       toast.success("Đăng nhập thành công", {
         autoClose: 1000
       });
+
+      if (user.data.user.role === "ADMIN") {
+        console.log("admin");
+        navigate("/film-management")
+      } else if (user.data.user.role === "USER") {
+        console.log("user");
+        navigate("/")
+      }
       // window.location.reload();
-      navigate("/film-management")
+
       closeLoginModal();
     } catch (error) {
       if (error.response && error.response.data) {

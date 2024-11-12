@@ -6,7 +6,7 @@ export const register = async (email, password, confirmPassword) => {
             email,
             password,
             confirmPassword,
-            roleId: 1,
+            roleId: 2,
         });
         return res.data
     }
