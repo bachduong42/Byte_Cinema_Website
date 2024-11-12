@@ -18,7 +18,7 @@ function UpdateMovie() {
         genre: 0,
         duration: "",
         nation: "",
-        // language: "",
+        language: "",
         releaseDay: new Date().toISOString(),
         description: "",
         images: [NoImage],
@@ -80,7 +80,7 @@ function UpdateMovie() {
         !movie.duration ||
         !movie.nation ||
         !movie.releaseDay ||
-        // !movie.language ||
+        !movie.language ||
         // !movie.type ||
         !movie.description ||
         !movie.poster ||
@@ -214,6 +214,7 @@ function UpdateMovie() {
                             imagePaths: [],
                             director: _movie.director,
                             nation: _movie.nation,
+                            language: _movie.language,
                             actors: _movie.actors,
                             pathTrailer: _movie.pathTrailer,
                         }),
@@ -372,6 +373,16 @@ function UpdateMovie() {
                                     type="text"
                                     name="nation"
                                     value={movie.nation}
+                                    onChange={handleChange}
+                                    className="w-full px-3 py-2 border rounded-md"
+                                />
+                            </div>
+                            <div className="flex items-center py-2 justify-center mb-4">
+                                <span className="font-bold mr-[00px] w-[40%]">Quốc gia:</span>
+                                <input
+                                    type="text"
+                                    name="language"
+                                    value={movie.language}
                                     onChange={handleChange}
                                     className="w-full px-3 py-2 border rounded-md"
                                 />

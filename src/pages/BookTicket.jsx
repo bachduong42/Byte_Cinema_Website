@@ -56,7 +56,7 @@ function BookTicket() {
         if (res !== undefined) {
           console.log("Payment response: ", res);
           console.log("Payment URL: ", res.paymentUrl);
-          window.open(res.paymentUrl, "_blank");
+          window.open(res.paymentUrl, "_self");
       }
       }
       setIsLoading(false);
