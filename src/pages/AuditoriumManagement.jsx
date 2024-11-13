@@ -4,7 +4,7 @@ import AuditoriumTable from "../components/AuditoriumTable/AuditoriumTable";
 import { useEffect, useState } from "react";
 import { getAllAuditorium } from "../services/getAllAuditorium";
 import ModalAuditorium from "../components/Modal/ModalAuditorium";
-import ModalDelAuditorium from "../components/Modal/ModalDeleteAuditorium";
+import { getListMovie } from "../services/getListMovie";
 
 function AuditoriumManagement() {
   const [type, setType] = useState("");
@@ -17,13 +17,27 @@ function AuditoriumManagement() {
 
   useEffect(() => {
     async function fetchRoomData() {
+      const listMovies = await getListMovie();
+      const screeningsByAuditorium = listMovies.data.reduce((acc, movie) => {
+        movie.screenings.forEach((screening) => {
+          const auditoriumName = screening.auditoriumName;
+          if (!acc[auditoriumName]) {
+            acc[auditoriumName] = 0;
+          }
+          acc[auditoriumName] += 1;
+        });
+        return acc;
+      }, {});
+
       const data = await getAllAuditorium(localStorage.getItem("accessToken"));
       if (data) {
-        data.map((item) => ({
+        const modifiedData = data.map((item) => ({
           ...item,
           status: item.status === false ? "Trống" : "Đang chiếu",
+          seatsPerRow: item.seats.filter((seat) => seat.seatRow === "A").length,
+          countScreening: screeningsByAuditorium[item.name] || 0,
         }));
-        setRoomData(data);
+        setRoomData(modifiedData);
       }
     }
     fetchRoomData();

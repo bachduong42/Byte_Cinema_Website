@@ -2,7 +2,6 @@ import React, { memo, useRef, useState } from "react";
 import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import ModalDelScreening from "../Modal/ModalDeleteScreening";
 import ModalAuditorium from "../Modal/ModalAuditorium";
 import ModalDelAuditorium from "../Modal/ModalDeleteAuditorium";
 
@@ -64,6 +63,11 @@ const AuditoriumTable = ({ roomData, handleReload }) => {
       key: "seatsPerRow",
     },
     {
+      title: 'Số lượng xuất chiếu',
+      dataIndex: 'countScreening',
+      key: 'countScreening',
+    },
+    {
       title: "Trạng thái",
       width: "10%",
       dataIndex: "status",
@@ -71,11 +75,11 @@ const AuditoriumTable = ({ roomData, handleReload }) => {
       filters: [
         {
           text: "Trống",
-          value: false,
+          value: "Trống",
         },
         {
           text: "Đang chiếu",
-          value: true,
+          value: "Đang chiếu",
         },
       ],
       filteredValue: filteredInfo.status || null,

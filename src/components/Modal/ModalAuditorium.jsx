@@ -56,7 +56,7 @@ function ModalAuditorium({ handleClose, idAuditorium, handleReload }) {
           setRoomData(data);
           setName(data.name);
           setCapacity(data.capacity);
-          setSeatsPerRow(data.seatsPerRow);
+          setSeatsPerRow(data.seats.filter(seat => seat.seatRow === 'A').length);
         }
       }
       fetchRoomData();
@@ -94,8 +94,9 @@ function ModalAuditorium({ handleClose, idAuditorium, handleReload }) {
         ? (message = "Tên phòng chiếu đã được sử dụng")
         : message === "Tên phòng chiếu đã được sử dụng"
         ? message
-        : (message = "Phòng chiếu đang sử dụng. Vui lòng không cập nhật.");
-      toast.error(message, { autoClose: 1200, position: "top-center" });
+        : (message =
+            "Phòng chiếu đang được sử dụng cho một vài suất chiếu. Vui lòng không cập nhật.");
+      toast.error(message, { autoClose: 1300, position: "top-center" });
     }
   };
 

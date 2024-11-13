@@ -6,8 +6,7 @@ function ModalDelScreening({ handleClose, idDel, handleReload }) {
   console.log(idDel);
   const handleDeleteScreening = async () => {
     try {
-      const access_token = localStorage.getItem("accessToken");
-      await deleteScreening(access_token, idDel);
+      await deleteScreening(idDel);
       toast.success("Xoá lịch chiếu thành công", {
         autoClose: 800,
         position: "top-center",
@@ -17,7 +16,7 @@ function ModalDelScreening({ handleClose, idDel, handleReload }) {
     } catch (error) {
       console.log(error);
       handleClose();
-      toast.error("Đã có lỗi xảy ra. Vui lòng thử lại!", {
+      toast.error("Xuất chiếu này đang có vé đặt. Không thể xoá!", {
         autoClose: 800,
         position: "top-center",
       });
