@@ -241,6 +241,12 @@ const Movie = () => {
                     </span>
                     <span className="w-[85%]">{movie.nation}</span>
                   </div>
+                  <div className="flex py-2">
+                    <span className="font-bold mr-[12px] w-[15%]">
+                      Ngôn ngữ:
+                    </span>
+                    <span className="w-[85%]">{movie.language}</span>
+                  </div>
                 </div>
               </div>
             </div>

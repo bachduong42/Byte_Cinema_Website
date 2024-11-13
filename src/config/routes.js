@@ -15,7 +15,7 @@ const routes = {
   bookTicket: "/book-a-ticket",
   updateMovie: "/update-movie/:id",
   bookTicket: "/book-a-ticket",
-  paymentSuccess: "/payment-success/:transactionId",
+  paymentSuccess: "/payment-success",
   paymentFailure: "/payment-failure/:transactionId",
   bookMovieTicket: "/book-movie-ticket/:id",
   manageAuditorium: "/manage-auditorium",
