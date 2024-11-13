@@ -56,7 +56,9 @@ function BookTicket() {
         if (res !== undefined) {
           console.log("Payment response: ", res);
           console.log("Payment URL: ", res.paymentUrl);
-          window.open(res.paymentUrl, "_self");
+          setTimeout(() => {
+            window.open(res.paymentUrl, "_self");
+          }, 1500);
       }
       }
       setIsLoading(false);
@@ -151,14 +153,33 @@ function BookTicket() {
 
       // window.location.reload();
       //   navigate("/film-management");
-    } catch (error) {
-      console.error(
-        "Booking error: ",
-        error.response?.data?.message || error.message
-      );
-      toast.error(`${error.response?.data?.message || error.message}`, {
+
+
+    // } catch (error) {
+    //   console.error(
+    //     "Booking error: ",
+    //     error.response?.data?.message || error.message
+    //   );
+    //   toast.error(`${error.response?.data?.message || error.message}`, {
+    //     autoClose: 1000,
+    //   });
+
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || error.message;
+    if (errorMessage.includes("already ordered")) {
+      const seatMatch = errorMessage.match(/Seat\s(\w+\d+)/);
+      const seatId = seatMatch ? seatMatch[1] : "unknown seat";
+      toast.error(`Ghế ${seatId} đã được đặt`, {
         autoClose: 1000,
       });
+    } else {
+      toast.error(errorMessage, {
+        autoClose: 1000,
+      });
+    }
+    console.error("Booking error: ", errorMessage);
+
+
       throw error;
     }
   };
