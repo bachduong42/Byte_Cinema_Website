@@ -1,41 +1,60 @@
-import React, { memo, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Table } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ModalDelScreening from "../Modal/ModalDeleteScreening";
 import ModalEditScreening from "../Modal/ModalEditScreening";
+import { countTicketByScreening } from "../../services/countTicketByScreening";
 
 const ScheduleTable = ({ data, roomData, handleReload }) => {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [openModalDel, setOpenModalDel] = useState(false);
-
+  const [countTicket, setCountTicket] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
   const idScreening = useRef();
-  const dataTable = data?.map((screening, index) => {
-    const startTime = new Date(screening.startTime);
-    const showDate = startTime.toLocaleDateString("en-GB");
-    const showTime = startTime.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "UTC",
+
+useEffect(() => {
+  async function fetchData() {
+    const dataIds = data.map((item) => item.id);
+
+    // Get the ticket counts for each screening ID
+    const dataCounts = await Promise.all(
+      dataIds.map((id) => countTicketByScreening(id))
+    );
+
+    // Create dataTb array with count included
+    const dataTb = data?.map((screening, index) => {
+      const startTime = new Date(screening.startTime);
+      const showDate = startTime.toLocaleDateString("en-GB");
+      const showTime = startTime.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "UTC",
+      });
+      const endTime = new Date(screening.endTime).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "UTC",
+      });
+
+      return {
+        id: screening.id,
+        key: index + 1,
+        showDate,
+        showTime,
+        endTime,
+        screenRoom: screening.auditoriumName,
+        price: screening.ticketPrice,
+        placed: dataCounts[index].toString(), // Assign the count to placed
+      };
     });
-    const endTime = new Date(screening.endTime).toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "UTC",
-    });
-    return {
-      id: screening.id,
-      key: index + 1,
-      showDate,
-      showTime,
-      endTime,
-      screenRoom: screening.auditoriumName,
-      price: screening.ticketPrice,
-      placed: "0",
-    };
-  });
+
+    setDataTable(dataTb);
+  }
+  fetchData();
+}, [data]);
 
   const uniqueShowDates = [...new Set(dataTable?.map((item) => item.showDate))];
   const showDateFilters = uniqueShowDates.map((date) => ({

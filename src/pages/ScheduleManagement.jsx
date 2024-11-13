@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import Search from "../components/Layout/Search";
-import { MdAddCircleOutline, MdFilterList } from "react-icons/md";
+import {MdFilterList } from "react-icons/md";
 import Button from "../components/Button/Button";
 import MovieCard from "../modules/Movie/MovieCard";
 import { getListMovie } from "../services/getListMovie";
-import { useNavigate } from "react-router-dom";
 
 function ScheduleManagement() {
   const [searchResult, setSearchResult] = useState([]);
 
   const [activeTab, setActiveTab] = useState("Tất cả");
-
-  const navigate = useNavigate();
-
-  const handleAddClick = () => {
-    navigate(`/film-management/add`);
-  };
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
