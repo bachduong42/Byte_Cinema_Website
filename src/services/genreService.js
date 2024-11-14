@@ -13,7 +13,7 @@ const updateGenreRequest = async (name, description, id) => {
         return response.data;
     }
     catch (error) {
-        console.error(error);
+        throw error.response.data.message;
     }
 }
 const addGenreRequest = async (name, description) => {
@@ -29,7 +29,7 @@ const addGenreRequest = async (name, description) => {
         return response.data;
     }
     catch (error) {
-        console.error(error);
+        throw error.response.data.message;
     }
 }
 const getGenreByID = async (id) => {

@@ -51,7 +51,7 @@ function GenreTable({ movieGenres, fetchGenres }) {
             ),
         },
         {
-            title: "Delete",
+            title: "Xoá",
             dataIndex: "delete",
             key: "delete",
             render: (_, record) => (

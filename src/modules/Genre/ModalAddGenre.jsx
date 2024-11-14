@@ -40,24 +40,29 @@ function ModalAddGenre({ handleClose, mode = "", idGenre = "", onSuccess }) {
         setErrors(errors);
         return formIsValid;
     };
-    const handleAddGenre = async () => {
+    const handleAddGenre = async (e) => {
+        if (e) e.preventDefault();
         if (!validateForm()) {
             return;
         }
         try {
             if (mode === "add") {
-                await addGenreRequest(name, description);
+                const response = await addGenreRequest(name.trimEnd(), description.trimEnd());
                 toast.success("Thêm thể loại thành công");
+                console.log(response);
             } else {
-                await updateGenreRequest(name, description, idGenre);
+                const response = await updateGenreRequest(name.trimEnd(), description.trimEnd(), idGenre);
                 toast.success("Cập nhật thể loại thành công");
             }
             onSuccess();
             handleClose();
-        } catch (error) {
-            toast.error("Đã có lỗi xảy ra");
+        } catch (message) {
+            if (message === "Tên thể loại đã được sử dụng") {
+                toast.error("Tên thể loại đã được sử dụng");
+            } else {
+                toast.error("Đã có lỗi xảy ra");
+            }
         }
-
     }
     return (
         <>
