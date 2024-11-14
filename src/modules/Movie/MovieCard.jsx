@@ -80,7 +80,7 @@ function MovieCard({
       />
       {cardInfor && (
         <div className="absolute flex flex-col items-center gap-2 bg-[#12739dcc] w-full bottom-0  h-2/5  opacity-0 transform  translate-y-1 group-hover:opacity-100 group-hover:translate-y-1 transition-transform duration-300 ease-in-out">
-          <div className="text-[#FDB6B6] text-[14px] nunito-text font-extrabold pt-5">
+          <div className="text-[#FDB6B6] text-[14px] nunito-text font-extrabold pt-5" onClick={handleViewDetail}>
             {infor.name}
           </div>
           {admin ? (
