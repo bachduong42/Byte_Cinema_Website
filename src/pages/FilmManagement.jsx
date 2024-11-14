@@ -177,7 +177,7 @@ function FilmManagement() {
                     idDel={idmovieToDelete}>
                 </ModalDeleteMovie>}
             {openModalAddGenre &&
-                <ModalAddGenre handleClose={() => setOpenModalAddGenre(false)} mode="add" ></ModalAddGenre>}
+                <ModalAddGenre handleClose={() => setOpenModalAddGenre(false)} mode="add" onSuccess={fetchGenres}></ModalAddGenre>}
         </div>
     );
 }
