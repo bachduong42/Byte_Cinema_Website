@@ -59,7 +59,7 @@ function BookTicket() {
           setTimeout(() => {
             window.open(res.paymentUrl, "_self");
           }, 1500);
-      }
+        }
       }
       setIsLoading(false);
       setBookingId(0);
@@ -155,29 +155,29 @@ function BookTicket() {
       //   navigate("/film-management");
 
 
-    // } catch (error) {
-    //   console.error(
-    //     "Booking error: ",
-    //     error.response?.data?.message || error.message
-    //   );
-    //   toast.error(`${error.response?.data?.message || error.message}`, {
-    //     autoClose: 1000,
-    //   });
+      // } catch (error) {
+      //   console.error(
+      //     "Booking error: ",
+      //     error.response?.data?.message || error.message
+      //   );
+      //   toast.error(`${error.response?.data?.message || error.message}`, {
+      //     autoClose: 1000,
+      //   });
 
-  } catch (error) {
-    const errorMessage = error.response?.data?.message || error.message;
-    if (errorMessage.includes("already ordered")) {
-      const seatMatch = errorMessage.match(/Seat\s(\w+\d+)/);
-      const seatId = seatMatch ? seatMatch[1] : "unknown seat";
-      toast.error(`Ghế ${seatId} đã được đặt`, {
-        autoClose: 1000,
-      });
-    } else {
-      toast.error(errorMessage, {
-        autoClose: 1000,
-      });
-    }
-    console.error("Booking error: ", errorMessage);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message;
+      if (errorMessage.includes("already ordered")) {
+        const seatMatch = errorMessage.match(/Seat\s(\w+\d+)/);
+        const seatId = seatMatch ? seatMatch[1] : "unknown seat";
+        toast.error(`Ghế ${seatId} đã được đặt`, {
+          autoClose: 1000,
+        });
+      } else {
+        toast.error(errorMessage, {
+          autoClose: 1000,
+        });
+      }
+      console.error("Booking error: ", errorMessage);
 
 
       throw error;
@@ -249,20 +249,22 @@ function BookTicket() {
             <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
 
             <div className="flex gap-16 pt-3 justify-center mt-5">
-              <button
-                onClick={handleBackPage}
-                className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] "
-              >
-                Quay lại
-              </button>
+
+              {currentStep !== 1 &&
+                <button
+                  onClick={handleBackPage}
+                  className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] "
+                >
+                  Quay lại
+                </button>
+              }
               <Button
                 disabled={disableNextPageButton}
                 onClick={
                   currentStep == 2 ? handleCreateBooking : handleNextPage
                 }
-                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${
-                  disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}
               </Button>
