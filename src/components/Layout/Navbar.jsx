@@ -94,12 +94,13 @@ const Navbar = React.memo(() => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
-        ? "bg-[#092B4B]"
-        : isScrolled
+      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${
+        !isHome
+          ? "bg-[#092B4B]"
+          : isScrolled
           ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
           : ""
-        }`}
+      }`}
     >
       <div className="flex gap-x-14 items-center">
         <div className="flex flex-col items-start">
@@ -128,17 +129,17 @@ const Navbar = React.memo(() => {
               </Button>
               <Button
                 href={`/manage-schedules`}
-                active={activeButton === "/showtime-management"}
+                active={activeButton === "/manage-schedules"}
                 className="lg:text-xl md:text-base"
-                onClick={() => setActiveButton("/showtime-management")}
+                onClick={() => setActiveButton("/manage-schedules")}
               >
                 Quản lý lịch chiếu
               </Button>
               <Button
-                href="/"
-                active={activeButton === "/theater-management"}
+                href="/manage-auditorium"
+                active={activeButton === "/manage-auditorium"}
                 className="lg:text-xl md:text-base"
-                onClick={() => setActiveButton("/theater-management")}
+                onClick={() => setActiveButton("/manage-auditorium")}
               >
                 Quản lý phòng
               </Button>
@@ -213,10 +214,7 @@ const Navbar = React.memo(() => {
             </div>
           )}
         >
-          <div
-
-            className="flex  items-center"
-          >
+          <div className="flex  items-center">
             <img
               onMouseEnter={() => {
                 setShowMenu(true);

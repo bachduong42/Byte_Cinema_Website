@@ -1,23 +1,23 @@
-
 import { MdClose } from "react-icons/md";
-import { deleteScreening } from "../../services/deleteScreening";
 import { toast } from "react-toastify";
-function ModalDelScreening({ handleClose, idDel, handleReload }) {
-  console.log(idDel);
+import { deleteAuditorium } from "../../services/deleteAuditorium";
+function ModalDelAuditorium({ handleClose, idDel, handleReload }) {
   const handleDeleteScreening = async () => {
     try {
-      await deleteScreening(idDel);
-      toast.success("Xoá lịch chiếu thành công", {
-        autoClose: 800,
+      await deleteAuditorium(idDel);
+      toast.success("Xoá phòng chiếu thành công", {
+        autoClose: 1000,
         position: "top-center",
       });
       handleClose();
-      handleReload(idDel + "deleted");
-    } catch (error) {
-      console.log(error);
+      handleReload(Date.now());
+    } catch (message) {
       handleClose();
-      toast.error("Xuất chiếu này đang có vé đặt. Không thể xoá!", {
-        autoClose: 800,
+      message === "Auditorium is used in screening"
+        ? (message = "Phòng chiếu đang được sử dụng. Không thể xoá!")
+        : "Đã có lỗi xảy ra. Vui lòng thử lại!";
+      toast.error(message, {
+        autoClose: 1200,
         position: "top-center",
       });
     }
@@ -43,7 +43,7 @@ function ModalDelScreening({ handleClose, idDel, handleReload }) {
           </div>
           <div className="flex flex-col gap-5 pt-8">
             <div className="text-[23px] font-bold text-[#9E0000]">
-              Bạn có chắc muốn xóa suất chiếu này không?
+              Bạn có chắc muốn xóa phòng chiếu này không?
             </div>
             <div className="text-[18px] text-black font-semibold">
               Sau khi xóa bạn sẽ không thể khôi phục lại!
@@ -69,4 +69,4 @@ function ModalDelScreening({ handleClose, idDel, handleReload }) {
   );
 }
 
-export default ModalDelScreening;
+export default ModalDelAuditorium;

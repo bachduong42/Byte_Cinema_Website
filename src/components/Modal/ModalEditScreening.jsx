@@ -5,7 +5,6 @@ import { MdClose } from "react-icons/md";
 import { faCalendar, faClock } from "@fortawesome/free-solid-svg-icons";
 import { getAllAuditorium } from "../../services/getAllAuditorium";
 import { getDetailFilm } from "../../services/getDetailFilm";
-import { getScreeningRequest } from "../../services/getScreening";
 import { getScreeningById } from "../../services/getScreeningById";
 import { updateScreening } from "../../services/updateScreening";
 import { toast } from "react-toastify";

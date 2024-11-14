@@ -2,6 +2,7 @@ import React, {useState} from "react";
 
 const BookingMovieSchedule = ({ data, onClick }) => {
   const [selectedDate, setSelectedDate] = useState(data[0]);
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   function getTimeFromDateTime(dateTime) {
     const timePart = dateTime.split("T")[1]; 
@@ -32,8 +33,13 @@ const BookingMovieSchedule = ({ data, onClick }) => {
         {selectedDate?.screenings.map((slot, index) => (
           <div
             key={index}
-            className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white  cursor-pointer rounded-md px-5 py-2"
-            onClick={() => onClick(slot.id, slot.ticketPrice, slot.startTime)}
+            className={`hover:bg-[#092b4b] hover:text-white text-[#092b4b]  cursor-pointer rounded-md px-5 py-2 ${
+              selectedSlot === slot.id ? "bg-[#092b4b] text-white" : "bg-white"
+            }`}
+            onClick={() => {
+              setSelectedSlot(slot.id);
+              onClick(slot.id, slot.ticketPrice, slot.startTime);
+            }}
           >
               {getTimeFromDateTime(slot.startTime)}
             {/* <div className="text-green-500 font-bold">{`${slot.ticketPrice}.000đ`}</div> */}
