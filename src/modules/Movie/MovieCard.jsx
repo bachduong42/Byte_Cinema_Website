@@ -79,7 +79,7 @@ function MovieCard({
         className="w-full h-full object-cover"
       />
       {cardInfor && (
-        <div className="absolute flex flex-col items-center gap-2 bg-[#12739dcc] w-full bottom-0  h-2/5  opacity-0 transform  translate-y-1 group-hover:opacity-100 group-hover:translate-y-1 transition-transform duration-300 ease-in-out">
+        <div className="absolute flex flex-col items-center gap-2 bg-[#12739dcc] w-full bottom-0  h-3/5  opacity-0 transform  translate-y-1 group-hover:opacity-100 group-hover:translate-y-1 transition-transform duration-300 ease-in-out">
           <div className="text-[#FDB6B6] text-[14px] nunito-text font-extrabold pt-5">
             {infor.name}
           </div>
@@ -104,14 +104,14 @@ function MovieCard({
             </>
           )}
           {admin ? (
-            <div className="flex flex-col gap-2">
-              <div className="flex">
+            <div className="flex flex-col gap-1">
+              <div className="flex gap-1">
                 <button
-                  onClick={handleViewDetail} className="text-white text-[14px]">
+                  onClick={handleViewDetail} className="text-white text-[13px]">
                   Xem chi tiết
                 </button>
                 {type === "update" && (
-                  <button className="bg-[#008E28] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]"
+                  <button className="bg-[#008E28] rounded-[5px] px-3 h-[25px] text-white text-[12px]"
                     onClick={handleUpdate}>
                     Chỉnh sửa
                   </button>
@@ -121,7 +121,7 @@ function MovieCard({
                 <div className="flex justify-center">
                   <button
                     onClick={handleDeleteFilm}
-                    className="bg-[#9E0000] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]">Xoá</button></div>
+                    className="bg-[#9E0000] rounded-[5px] px-3 h-[25px] text-white text-[12px]">Xoá</button></div>
 
               )}
             </div>

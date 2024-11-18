@@ -84,8 +84,34 @@ function BookTicket() {
     setBillStartTime(startTime);
   };
 
-  const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
   const seatsPerRow = 10;
+  const totalSeats = 125;
+  function generateSeatLayout(totalSeats, seatsPerRow) {
+    const rows = [];
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    let remainingSeats = totalSeats;
+    let currentRow = 0;
+
+    while (remainingSeats > 0) {
+      const seatsInRow = Math.min(seatsPerRow, remainingSeats);
+      const rowSeats = [];
+
+      for (let i = 1; i <= seatsInRow; i++) {
+        rowSeats.push(`${alphabet[currentRow]}${i}`);
+      }
+
+      rows.push(rowSeats);
+      remainingSeats -= seatsInRow;
+      currentRow++;
+    }
+
+    return rows;
+  }
+  const seatLayout = generateSeatLayout(totalSeats, seatsPerRow);
+  console.log(seatLayout);
+  const usedAlphabets = seatLayout.map((row) => row[0][0]);
+  console.log(usedAlphabets);
   const [currentStep, setCurrentStep] = useState(1);
   const [slideDirection, setSlideDirection] = useState("");
   const [listSeats, setListSeats] = useState([]);
@@ -231,8 +257,9 @@ function BookTicket() {
           >
             {currentStep === 1 && movie?.screenings && (
               <SelectSeat
-                rows={rows}
+                rows={usedAlphabets}
                 seatsPerRow={seatsPerRow}
+                totalSeats={totalSeats}
                 listSeats={listSeats}
                 setListSeats={setListSeats}
                 schedule={movie.screenings}

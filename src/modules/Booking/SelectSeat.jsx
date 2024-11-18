@@ -9,6 +9,7 @@ function SelectSeat({
   setlistSeatIds,
   schedule,
   onClick,
+  totalSeats
 }) {
   //   const handleSeatClick = (seat) => {
   //     setListSeats((prevSeats) => {
@@ -96,33 +97,42 @@ function SelectSeat({
       <div>Màn hình</div>
       <div className="w-[80%] border border-t-[#0DB1F6] border-t-2 mx-auto my-2"></div>
       <div className="space-y-2 pt-5">
-        {rows.map((row) => (
-          <div className="flex items-center gap-16 justify-center" key={row}>
-            <div className="w-5">{row}</div>
-            <div className="grid grid-cols-10 gap-3">
-              {Array.from({ length: seatsPerRow }, (_, index) => {
-                const seatNumber = index + 1;
-                const seatLabel = `${row}${seatNumber}`;
-                const seatId = rows.indexOf(row) * seatsPerRow + seatNumber;
-                const isSelected = listSeatIds.includes(seatId);
-                return (
-                  <button
-                    onClick={() => handleSeatClick(row, seatNumber)}
-                    key={seatLabel}
-                    className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${isSelected
-                      ? "bg-[#F75900] text-white font-semibold"
-                      : "hover:bg-[#F75900]"
-                      } flex justify-center items-center`}
-                  >
-                    {" "}
-                    {seatNumber}
-                  </button>
-                );
-              })}
+        {rows.map((row, rowIndex) => {
+          // Tính số ghế còn lại và số ghế trong hàng hiện tại
+          const remainingSeats = totalSeats - rowIndex * seatsPerRow;
+          const seatsInRow = Math.min(seatsPerRow, remainingSeats); // Số ghế cho hàng hiện tại
+
+          return (
+            <div className="flex items-center gap-16 justify-center" key={row}>
+              <div className="w-5">{row}</div>
+              <div
+                className="grid gap-3"
+                style={{ gridTemplateColumns: `repeat(${seatsInRow}, minmax(0, 1fr))` }}
+              >
+                {Array.from({ length: seatsInRow }, (_, index) => {
+                  const seatNumber = index + 1;
+                  const seatLabel = `${row}${seatNumber}`;
+                  const seatId = rowIndex * seatsPerRow + seatNumber;
+                  const isSelected = listSeatIds.includes(seatId);
+
+                  return (
+                    <button
+                      onClick={() => handleSeatClick(row, seatNumber)}
+                      key={seatLabel}
+                      className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${isSelected
+                        ? "bg-[#F75900] text-white font-semibold"
+                        : "hover:bg-[#F75900]"
+                        } flex justify-center items-center`}
+                    >
+                      {seatNumber}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="w-5">{row}</div>
             </div>
-            <div className="w-5">{row}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="flex gap-4 mt-16">
         <div className="flex gap-2">
