@@ -19,6 +19,7 @@ const routes = {
   paymentFailure: "/payment-failure/:transactionId",
   bookMovieTicket: "/book-movie-ticket/:id",
   manageAuditorium: "/manage-auditorium",
+  revenue: "/revenue"
 };
 
 export default routes;

@@ -17,6 +17,7 @@ import BookTicket from "../pages/BookTicket";
 import BillSuccessfull from "../modules/Booking/BillSuccesfull";
 import BillFailure from "../modules/Booking/BillFailure";
 import AuditoriumManagement from "../pages/AuditoriumManagement";
+import Revenue from "../modules/Revenue/Revenue";
 const publicRoutes = [
   { path: config.routes.home, component: Home },
   { path: config.routes.categories, component: Categories },
@@ -34,6 +35,7 @@ const publicRoutes = [
   { path: config.routes.paymentSuccess, component: BillSuccessfull },
   { path: config.routes.paymentFailure, component: BillFailure },
   { path: config.routes.bookMovieTicket, component: BookTicket },
+  { path: config.routes.revenue, component: Revenue },
   {
     path: config.routes.manageAuditorium,
     component: AuditoriumManagement,
