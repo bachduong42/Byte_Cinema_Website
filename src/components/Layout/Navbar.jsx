@@ -143,6 +143,14 @@ const Navbar = React.memo(() => {
               >
                 Quản lý phòng
               </Button>
+              <Button
+                href="/report-revenue"
+                active={activeButton === "/report-revenue"}
+                className="lg:text-xl md:text-base"
+                onClick={() => setActiveButton("/report-revenue")}
+              >
+                Thống kê
+              </Button>
             </>
           ) : (
             <>
