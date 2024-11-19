@@ -2,7 +2,7 @@ import * as httpRequest from "../utils/httpRequest";
 
 export const updateAuditorium = async (id, name) => {
   try {
-    const res = await httpRequest.PUT(
+    const res = await httpRequest.put(
       `/auditorium/${id}`,
       {
         name
