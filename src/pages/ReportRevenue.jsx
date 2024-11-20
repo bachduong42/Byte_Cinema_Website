@@ -12,7 +12,6 @@ function ReportRevenue() {
   const [data, setData] = useState([]);
   const [dataMonthly, setDataMonthly] = useState([]);
   const [dataYear, setDataYear] = useState([]);
-  const [date, setDate] = useState("")
   const [currentMonth, setCurrentMonth] = useState("");
   const [currentYear, setCurrentYear] = useState("");
   useEffect(() => {
@@ -29,80 +28,6 @@ function ReportRevenue() {
     const date = new Date(`${monthString}-22T14:00:00Z`);
     return date.toISOString();
   }
-  // const dt = [
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-01-31T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-02-29T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-03-31T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-04-30T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-05-31T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-06-30T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-07-31T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-08-31T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-09-30T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-10-31T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 4,
-  //     "totalRevenue": 350000.00,
-  //     "totalTicket": 900,
-  //     "time": "2024-11-30T16:59:59.999999999Z"
-  //   },
-  //   {
-  //     "totalTicketsSold": 0,
-  //     "totalRevenue": 0,
-  //     "totalTicket": 0,
-  //     "time": "2024-12-31T16:59:59.999999999Z"
-  //   }
-  // ]
   useEffect(() => {
     async function fetchApi() {
       console.log(type);

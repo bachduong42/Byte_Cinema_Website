@@ -18,10 +18,10 @@ function TableMonthRevenue({ revenueData, isYear }) {
             dataIndex: "time",
             key: "time",
             render: (value, record) => {
-                // Conditionally format the time
+
                 return isYear
-                    ? dayjs(record.time).format("MM-YYYY")  // For year view, show "MM-YYYY"
-                    : dayjs(record.time).format("DD-MM-YYYY");  // For day view, show "DD-MM-YYYY"
+                    ? dayjs(record.time).format("MM-YYYY")
+                    : dayjs(record.time).format("DD-MM-YYYY");
             },
         },
         {
