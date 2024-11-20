@@ -1,4 +1,4 @@
-function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPrice, startTime }) {
+function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPrice, startTime, auditoriumName }) {
 
   function formatDate(dateStr) {
     const date = new Date(dateStr);
@@ -108,7 +108,7 @@ function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPr
           </div>
           <div className="flex justify-between font-semibold">
             <span>Phòng chiếu:</span>
-            <span>B05</span>
+            <span>{auditoriumName}</span>
           </div>
           <div className="flex justify-between font-semibold">
             <span>Số ghế:</span>
