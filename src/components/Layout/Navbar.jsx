@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../../assets/images/logo.png"
+import logo from "../../assets/images/logo.png";
 import Button from "../Button/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import Image from "../Image/Image";
@@ -9,11 +9,13 @@ import ForgetPassword from "../../modules/auth/ForgetPassword";
 import ChangePassword from "../../modules/auth/ChangePassword";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import noImage from "../../assets/images/hy.jpg"
+import noImage from "../../assets/images/hy.jpg";
 import ConfirmOtp from "../../modules/auth/ConfirmOtp";
-import Tippy from '@tippyjs/react/headless';
+import Tippy from "@tippyjs/react/headless";
 import { MdLogin, MdOutlinePerson, MdOutlineSettings } from "react-icons/md";
+import { FaClockRotateLeft } from "react-icons/fa6";
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { toast } from "react-toastify";
 const Navbar = React.memo(() => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
@@ -88,6 +90,20 @@ const Navbar = React.memo(() => {
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const handleViewTransactions = () => {
+    if (isLogin) {
+      navigate(`/transactions`);
+      setActiveButton("/transactions");
+    } else {
+      toast.info("Vui lòng đăng nhập để đặt vé!", {
+        autoClose: 1000,
+        position: "top-center",
+      });
+    }
+    // navigate(`/transactions`);
+    // setActiveButton("/transactions");
   };
 
   const isHome = location.pathname === "/";
@@ -186,6 +202,14 @@ const Navbar = React.memo(() => {
               >
                 Rạp/Giá vé
               </Button>
+              <Button
+                // href="/transactions"
+                className="lg:text-xl md:text-base"
+                active={activeButton === "/transactions"}
+                onClick={handleViewTransactions}
+              >
+                Giao dịch
+              </Button>
             </>
           )}
         </ul>
@@ -211,6 +235,13 @@ const Navbar = React.memo(() => {
                   <MdOutlineSettings className=" text-[25px]" />
                   <span className="nunito-text">Cài đặt</span>
                 </div>
+                {/* <div
+                  onClick={handleViewTransactions}
+                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer"
+                >
+                  <FaClockRotateLeft className=" text-[20px]" />
+                  <span className="nunito-text">Giao dịch</span>
+                </div> */}
                 <div
                   onClick={handleLogout}
                   className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer"

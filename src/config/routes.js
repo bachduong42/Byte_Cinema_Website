@@ -20,6 +20,7 @@ const routes = {
   bookMovieTicket: "/book-movie-ticket/:id",
   manageAuditorium: "/manage-auditorium",
   reportRevenue: "/report-revenue",
+  transactions: "/transactions"
 };
 
 export default routes;

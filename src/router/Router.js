@@ -18,6 +18,7 @@ import BillSuccessfull from "../modules/Booking/BillSuccesfull";
 import BillFailure from "../modules/Booking/BillFailure";
 import AuditoriumManagement from "../pages/AuditoriumManagement";
 import ReportRevenue from "../pages/ReportRevenue";
+import { Transactions } from "../pages/Transactions";
 const publicRoutes = [
   { path: config.routes.home, component: Home },
   { path: config.routes.categories, component: Categories },
@@ -43,6 +44,7 @@ const publicRoutes = [
     path: config.routes.reportRevenue,
     component: ReportRevenue,
   },
+  { path: config.routes.transactions, component: Transactions },
 ];
 const privateRoutes = [];
 export { publicRoutes, privateRoutes };

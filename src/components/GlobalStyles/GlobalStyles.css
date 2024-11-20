@@ -211,13 +211,28 @@ html *::-webkit-scrollbar-track {
 }
 
 .loader {
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 50%;
 }
 .modal-outer-box {
+  display: flex;
   position: relative;
-  width: 28rem;
-  height: 18rem;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+  height: 60%;
+}
+
+.modal-inner-box {
+  /* position: relative; */
+  z-index: 2;
+  background-color: white;
+  border-radius: 10px;
+  height: 90%;
+  padding: 20px;
+  width: 90%;
+  justify-content: center;
+  animation: modalFadeIn 0.5s;
 }
 
 @keyframes overlayFadeIn {
@@ -239,6 +254,20 @@ html *::-webkit-scrollbar-track {
     transform: translateX(0);
   }
 }
+
+
+.modal-overlay.closing {
+  animation: overlayFadeOut 0.5s;
+  transition-timing-function: cubic-bezier(0.84, 0, 0.7, 0);
+}
+
+.modal-content {
+  display: flex;
+  /* flex-direction: row; */
+  text-align: center;
+  gap: 2rem;
+}
+
 
 @keyframes overlayFadeOut {
   from {
