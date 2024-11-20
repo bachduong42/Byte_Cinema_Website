@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-const BookingMovieSchedule = ({ data, onClick }) => {
+const BookingMovieSchedule = ({ data, onClick, onChange }) => {
   const [selectedDate, setSelectedDate] = useState(data[0]);
   const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -16,7 +16,7 @@ const BookingMovieSchedule = ({ data, onClick }) => {
         {data.map((item, index) => (
           <button
             key={index}
-            onClick={() => setSelectedDate(item)}
+            onClick={() => {setSelectedDate(item)}}
             className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
               selectedDate.date === item.date
                 ? "bg-[#092b4b] text-white"
@@ -38,7 +38,8 @@ const BookingMovieSchedule = ({ data, onClick }) => {
             }`}
             onClick={() => {
               setSelectedSlot(slot.id);
-              onClick(slot.id, slot.ticketPrice, slot.startTime);
+              onClick(slot.id, slot.ticketPrice, slot.startTime, slot.auditoriumName, slot.auditoriumId);
+              onChange();
             }}
           >
               {getTimeFromDateTime(slot.startTime)}
