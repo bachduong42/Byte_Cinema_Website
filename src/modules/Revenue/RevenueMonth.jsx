@@ -8,7 +8,7 @@ function RevenueMonth({ revenueData, month, isYear }) {
     const filteredData = filterByMonth(revenueData, month);
     return (
         <>
-            <div className="w-[60%] mx-auto gap-10">
+            <div className="w-full mx-auto gap-10">
                 <TableMonthRevenue revenueData={filteredData} isYear={isYear}></TableMonthRevenue>
                 <ChartDaily data={filteredData}></ChartDaily>
             </div>
