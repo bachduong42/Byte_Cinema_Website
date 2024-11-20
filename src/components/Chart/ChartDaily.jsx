@@ -1,8 +1,12 @@
 import { Line } from "@ant-design/charts";
+import dayjs from "dayjs";
 function ChartDaily({ data }) {
-    
+    const formattedData = data.map(item => ({
+        date: dayjs(item.time).format("DD-MM-YYYY"),
+        revenue: item.totalRevenue,
+    }));
     const config = {
-        data: data,
+        data: formattedData,
         xField: "date",
         yField: "revenue",
         xAxis: {
@@ -28,6 +32,7 @@ function ChartDaily({ data }) {
             shape: "circle",
         },
     };
+
     return <Line {...config} />;
 }
 

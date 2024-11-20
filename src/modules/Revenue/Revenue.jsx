@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RevenueDaily from "./RevenueDaily";
+import RevenueDaily from "./RevenueMonth";
 import RevenueMonthly from "./RevenueMonth";
 
 function Revenue() {
@@ -93,7 +93,7 @@ function Revenue() {
                     className="px-3 py-1 outline-none border border-[#ced5db] bg-[#f2f4f6] rounded-lg" />
             </div>
             {/* <RevenueDaily data={data} month={currentMonth}></RevenueDaily> */}
-            <RevenueMonthly data={dataMonth} year={currentYear}></RevenueMonthly>
+            {/* <RevenueMonthly data={dataMonth} year={currentYear}></RevenueMonthly> */}
         </div>
     );
 }
