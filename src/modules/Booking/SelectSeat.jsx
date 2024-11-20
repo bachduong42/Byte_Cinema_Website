@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import BookingMovieSchedule from "../../components/MovieSchedule/BookingMovieSchedule";
 
 function SelectSeat({
@@ -9,7 +10,10 @@ function SelectSeat({
   setlistSeatIds,
   schedule,
   onClick,
-  totalSeats
+  totalSeats,
+  auditoriumName,
+  orderedSeats,
+  auditoriumSeats,
 }) {
   //   const handleSeatClick = (seat) => {
   //     setListSeats((prevSeats) => {
@@ -21,9 +25,12 @@ function SelectSeat({
   //     });
   //   };
 
-  const handleSeatClick = (row, seatNumber) => {
-    const seatLabel = `${row}${seatNumber}`;
-    const seatId = rows.indexOf(row) * seatsPerRow + seatNumber;
+  const orderedIdSeat = orderedSeats.map((orderedSeat) => {
+    return orderedSeat.id;
+  });
+
+  const handleSeatClick = (seatLabel, id) => {
+    const seatId = id;
     const seatExists = listSeatIds.includes(seatId);
     setlistSeatIds((prevIds) => {
       if (seatExists) {
@@ -39,7 +46,24 @@ function SelectSeat({
         return [...prevSeats, seatLabel];
       }
     });
+    console.log(seatId);
+
+    console.log(orderedSeats);
   };
+
+  const clear = () => {
+    setListSeats([]);
+    setlistSeatIds([]);
+  };
+  // Tổ chức mảng 2 chiều
+  const organizedSeats = auditoriumSeats.reduce((result, seat) => {
+    if (!result[seat.seatRow]) result[seat.seatRow] = [];
+    result[seat.seatRow].push(seat);
+    return result;
+  }, {});
+
+  // Chuyển đổi thành mảng 2 chiều
+  const seatArray2D = Object.values(organizedSeats);
 
   function groupScreeningsByDate(screenings) {
     if (screenings) {
@@ -74,7 +98,9 @@ function SelectSeat({
   return (
     <>
       <div className="flex w-full bg-[#d9e9f0] rounded-md h-[180px] mb-5 items-center px-5 justify-between">
-        <div className="font-bold text-[#092b4b] text-[20px]">Đổi suất chiếu</div>
+        <div className="font-bold text-[#092b4b] text-[20px]">
+          Đổi suất chiếu
+        </div>
         {/* <div className="flex gap-3">
                     <div className="bg-[#092b4b] cursor-pointer  text-white rounded-md px-5 py-2">11:30</div>
                     <div className="bg-white text-[#092b4b] hover:bg-[#092b4b] hover:text-white cursor-pointer  rounded-md px-5 py-2">12:30</div>
@@ -84,6 +110,7 @@ function SelectSeat({
         <BookingMovieSchedule
           data={groupScreeningsByDate(schedule)}
           onClick={onClick}
+          onChange={clear}
         />
       </div>
       <div className="flex justify-between">
@@ -91,45 +118,48 @@ function SelectSeat({
           Chọn ghế
         </span>
         <div className="w-[110px] h-[30px] bg-[#0DB1F6] text-white flex items-center justify-center font-semibold rounded-md">
-          Phòng B05
+          {auditoriumName}
         </div>
       </div>
       <div>Màn hình</div>
       <div className="w-[80%] border border-t-[#0DB1F6] border-t-2 mx-auto my-2"></div>
       <div className="space-y-2 pt-5">
-        {rows.map((row, rowIndex) => {
-          // Tính số ghế còn lại và số ghế trong hàng hiện tại
-          const remainingSeats = totalSeats - rowIndex * seatsPerRow;
+        {seatArray2D.map((row, rowIndex) => {
+          const remainingSeats =
+            (auditoriumSeats.length - rowIndex) ^ seatsPerRow;
           const seatsInRow = Math.min(seatsPerRow, remainingSeats); // Số ghế cho hàng hiện tại
-
           return (
-            <div className="flex items-center gap-16 justify-center" key={row}>
-              <div className="w-5">{row}</div>
+            <div
+              key={`row-${rowIndex}`}
+              className="flex items-center gap-16 justify-center"
+            >
+              <div className="w-5">{row[0]?.seatRow}</div>
               <div
                 className="grid gap-3"
-                style={{ gridTemplateColumns: `repeat(${seatsInRow}, minmax(0, 1fr))` }}
+                style={{
+                  gridTemplateColumns: `repeat(${seatsInRow}, minmax(0, 1fr))`,
+                }}
               >
-                {Array.from({ length: seatsInRow }, (_, index) => {
-                  const seatNumber = index + 1;
-                  const seatLabel = `${row}${seatNumber}`;
-                  const seatId = rowIndex * seatsPerRow + seatNumber;
-                  const isSelected = listSeatIds.includes(seatId);
-
+                {row.map((seat) => {
+                  const isSelected = listSeatIds.includes(seat.id);
+                  const seatLabel = `${seat.seatRow}${seat.seatNumber}`;
+                  const isOrdered = orderedIdSeat.includes(seat.id);
                   return (
                     <button
-                      onClick={() => handleSeatClick(row, seatNumber)}
+                      onClick={() => handleSeatClick(seatLabel, seat.id)}
                       key={seatLabel}
-                      className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition ${isSelected
-                        ? "bg-[#F75900] text-white font-semibold"
-                        : "hover:bg-[#F75900]"
-                        } flex justify-center items-center`}
+                      disabled={isOrdered}
+                      className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition 
+                        ${isSelected ? "bg-[#F75900] text-white font-semibold" : ""}
+                        ${isOrdered ? "bg-black text-white" : "hover:bg-[#F75900]"}`
+                      }
                     >
-                      {seatNumber}
+                      {seat.seatNumber}
                     </button>
                   );
                 })}
               </div>
-              <div className="w-5">{row}</div>
+              <div className="w-5">{row[0]?.seatRow}</div>
             </div>
           );
         })}

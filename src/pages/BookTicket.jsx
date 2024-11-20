@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Button from "../components/Button/Button";
 import Bill from "../modules/Booking/Bill";
 import SelectSeat from "../modules/Booking/SelectSeat";
@@ -9,7 +9,10 @@ import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import { toast } from "react-toastify";
 import { createBookingRequest } from "../services/createBooking";
 import { paymentRequest } from "../services/payment";
+import { getAuditorium } from "../services/getAuditoriumById";
+import getOrderedSeatsByScreeningId from "../services/getOrderedSeats";
 // import BillSuccessfull from "../modules/Booking/BillSuccesfull";
+import loadingSvg from '../assets/svgs/loading.svg'
 function BookTicket() {
   const { id } = useParams();
 
@@ -17,12 +20,23 @@ function BookTicket() {
   const [screeningId, setScreeningId] = useState(0);
   //   const [auditorium, setAuditorium] = useState(null);
   // const [testSeats2, setTestSeats2] = useState([{ id: 91 }, { id: 92 }]);
+
   const [testSeats, setTestSeats] = useState([]);
   const [listIdSeats, setListIdSeats] = useState([]);
+
   const [selectedTicketPrice, setSelectedTicketPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [billStartTime, setBillStartTime] = useState(null);
+  const [auditoriumName, setAuditoriumName] = useState("Phòng");
+  const [auditoriumId, setAuditoriumId] = useState(0);
   const [bookingId, setBookingId] = useState(0);
+  const [auditoriumSeats, setAuditoriumSeats] = useState([]);
+  const [orderedSeats, setOrderedSeats] = useState([]);
+
+  const [isShowLoader, setIsShowLoader] = useState(false);
+  // const overlayRef = useRef(null);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isOverlayClosing, setIsOverlayClosing] = useState(false);
 
   useEffect(() => {
     async function getMovie() {
@@ -37,8 +51,29 @@ function BookTicket() {
   }, [id]);
 
   useEffect(() => {
-    console.log(screeningId);
+
   }, [screeningId]);
+
+  
+  async function _getOrderedSeatsByScreeningId(_screeningId) {
+    const seats = await getOrderedSeatsByScreeningId(_screeningId);
+    if (seats) {
+      setOrderedSeats(seats);
+      console.log(seats);
+    }
+  }
+  
+
+  async function getAuditoriumSeats(auditoriumId) {
+    setIsLoading(true);
+    const seats = await getAuditorium(auditoriumId);
+
+    if (seats) {
+      // console.log(seats.seats);
+      setAuditoriumSeats(seats.seats);
+      // console.log(auditoriumSeats);
+    }
+  }
 
   useEffect(() => {
     setTestSeats(listIdSeats.map((_id) => ({ id: _id })));
@@ -78,14 +113,35 @@ function BookTicket() {
   //     fetchAuditorium();
   //   }, []);
 
-  const handleSelectScreening = (id, ticketPrice, startTime) => {
+  const handleSelectScreening = (
+    id,
+    ticketPrice,
+    startTime,
+    auditoriumName,
+    auditoriumId
+  ) => {
+    setIsOverlayOpen(true);
+    setIsShowLoader(true);
     setScreeningId(id);
+    
+    _getOrderedSeatsByScreeningId(id);
     setSelectedTicketPrice(ticketPrice);
     setBillStartTime(startTime);
+    setAuditoriumName(auditoriumName);
+    getAuditoriumSeats(auditoriumId);
+
+    setTimeout(() => {
+      setIsOverlayClosing(true);
+      setTimeout(() => {
+        setIsOverlayOpen(false);
+        setIsShowLoader(false);
+        setIsOverlayClosing(false); // Reset for next use
+      }, 500); // Match the animation duration
+    }, 2500);
   };
 
   const seatsPerRow = 10;
-  const totalSeats = 125;
+  const totalSeats = 100;
   function generateSeatLayout(totalSeats, seatsPerRow) {
     const rows = [];
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -109,9 +165,9 @@ function BookTicket() {
     return rows;
   }
   const seatLayout = generateSeatLayout(totalSeats, seatsPerRow);
-  console.log(seatLayout);
+  // console.log(seatLayout);
   const usedAlphabets = seatLayout.map((row) => row[0][0]);
-  console.log(usedAlphabets);
+  // console.log(usedAlphabets);
   const [currentStep, setCurrentStep] = useState(1);
   const [slideDirection, setSlideDirection] = useState("");
   const [listSeats, setListSeats] = useState([]);
@@ -180,7 +236,6 @@ function BookTicket() {
       // window.location.reload();
       //   navigate("/film-management");
 
-
       // } catch (error) {
       //   console.error(
       //     "Booking error: ",
@@ -189,7 +244,6 @@ function BookTicket() {
       //   toast.error(`${error.response?.data?.message || error.message}`, {
       //     autoClose: 1000,
       //   });
-
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       if (errorMessage.includes("already ordered")) {
@@ -205,13 +259,17 @@ function BookTicket() {
       }
       console.error("Booking error: ", errorMessage);
 
-
       throw error;
     }
   };
 
   return (
     <>
+    <div className={`${isOverlayOpen ? 'modal-overlay ' : 'hidden'} ${isOverlayClosing ? 'closing' : ''}`}>
+      <div className="modal-outer-box">
+        {isShowLoader && <img src={loadingSvg} alt="Loading..." className="loader" />}
+      </div>
+    </div>
       <div className="min-h-[800px] h-auto flex flex-col mt-[115px] justify-start w-full lg:px-16 pt-5 pb-10">
         <div className="text-3xl mb-[15px] font-bold text-[#092b4b] text-start">
           Đặt vé
@@ -220,19 +278,23 @@ function BookTicket() {
           <div className="w-[80%] h-[15px] border border-gray rounded-[23px] bg-[#ced5db] text-center flex">
             <div className="w-1/4 h-full bg-[#284662] rounded-s-3xl"></div>
             <div
-              className={`w-1/4 h-full ${currentStep === 2 || currentStep === 4 || currentStep === 3
-                ? "bg-[#284662]"
-                : "bg-[#576f85]"
-                }`}
+              className={`w-1/4 h-full ${
+                currentStep === 2 || currentStep === 4 || currentStep === 3
+                  ? "bg-[#284662]"
+                  : "bg-[#576f85]"
+              }`}
             ></div>
             <div
-              className={`w-1/4 h-full ${currentStep === 2 ? "bg-[#576f85]" : ""
-                } ${currentStep === 4 || currentStep === 3 ? "bg-[#284662]" : ""
-                }`}
+              className={`w-1/4 h-full ${
+                currentStep === 2 ? "bg-[#576f85]" : ""
+              } ${
+                currentStep === 4 || currentStep === 3 ? "bg-[#284662]" : ""
+              }`}
             ></div>
             <div
-              className={`w-1/4 h-full ${currentStep === 4 ? "bg-[#284662]" : ""
-                } ${currentStep === 3 ? "bg-[#576f85]" : ""}`}
+              className={`w-1/4 h-full ${
+                currentStep === 4 ? "bg-[#284662]" : ""
+              } ${currentStep === 3 ? "bg-[#576f85]" : ""}`}
             ></div>
           </div>
           <div className="w-[80%] h-[15px]  text-center flex">
@@ -252,8 +314,9 @@ function BookTicket() {
         </div>
         <div className="flex flex-row gap-5 w-full h-full mt-10">
           <div
-            className={`flex flex-col px-10 ${currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "
-              }`}
+            className={`flex flex-col px-10 ${
+              currentStep === 4 ? "w-full" : "lg:w-3/4 w-3/5 "
+            }`}
           >
             {currentStep === 1 && movie?.screenings && (
               <SelectSeat
@@ -266,8 +329,12 @@ function BookTicket() {
                 onClick={handleSelectScreening}
                 listSeatIds={listIdSeats}
                 setlistSeatIds={setListIdSeats}
-              // chosenSeats={chosenSeats}
-              // setChosenSeats={setChosenSeats}
+                auditoriumName={auditoriumName}
+                orderedSeats={orderedSeats}
+                auditoriumSeats={auditoriumSeats}
+
+                // chosenSeats={chosenSeats}
+                // setChosenSeats={setChosenSeats}
               ></SelectSeat>
             )}
             {currentStep == 2 && <ConfirmSeat></ConfirmSeat>}
@@ -276,22 +343,22 @@ function BookTicket() {
             <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
 
             <div className="flex gap-16 pt-3 justify-center mt-5">
-
-              {currentStep !== 1 &&
+              {currentStep !== 1 && (
                 <button
                   onClick={handleBackPage}
                   className="bg-white text-base rounded-[5px] text-black border-[#092b4b] border md:w-[120px] md:h-[35px] "
                 >
                   Quay lại
                 </button>
-              }
+              )}
               <Button
                 disabled={disableNextPageButton}
                 onClick={
                   currentStep == 2 ? handleCreateBooking : handleNextPage
                 }
-                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                className={`bg-[#092b4b] rounded-[5px]  md:w-[120px] md:h-[35px] w-[80px] h-[25px] text-white ${
+                  disableNextPageButton ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 {currentStep === 1 ? "Tiếp theo" : "Xác nhận"}
               </Button>
@@ -305,6 +372,7 @@ function BookTicket() {
             nation={movie.nation}
             ticketPrice={selectedTicketPrice}
             startTime={billStartTime}
+            auditoriumName={auditoriumName}
           ></Bill>
         </div>
       </div>
