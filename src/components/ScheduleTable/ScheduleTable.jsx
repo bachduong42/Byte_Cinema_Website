@@ -122,11 +122,13 @@ useEffect(() => {
       onFilter: (value, record) => record.screenRoom.includes(value),
     },
     {
-      title: "Giá vé",
+      title: "Giá vé (VNĐ)",
       dataIndex: "price",
       key: "price",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.price - b.price,
+      render: (value, record) =>
+        `${(record.price || 0).toLocaleString()}`,
     },
     {
       title: "Vé đã đặt",

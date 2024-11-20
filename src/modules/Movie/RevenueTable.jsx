@@ -31,12 +31,14 @@ function RevenueTable({ revenueData }) {
       onFilter: (value, record) => record.movieName.includes(value),
     },
     {
-      title: "Doanh thu",
+      title: "Doanh thu (VNĐ)",
       dataIndex: "totalRevenue",
       key: "totalRevenue",
       width: "25%",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.totalRevenue - b.totalRevenue,
+      render: (value, record) =>
+        `${(record.totalRevenue || 0).toLocaleString()}`,
     },
     {
       title: "Tổng vé",
