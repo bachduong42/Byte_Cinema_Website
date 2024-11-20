@@ -103,26 +103,28 @@ function ReportRevenue() {
       </div>
       {type === "byFilm" && <RevenueTable revenueData={data} />}
       {type === "byMonth" &&
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full gap-10">
           <div className="w-full mx-auto gap-10 justify-end flex">
             <input
               value={currentMonth}
               onChange={handleMonthChange}
               type="month"
+              min="2000-01"
+              max={`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}`}
               className="px-3 py-1 outline-none border border-[#ced5db] bg-[#f2f4f6] rounded-lg" />
           </div>
           <RevenueMonth revenueData={dataMonthly} month={currentMonth} />
         </div>
       }
       {type === "byYear" &&
-        <div className="flex flex-col w-full">
-          <div className="w-full mx-auto gap-10 justify-end flex">
+        <div className="flex flex-col w-full gap-10">
+          <div className="w-full mx-auto gap-10 justify-end flex ">
             <input
               value={currentYear}
               onChange={(e) => setCurrentYear(e.target.value)}
               type="number"
               min="2000"
-              max="2100"
+              max={new Date().getFullYear()}
               className="px-3 py-1 outline-none border border-[#ced5db] bg-[#f2f4f6] rounded-lg" />
           </div>
           <RevenueMonth revenueData={dataYear} month={currentYear} isYear />
