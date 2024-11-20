@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/charts": "^2.2.3",
+    "@ant-design/icons": "^5.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@gsap/react": "^2.1.1",
     "@ionic/react": "^8.3.1",
