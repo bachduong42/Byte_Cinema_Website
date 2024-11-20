@@ -13,16 +13,8 @@ function ReportRevenue() {
     async function fetchApi() {
       if (type === "byFilm") {
         let dataRes = await reportRevenueByFilm();
-        dataRes = { id: 1, name: "Em và Trịnh", totalTickets: 20, ...dataRes };
-        const dataRes2 = {
-          id: 2,
-          name: "Mắt biếc",
-          totalTickets: 10,
-          totalTicketsSold: 8,
-          totalRevenue: 200000,
-        };
         if (dataRes) {
-          setData([dataRes, dataRes2]);
+          setData(dataRes);
         }
       } else if (type === "byMonth") {
       } else if (type === "byYear") {

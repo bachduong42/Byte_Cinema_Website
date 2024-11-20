@@ -20,15 +20,15 @@ function RevenueTable({ revenueData }) {
     },
     {
       title: "Tên phim",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "movieName",
+      key: "movieName",
       width: "35%",
       filters: revenueData.map((revenue) => ({
-        text: revenue.name,
-        value: revenue.name,
+        text: revenue.movieName,
+        value: revenue.movieName,
       })),
-      filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
+      filteredValue: filteredInfo.movieName || null,
+      onFilter: (value, record) => record.movieName.includes(value),
     },
     {
       title: "Doanh thu",
@@ -40,11 +40,11 @@ function RevenueTable({ revenueData }) {
     },
     {
       title: "Tổng vé",
-      dataIndex: "totalTickets",
-      key: "totalTickets",
+      dataIndex: "totalTicket",
+      key: "totalTicket",
       width: "15%",
       defaultSortOrder: "descend",
-      sorter: (a, b) => a.totalTickets - b.totalTickets,
+      sorter: (a, b) => a.totalTicket - b.totalTicket,
     },
     {
       title: "Vé đã bán",
