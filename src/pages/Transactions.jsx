@@ -186,7 +186,7 @@ export const Transactions = () => {
                   <img src={loadingSvg} alt="Loading..." className="loader" />
                 )}
                 {isShowModal && (
-                  <div className="modal-inner-box" ref={modalRef}>
+                  <div className="" ref={modalRef}>
                     <div className="modal-content">
                       <BillTransaction
                         listSeats={chosenBooking.nameSeats}
