@@ -21,25 +21,26 @@ function GenreTable({ movieGenres, fetchGenres }) {
             title: "STT",
             dataIndex: "STT",
             key: "STT",
-            width: "10%",
+            width: "15%",
             render: (_, __, index) => index + 1,
         },
         {
             title: 'Thể loại',
             dataIndex: 'name',
             key: 'name',
-            width: "20%",
+            width: "25%",
         },
         {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
-            width: "30%",
+            width: "40%",
         },
         {
             title: "Cập nhật",
             dataIndex: "update",
             key: "update",
+            width: "15%",
             render: (_, record) => (
                 <button
                     id={record.id}
@@ -50,20 +51,20 @@ function GenreTable({ movieGenres, fetchGenres }) {
                 </button>
             ),
         },
-        {
-            title: "Xoá",
-            dataIndex: "delete",
-            key: "delete",
-            render: (_, record) => (
-                <button
-                    id={record.id}
-                    // onClick={() => handleDel(record.id)}
-                    className="text-[red] rounded px-4 py-2 text-[18px]"
-                >
-                    <FontAwesomeIcon icon={faTrash} />
-                </button>
-            ),
-        },
+        // {
+        //     title: "Xoá",
+        //     dataIndex: "delete",
+        //     key: "delete",
+        //     render: (_, record) => (
+        //         <button
+        //             id={record.id}
+        //             // onClick={() => handleDel(record.id)}
+        //             className="text-[red] rounded px-4 py-2 text-[18px]"
+        //         >
+        //             <FontAwesomeIcon icon={faTrash} />
+        //         </button>
+        //     ),
+        // },
     ]
     return (
         <>
