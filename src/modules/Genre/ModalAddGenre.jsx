@@ -47,11 +47,11 @@ function ModalAddGenre({ handleClose, mode = "", idGenre = "", onSuccess }) {
         }
         try {
             if (mode === "add") {
-                const response = await addGenreRequest(name.trimEnd(), description.trimEnd());
+                const response = await addGenreRequest(name.trim(), description.trim());
                 toast.success("Thêm thể loại thành công");
                 console.log(response);
             } else {
-                const response = await updateGenreRequest(name.trimEnd(), description.trimEnd(), idGenre);
+                const response = await updateGenreRequest(name.trim(), description.trim(), idGenre);
                 toast.success("Cập nhật thể loại thành công");
             }
             onSuccess();
