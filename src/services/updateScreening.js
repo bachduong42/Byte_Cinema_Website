@@ -8,7 +8,7 @@ export const updateScreening = async (
   auditoriumId
 ) => {
   try {
-    const response = await httpRequest.PUT(
+    const response = await httpRequest.put(
       `/update-screening/${id}`,
       {
         startTime,
