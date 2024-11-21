@@ -151,7 +151,7 @@ function SelectSeat({
                       disabled={isOrdered}
                       className={`w-[25px] h-[25px] border border-[#e1e1e1] rounded-md transition 
                         ${isSelected ? "bg-[#F75900] text-white font-semibold" : ""}
-                        ${isOrdered ? "bg-black text-white" : "hover:bg-[#F75900]"}`
+                        ${isOrdered ? "bg-[#d0d0d0] text-white" : "hover:bg-[#F75900]"}`
                       }
                     >
                       {seat.seatNumber}
