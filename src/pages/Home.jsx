@@ -277,7 +277,7 @@ const Home = () => {
           <Swiper
             ref={swiperRef}
             spaceBetween={30}
-            slidesPerView={5}
+            slidesPerView={listMovie.length >= 5 ? 5 : listMovie.length}
             navigation
             pagination={{ clickable: true }}
             loop={true}
