@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Search from "../components/Layout/Search";
-import {MdFilterList } from "react-icons/md";
+import { MdFilterList } from "react-icons/md";
 import Button from "../components/Button/Button";
 import MovieCard from "../modules/Movie/MovieCard";
 import { getListMovie } from "../services/getListMovie";
