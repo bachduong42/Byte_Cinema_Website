@@ -2,7 +2,7 @@ import * as httpRequest from "../utils/httpRequest";
 
 const getPaidBookingsRequest = async (status, page) => {
     try {
-        const res = await httpRequest.get(`/bookings/get-all?isAlreadyScreened=${status}&page=${page}&size=4`, {
+        const res = await httpRequest.get(`/bookings/get-all?isAlreadyScreened=${status}&page=${page}&size=5&sort=id,desc`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
