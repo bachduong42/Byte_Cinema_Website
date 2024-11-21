@@ -97,66 +97,56 @@ function ModalEditScreening({ handleClose, idScreening, handleReload }) {
     handleClose();
   };
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
+const handleUpdate = async (e) => {
+  e.preventDefault();
 
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    const day = selectedDate.getDate();
-    const hours = selectedTime.getHours();
-    const minutes = selectedTime.getMinutes();
-    const combinedDateTime = new Date(
-      Date.UTC(year, month, day, hours, minutes)
-    );
-    const releaseDate = new Date(releaseDay);
+  if (!validateForm()) {
+    return;
+  }
 
-    try {
-      if (combinedDateTime.toISOString() >= releaseDate.toISOString()) {
-        console.log("Vo update");
-        const data = await updateScreening(
-          idScreening,
-          combinedDateTime,
-          price,
-          movieId,
-          selectedRoom
-        );
-        console.log(data);
-        if (data) {
-          console.log("Vo co data");
-          toast.success("Cập nhật lịch chiếu thành công", {
-            autoClose: 1000,
-            position: "top-center",
-          });
-          handleClose();
-          handleReload(Date.now());
-        } else {
-          toast.error(
-            "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
-            {
-              autoClose: 1200,
-              position: "top-center",
-            }
-          );
-        }
-      } else {
-        const releaseDayFormat = new Date(releaseDate);
-        const year = releaseDayFormat.getFullYear();
-        const month = (releaseDayFormat.getMonth() + 1)
-          .toString()
-          .padStart(2, "0");
-        const day = releaseDayFormat.getDate().toString().padStart(2, "0");
-        const formattedDate = `${day}-${month}-${year}`;
-        setErrors({
-          ...errors,
-          date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
+  // Kết hợp ngày và giờ từ các giá trị đã chọn
+  const year = selectedDate.getFullYear();
+  const month = selectedDate.getMonth();
+  const day = selectedDate.getDate();
+  const hours = selectedTime.getHours();
+  const minutes = selectedTime.getMinutes();
+  const combinedDateTime = new Date(Date.UTC(year, month, day, hours, minutes));
+
+  // Ngày phát hành phim
+  const releaseDate = new Date(releaseDay);
+
+  // Thiết lập giờ, phút, giây và mili giây về 0 để chỉ so sánh ngày
+  const combinedDateOnly = new Date(
+    combinedDateTime.getFullYear(),
+    combinedDateTime.getMonth(),
+    combinedDateTime.getDate()
+  );
+  const releaseDateOnly = new Date(
+    releaseDate.getFullYear(),
+    releaseDate.getMonth(),
+    releaseDate.getDate()
+  );
+
+  try {
+    if (combinedDateOnly >= releaseDateOnly) {
+      console.log("Vo update");
+      const data = await updateScreening(
+        idScreening,
+        combinedDateTime,
+        price,
+        movieId,
+        selectedRoom
+      );
+      console.log(data);
+      if (data) {
+        console.log("Vo co data");
+        toast.success("Cập nhật lịch chiếu thành công", {
+          autoClose: 1000,
+          position: "top-center",
         });
-      }
-    } catch (error) {
-      if(error.response.data.message.includes('There is already screening'))
-      {
+        handleClose();
+        handleReload(Date.now());
+      } else {
         toast.error(
           "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
           {
@@ -165,31 +155,51 @@ function ModalEditScreening({ handleClose, idScreening, handleReload }) {
           }
         );
       }
-      else {
-        toast.error(
-          "Đã có vé được đặt vào thời gian này, không thể cập nhật!",
-          {
-            autoClose: 1200,
-            position: "top-center",
-          }
-        );
-      }
+    } else {
+      const releaseDayFormat = new Date(releaseDate);
+      const year = releaseDayFormat.getFullYear();
+      const month = (releaseDayFormat.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      const day = releaseDayFormat.getDate().toString().padStart(2, "0");
+      const formattedDate = `${day}-${month}-${year}`;
+      setErrors({
+        ...errors,
+        date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
+      });
     }
-  };
+  } catch (error) {
+    if (error.response?.data?.message.includes("There is already screening")) {
+      toast.error(
+        "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
+        {
+          autoClose: 1200,
+          position: "top-center",
+        }
+      );
+    } else {
+      toast.error("Đã có vé được đặt vào thời gian này, không thể cập nhật!", {
+        autoClose: 1200,
+        position: "top-center",
+      });
+    }
+  }
+};
+
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-0"></div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-0 p-2"></div>
       <div
         className="fixed inset-0 flex w-full h-screen justify-center items-center text-center z-50"
         onClick={handleCancel}
       >
         <div
-          className="modal min-w-[550px] min-h-[370px] w-1/3 h-1/3 flex  border-2 border-none rounded-xl shadow-xl stroke-2 bg-white stroke-[#D7D7D7] flex-col items-center"
+          className="modal min-w-[450] min-h-[370px] p-[30px] pt-0 flex  border-2 border-none rounded-xl shadow-xl stroke-2 bg-white stroke-[#D7D7D7] flex-col items-center"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex pt-2 items-center h-[70px]">
-            <div className="text-[23px] w-[400px] text-[#0F3E4A] font-bold">
+            <div className="text-[23px] min-w-[500px] text-[#0F3E4A] font-bold">
               Cập nhật lịch chiếu
             </div>
             <MdClose

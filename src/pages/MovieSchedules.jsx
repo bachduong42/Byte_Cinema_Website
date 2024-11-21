@@ -113,61 +113,88 @@ function MovieSchedules() {
     setRoom("");
   };
 
-  const handleAddSchedule = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    const day = selectedDate.getDate();
-    const hours = selectedTime.getHours();
-    const minutes = selectedTime.getMinutes();
-    const combinedDateTime = new Date(
-      Date.UTC(year, month, day, hours, minutes)
-    );
+ const handleAddSchedule = async (e) => {
+   e.preventDefault();
 
-    const releaseDate = new Date(filmData.releaseDay);
+   if (!validateForm()) {
+     return;
+   }
 
-    try {
-      if (combinedDateTime.toISOString() >= releaseDate.toISOString()) {
-        const data = await addSchedule(
-          combinedDateTime.toISOString(),
-          price,
-          id,
-          room
-        );
-        if (data) {
-          toast.success("Thêm lịch chiếu thành công", {
-            autoClose: 800,
-            position: "top-right",
-          });
-          handleCancel();
-          setReload((prev) => !prev);
-        } else {
-          toast.error(
-            "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
-            {
-              autoClose: 1500,
-              position: "top-right",
-            }
-          );
-        }
-      } else {
-        const releaseDayFormat = new Date(releaseDate);
-        const year = releaseDayFormat.getFullYear();
-        const month = (releaseDayFormat.getMonth() + 1)
-          .toString()
-          .padStart(2, "0");
-        const day = releaseDayFormat.getDate().toString().padStart(2, "0");
-        const formattedDate = `${day}-${month}-${year}`;
-        setErrors({
-          ...errors,
-          date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
-        });
-      }
-    } catch (message) {}
-  };
+   // Kết hợp ngày và giờ từ các giá trị đã chọn
+   const year = selectedDate.getFullYear();
+   const month = selectedDate.getMonth();
+   const day = selectedDate.getDate();
+   const hours = selectedTime.getHours();
+   const minutes = selectedTime.getMinutes();
+   const combinedDateTime = new Date(
+     Date.UTC(year, month, day, hours, minutes)
+   );
+
+   // Ngày phát hành phim
+   const releaseDate = new Date(filmData.releaseDay);
+
+   // Chuẩn hóa cả hai ngày về 00:00:00 để so sánh
+   const normalizedCombinedDate = new Date(
+     combinedDateTime.getFullYear(),
+     combinedDateTime.getMonth(),
+     combinedDateTime.getDate()
+   );
+
+   const normalizedReleaseDate = new Date(
+     releaseDate.getFullYear(),
+     releaseDate.getMonth(),
+     releaseDate.getDate()
+   );
+
+   try {
+     // So sánh chỉ ngày
+     if (normalizedCombinedDate >= normalizedReleaseDate) {
+       const data = await addSchedule(
+         combinedDateTime.toISOString(),
+         price,
+         id,
+         room
+       );
+
+       if (data) {
+         // Thông báo thành công
+         toast.success("Thêm lịch chiếu thành công", {
+           autoClose: 800,
+           position: "top-right",
+         });
+
+         // Reset form và cập nhật danh sách lịch chiếu
+         handleCancel();
+         setReload((prev) => !prev);
+       } else {
+         // Thông báo trùng lịch chiếu
+         toast.error(
+           "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
+           {
+             autoClose: 1500,
+             position: "top-right",
+           }
+         );
+       }
+     } else {
+       // Format lại ngày phát hành để hiển thị
+       const formattedDate = `${releaseDate
+         .getDate()
+         .toString()
+         .padStart(2, "0")}-${(releaseDate.getMonth() + 1)
+         .toString()
+         .padStart(2, "0")}-${releaseDate.getFullYear()}`;
+
+       setErrors({
+         ...errors,
+         date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
+       });
+     }
+   } catch (message) {
+     console.error("Lỗi khi thêm lịch chiếu:", message);
+   }
+ };
+
 
   const handleChange = (type) => {
     setType(type);

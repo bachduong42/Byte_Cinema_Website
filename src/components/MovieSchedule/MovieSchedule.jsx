@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 
 const MovieSchedule = ({ data }) => {
+  console.log(data);
   const [selectedDate, setSelectedDate] = useState(data[0]);
 
   function getTimeFromDateTime(dateTime) {
@@ -35,7 +36,9 @@ const MovieSchedule = ({ data }) => {
             className="text-center border p-2 rounded-lg w-[25%]"
           >
             <div className="text-gray-600">
-              {getTimeFromDateTime(slot.startTime)}
+              {`${getTimeFromDateTime(slot.startTime)} - ${
+                slot.auditoriumName
+              }`}
             </div>
             {/* <div className="text-green-500 font-bold">{`${slot.ticketPrice}.000đ`}</div> */}
           </div>
