@@ -195,7 +195,6 @@ html *::-webkit-scrollbar-track {
   z-index: 1;
 }
 
-
 .modal-overlay {
   width: 100%;
   position: fixed;
@@ -255,7 +254,6 @@ html *::-webkit-scrollbar-track {
   }
 }
 
-
 .modal-overlay.closing {
   animation: overlayFadeOut 0.5s;
   transition-timing-function: cubic-bezier(0.84, 0, 0.7, 0);
@@ -267,7 +265,6 @@ html *::-webkit-scrollbar-track {
   text-align: center;
   gap: 2rem;
 }
-
 
 @keyframes overlayFadeOut {
   from {
@@ -281,4 +278,38 @@ html *::-webkit-scrollbar-track {
 .modal-overlay.closing {
   animation: overlayFadeOut 0.5s;
   transition-timing-function: cubic-bezier(0.84, 0, 0.7, 0);
+}
+.custom-password-input {
+  background-color: #dce1e6 !important;
+  border: none !important;
+  height: 37px !important;
+  border-radius: 8px !important;
+  padding: 0 12px !important;
+  font-size: 14px !important;
+  color: #000 !important;
+}
+
+.custom-password-input .ant-input-affix-wrapper {
+  background-color: #dce1e6 !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.custom-password-input .ant-input {
+  background-color: transparent !important;
+  border: none !important;
+  height: 37px !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.custom-password-input .ant-input-suffix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  background-color: #dce1e6;
+  border: none;
+  border-radius: 0 8px 8px 0;
 }
