@@ -6,16 +6,15 @@ import Image from "../Image/Image";
 import Login from "../../modules/auth/Login";
 import Register from "../../modules/auth/Register";
 import ForgetPassword from "../../modules/auth/ForgetPassword";
-import ChangePassword from "../../modules/auth/ChangePassword";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import noImage from "../../assets/images/hy.jpg";
 import ConfirmOtp from "../../modules/auth/ConfirmOtp";
 import Tippy from "@tippyjs/react/headless";
-import { MdLogin, MdOutlinePerson, MdOutlineSettings } from "react-icons/md";
-import { FaClockRotateLeft } from "react-icons/fa6";
-import { config } from "@fortawesome/fontawesome-svg-core";
+import { MdLogin, MdOutlinePerson, MdOutlineSettings, MdPassword, MdShoppingCart } from "react-icons/md";
 import { toast } from "react-toastify";
+import ModalEditProfile from "../Modal/ModalEditProfile"
+import ModalChangePassword from "../Modal/ModalChangePassword";
 const Navbar = React.memo(() => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
@@ -28,6 +27,8 @@ const Navbar = React.memo(() => {
   const [changePasswordModalRef, setChangePasswordModalRef] = useState(null);
   const [confirmOtpModalRef, setConfirmOtpModalRef] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
+  const [modalChangePassword, setModalChangePassword] = useState(false);
 
   const navigate = useNavigate();
   const { user, logout } = useContext(UserContext);
@@ -83,6 +84,12 @@ const Navbar = React.memo(() => {
       confirmOtpModalRef.openConfirmOtpModal();
     }
   };
+  const handleOpenModalProfile = () => {
+    setProfileModal(true);
+  }
+  const handleOpenModalChangePassword = () => {
+    setModalChangePassword(true);
+  }
 
   const handleHideResult = () => {
     setShowMenu(false);
@@ -110,13 +117,12 @@ const Navbar = React.memo(() => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${
-        !isHome
-          ? "bg-[#092B4B]"
-          : isScrolled
+      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
+        ? "bg-[#092B4B]"
+        : isScrolled
           ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
           : ""
-      }`}
+        }`}
     >
       <div className="flex gap-x-14 items-center">
         <div className="flex flex-col items-start">
@@ -227,21 +233,28 @@ const Navbar = React.memo(() => {
               {...attrs}
             >
               <div className="w-full min-h-[100px] rounded-lg shadow-xl bg-white mt-[-20px] py-2 flex-col flex gap-1">
-                <div className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
+                <div
+                  onClick={() => {
+                    handleOpenModalProfile();
+                    handleHideResult();
+                  }}
+                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
                   <MdOutlinePerson className=" text-[25px]" />
-                  <span className="nunito-text">Trang cá nhân</span>
+                  <span className="nunito-text">Thông tin cá nhân</span>
+                </div>
+                <div
+                  onClick={() => {
+                    handleOpenModalChangePassword();
+                    handleHideResult();
+                  }}
+                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
+                  <MdPassword className=" text-[25px]" />
+                  <span className="nunito-text">Đổi mật khẩu</span>
                 </div>
                 <div className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
-                  <MdOutlineSettings className=" text-[25px]" />
-                  <span className="nunito-text">Cài đặt</span>
+                  <MdShoppingCart className=" text-[25px]" />
+                  <span className="nunito-text">Đơn hàng của tôi</span>
                 </div>
-                {/* <div
-                  onClick={handleViewTransactions}
-                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer"
-                >
-                  <FaClockRotateLeft className=" text-[20px]" />
-                  <span className="nunito-text">Giao dịch</span>
-                </div> */}
                 <div
                   onClick={handleLogout}
                   className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer"
@@ -260,7 +273,7 @@ const Navbar = React.memo(() => {
               }}
               src={noImage}
               alt=""
-              className="w-[60px] h-[60px] rounded-[90px] cursor-pointer"
+              className="w-[50px] h-[50px] rounded-[90px] cursor-pointer"
             />
           </div>
         </Tippy>
@@ -293,6 +306,8 @@ const Navbar = React.memo(() => {
         setModalRef={setConfirmOtpModalRef}
         openLoginModal={handleLoginClick}
       />
+      {profileModal && <ModalEditProfile handleClose={() => setProfileModal(false)}></ModalEditProfile>}
+      {modalChangePassword && <ModalChangePassword handleClose={() => setModalChangePassword(false)}></ModalChangePassword>}
     </nav>
   );
 });
