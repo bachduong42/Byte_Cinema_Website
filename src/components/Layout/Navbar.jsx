@@ -185,7 +185,7 @@ const Navbar = React.memo(() => {
                 Trang chủ
               </Button>
               <Button
-                href="/"
+                to="/categories"
                 active={activeButton === "/categories"}
                 className="lg:text-xl md:text-base"
                 onClick={() => setActiveButton("/categories")}

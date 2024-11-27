@@ -20,6 +20,7 @@ const Home = () => {
   const [listMovie, setListMovie] = useState([]);
   const [listMovieUpComming, setListMovieUpcomming] = useState([])
 
+  console.log(listMovie)
 
   const fetchMovie = async () => {
     try {
@@ -160,7 +161,7 @@ const Home = () => {
           }}
           onSlideChange={handleSlideChange}
         >
-          {listMovie.map((movie) => (
+          {listMovie?.map((movie) => (
             <SwiperSlide key={movie.id}>
               <MovieBanner infor={movie} />
             </SwiperSlide>

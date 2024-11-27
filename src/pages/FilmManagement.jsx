@@ -102,123 +102,82 @@ function FilmManagement() {
   return (
     <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">
       <div className="flex justify-between w-full h-full">
-        <Search
-          searchResult={searchResult}
-          setSearchResult={setSearchResult}
-        ></Search>
-        {activeTab !== "Thể loại" ? (
-          <Button
-            className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer"
-            leftIcon={<MdAddCircleOutline className="text-white " />}
-            onClick={handleAddClick}
-          >
+        <Search searchResult={searchResult} setSearchResult={setSearchResult}></Search>
+        {activeTab !== "Thể loại" ?
+          <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} onClick={handleAddClick}>
             Tạo phim mới
-          </Button>
-        ) : (
+          </Button> :
           <Button
             onClick={handleOpenAddGenre}
-            className="flex w-[170px] gap-1 px-2 bg-[#092B4B] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer"
-            leftIcon={<MdAddCircleOutline className="text-white " />}
-          >
+            className="flex w-[170px] gap-1 px-2 bg-[#092B4B] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} >
             Thêm thể loại
-          </Button>
-        )}
+          </Button>}
       </div>
       <div className="w-full flex justify-between mt-5">
         <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400  gap-3">
           <li className="me-2">
             <a
               href="#"
-              onClick={() => handleTabClick("Tất cả")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Tất cả"
-                ? "text-white bg-[#092B4B] active"
-                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-                }`}
-              aria-current={activeTab === "Tất cả" ? "page" : undefined}
-            >
-              Tất cả
-            </a>
+              onClick={() => handleTabClick('Tất cả')}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Tất cả'
+                ? 'text-white bg-[#092B4B] active'
+                : 'hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'}`}
+              aria-current={activeTab === 'Tất cả' ? "page" : undefined}>Tất cả</a>
           </li>
           <li className="me-2">
             <a
               href="#"
-              onClick={() => handleTabClick("Đang chiếu")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Đang chiếu"
-                ? "text-white bg-[#092B4B] active"
-                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-                }`}
-              aria-current={activeTab === "Đang chiếu" ? "page" : undefined}
-            >
-              Đang chiếu
-            </a>
+              onClick={() => handleTabClick('Đang chiếu')}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Đang chiếu'
+                ? 'text-white bg-[#092B4B] active'
+                : 'hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'}`}
+              aria-current={activeTab === 'Đang chiếu' ? "page" : undefined}>Đang chiếu</a>
           </li>
           <li className="me-2">
             <a
               href="#"
-              onClick={() => handleTabClick("Sắp chiếu")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Sắp chiếu"
-                ? "text-white bg-[#092B4B] active"
-                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-                }`}
-              aria-current={activeTab === "Sắp chiếu" ? "page" : undefined}
-            >
-              Sắp chiếu
-            </a>
+              onClick={() => handleTabClick('Sắp chiếu')}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Sắp chiếu'
+                ? 'text-white bg-[#092B4B] active'
+                : 'hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'}`}
+              aria-current={activeTab === 'Sắp chiếu' ? "page" : undefined}>Sắp chiếu</a>
           </li>
           <li className="me-2">
             <a
               href="#"
-              onClick={() => handleTabClick("Thể loại")}
-              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === "Thể loại"
-                ? "text-white bg-[#092B4B] active"
-                : "hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-                }`}
-              aria-current={activeTab === "Thể loại" ? "page" : undefined}
-            >
-              Thể loại
-            </a>
+              onClick={() => handleTabClick('Thể loại')}
+              className={`inline-block px-4 py-3 rounded-lg text-base ${activeTab === 'Thể loại'
+                ? 'text-white bg-[#092B4B] active'
+                : 'hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white'}`}
+              aria-current={activeTab === 'Thể loại' ? "page" : undefined}>Thể loại</a>
           </li>
         </ul>
-        <Button
-          className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base"
-          leftIcon={<MdFilterList />}
-        >
-          Sắp xếp
-        </Button>
+        <Button className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base" leftIcon={<MdFilterList />}>Sắp xếp</Button>
       </div>
       {activeTab !== "Thể loại" ? (
         <div className="w-full grid lg:grid-cols-6 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">
           {filteredMovies.map((movie) => (
             <MovieCard
               infor={movie}
-              key={movie?.id}
+              key={movie.id}
               cardInfor
               admin
-              happening={listMovie.some((m) => m?.id === movie?.id)}
+              happening={listMovie.some(m => m.id === movie.id)}
               type="update"
-              onDelete={() => handleOpenDeleteModal(movie?.id)}
+              onDelete={() => handleOpenDeleteModal(movie.id)}
             />
           ))}
         </div>
       ) : (
-        <GenreTable
-          movieGenres={movieGenres}
-          fetchGenres={fetchGenres}
-        ></GenreTable>
+        <GenreTable movieGenres={movieGenres} fetchGenres={fetchGenres}></GenreTable>
       )}
-      {openModalDelMovie && (
+      {openModalDelMovie &&
         <ModalDeleteMovie
           handleClose={handleCloseDeleteModal}
-          idDel={idmovieToDelete}
-        ></ModalDeleteMovie>
-      )}
-      {openModalAddGenre && (
-        <ModalAddGenre
-          handleClose={() => setOpenModalAddGenre(false)}
-          mode="add"
-          onSuccess={fetchGenres}
-        ></ModalAddGenre>
-      )}
+          idDel={idmovieToDelete}>
+        </ModalDeleteMovie>}
+      {openModalAddGenre &&
+        <ModalAddGenre handleClose={() => setOpenModalAddGenre(false)} mode="add" onSuccess={fetchGenres}></ModalAddGenre>}
     </div>
   );
 }

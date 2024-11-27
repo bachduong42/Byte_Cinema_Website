@@ -207,7 +207,7 @@ function MovieSchedules() {
       <div className="grid grid-cols-1 lg:grid-cols-[0.3fr,0.7fr] gap-4 mt-[35px]">
         <div className="flex justify-center">
           <img
-            src={filmData?.imagePaths[0]}
+            src={filmData?.imagePaths?.[0]}
             alt="image"
             className="w-[300px] h-[400px] object-cover"
           ></img>

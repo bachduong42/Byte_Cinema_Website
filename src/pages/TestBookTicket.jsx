@@ -190,7 +190,7 @@ function TestBookTicket() {
           <Bill
             listSeats={listSeats}
             name={movie.name}
-            imgSrc={movie.imagePaths ? movie.imagePaths[0] : null}
+            imgSrc={movie.imagePaths ? movie.imagePaths?.[0] : null}
             duration={movie.duration}
             nation={movie.nation}
             ticketPrice={selectedTicketPrice}

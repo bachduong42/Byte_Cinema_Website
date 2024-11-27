@@ -36,8 +36,8 @@ function HorizontalMovieCard({ infor, className, cardInfor = false }) {
       <div className="flex flex-row overflow-hidden">
         <div className="w-1/3 overflow-hidden">
           <Image
-            src={infor.imagePaths[0]}
-            alt={infor.imagePaths[0]}
+            src={infor.imagePaths?.[0]}
+            alt={infor.imagePaths?.[0]}
             className=" h-full w-[100%] overflow-hidden object-cover"
           />
         </div>

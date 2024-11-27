@@ -41,4 +41,5 @@ const getGenreByID = async (id) => {
         console.error(error);
     }
 }
+
 export { updateGenreRequest, addGenreRequest, getGenreByID }

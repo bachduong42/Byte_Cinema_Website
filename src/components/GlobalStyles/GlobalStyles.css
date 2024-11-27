@@ -313,3 +313,14 @@ html *::-webkit-scrollbar-track {
   border: none;
   border-radius: 0 8px 8px 0;
 }
+
+.genre-dropdown .ant-select-selector {
+  background-color: #00b3ff !important; /* Ghi đè màu nền */
+  color: white !important; /* Màu chữ */
+  border-color: #00b3ff !important;
+}
+
+.genre-dropdown .ant-select-dropdown {
+  background-color: #00b3ff !important;
+  color: white !important;
+}
