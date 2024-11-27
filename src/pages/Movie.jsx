@@ -135,12 +135,12 @@ const Movie = () => {
               <div
                 className="absolute inset-0 bg-cover bg-center filter blur-xl"
                 style={{
-                  backgroundImage: `url(${movie.imagePaths ? movie.imagePaths[0] : null
+                  backgroundImage: `url(${movie.imagePaths ? movie.imagePaths?.[0] : null
                     })`,
                 }}
               ></div>
               <img
-                src={movie.imagePaths ? movie.imagePaths[0] : null}
+                src={movie.imagePaths ? movie.imagePaths?.[0] : null}
                 alt={movie.name}
                 className="banner-image relative"
               />
@@ -156,7 +156,7 @@ const Movie = () => {
             <div className="flex-row flex pt-[50px] flex-1">
               <div className="transition translate-y-[-13%] z-40">
                 <img
-                  src={movie.imagePaths ? movie.imagePaths[0] : null}
+                  src={movie.imagePaths ? movie.imagePaths?.[0] : null}
                   alt={movie.name}
                   className="border-2 border-black rounded-lg w-[450px]"
                 />

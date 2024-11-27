@@ -44,7 +44,7 @@ function UpdateMovie() {
             if (movieData) {
                 let posterFile = null;
                 if (imagePaths && imagePaths.length > 1) {
-                    const response = await fetch(imagePaths[0], { mode: "cors" });
+                    const response = await fetch(imagePaths?.[0], { mode: "cors" });
                     const blob = await response.blob();
                     posterFile = new File([blob], "poster.jpg", { type: "image/jpeg" });
                 }
@@ -54,7 +54,7 @@ function UpdateMovie() {
                     ...movieData,
                     duration: convertDurationToMinutes(movieData.duration),
                     genre: movieData.movieGenres[0].id + 1,
-                    posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths[0] : null,
+                    posterPreview: imagePaths && imagePaths.length > 1 ? imagePaths?.[0] : null,
                     poster: posterFile,
                     images: initialImages,
                 }));
