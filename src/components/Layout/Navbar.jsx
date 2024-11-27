@@ -208,14 +208,14 @@ const Navbar = React.memo(() => {
               >
                 Rạp/Giá vé
               </Button>
-              <Button
+              {/* <Button
                 // href="/transactions"
                 className="lg:text-xl md:text-base"
                 active={activeButton === "/transactions"}
                 onClick={handleViewTransactions}
               >
                 Giao dịch
-              </Button>
+              </Button> */}
             </>
           )}
         </ul>
@@ -251,10 +251,15 @@ const Navbar = React.memo(() => {
                   <MdPassword className=" text-[25px]" />
                   <span className="nunito-text">Đổi mật khẩu</span>
                 </div>
-                <div className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
-                  <MdShoppingCart className=" text-[25px]" />
-                  <span className="nunito-text">Đơn hàng của tôi</span>
-                </div>
+                {
+                  !isAdmin &&
+                  <div
+                    onClick={handleViewTransactions}
+                    className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
+                    <MdShoppingCart className=" text-[25px]" />
+                    <span className="nunito-text">Đơn hàng của tôi</span>
+                  </div>
+                }
                 <div
                   onClick={handleLogout}
                   className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer"
