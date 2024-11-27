@@ -19,8 +19,6 @@ const Home = () => {
   const [listMovie, setListMovie] = useState([]);
   const [listMovieUpComming, setListMovieUpcomming] = useState([])
 
-  console.log(listMovie)
-
   const fetchMovie = async () => {
     try {
       const res = await getListMovie();

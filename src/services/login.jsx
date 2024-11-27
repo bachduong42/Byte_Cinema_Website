@@ -95,5 +95,24 @@ const resetPasswordService = async (token, password) => {
     }
 }
 
+const changePassword = async (
+  currentPassword,
+  newPassword,
+  confirmPassword
+) => {
+  try {
+    const res = await httpRequest.patch("/users/update-password", {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+    return res;
+  } catch (error) {
+    console.log("Failed to update password ", error);
+  }
+};
 
-export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService, checkToken }
+
+
+
+export { loginService, logoutService, getUser, forgetPasswordService, resetPasswordService, checkToken, changePassword}

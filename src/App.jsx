@@ -6,8 +6,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { publicRoutes } from "./router"
 import DefaultLayout from "./components/Layout/DefaultLayout"
 import ScrollToTop from './utils/ScrollToTop';
-import { useEffect } from 'react';
+import { useContext, useEffect } from "react";
+import { UserContext } from "./contexts/UserContext";
 function App() {
+  const { checkLoginSession } = useContext(UserContext);
+
+  useEffect(() => {
+   checkLoginSession();
+  }, []);
+  
   return (
     <Router>
       <ScrollToTop />
@@ -29,7 +36,11 @@ function App() {
             );
           })}
         </Routes>
-        <ToastContainer position='top-right'  style={{width: '340px', textAlign: 'left'}} autoClose={3000} />
+        <ToastContainer
+          position="top-right"
+          style={{ width: "340px", textAlign: "left" }}
+          autoClose={3000}
+        />
       </div>
     </Router>
   );
