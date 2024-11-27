@@ -276,6 +276,7 @@ const Navbar = React.memo(() => {
               onMouseEnter={() => {
                 setShowMenu(true);
               }}
+              // src={null}
               src={noImage}
               alt=""
               className="w-[50px] h-[50px] rounded-[90px] cursor-pointer"
