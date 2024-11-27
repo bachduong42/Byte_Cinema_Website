@@ -14,6 +14,7 @@ const Home = () => {
   const sliderRef = useRef(null);
   const coverflowRef = useRef(null);
   const swiperRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [slidesPerView, setSlidesPerView] = useState(1);
   const [coverflowSlidesPerView, setCoverflowSlidesPerView] = useState(3);
   const [listMovie, setListMovie] = useState([]);
@@ -23,6 +24,7 @@ const Home = () => {
 
   const fetchMovie = async () => {
     try {
+      setIsLoading(true);
       const res = await getListMovie();
       if (res.data && Array.isArray(res.data)) {
         const currentDate = new Date();
@@ -46,11 +48,15 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error fetching movie data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchMovie();
+    console.log(listMovie);
+    console.log(listMovieUpComming)
   }, [])
 
   useEffect(() => {
