@@ -8,7 +8,7 @@ const updateProfileRequest = async (bearer, data) => {
                 // 'Content-Type': 'application/json',
             },
         });
-        console.log('Profile updated successfully:', res.data);
+        // console.log('Profile updated successfully:', res.data);
         return res.data;
     } catch (error) {
         if (error.response) {

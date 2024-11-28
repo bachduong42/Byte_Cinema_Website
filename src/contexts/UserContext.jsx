@@ -1,6 +1,7 @@
 
-import { createContext, useState } from "react";
-import {jwtDecode} from "jwt-decode";
+import { createContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { getUser } from "../services/login";
 // import { refreshToken } from "../services/refreshToken";
 // import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState(null);
   const [isTokenExpired, setIsTokenExpired] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   // const checkLoginSession = useCallback(async () => {
   //     if (document.cookie) return true;
   //     const response = await refreshToken();
@@ -50,6 +51,23 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem("isLogin", true);
   };
 
+  useEffect(() => {
+    setLoading(true)
+    async function fetchApi() {
+      try {
+        const currentUser = await getUser();
+        if (currentUser) {
+          setUser(currentUser.data.user);
+          setLoading(false)
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+        }
+      }
+    }
+    fetchApi();
+  }, []);
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("isAdmin");
@@ -67,7 +85,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, login, logout, saveEmail, getEmail, checkLoginSession }}
+      value={{ user, setUser, login, logout, saveEmail, getEmail, checkLoginSession }}
     >
       {children}
       {isTokenExpired && (

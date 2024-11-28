@@ -7,7 +7,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { getProfileRequest } from "../../services/getProfile";
 import { updateProfileRequest } from "../../services/updateProfile";
 
-function ModalNotifyLogin({ handleClose }) {
+function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
   const [profile, setProfile] = useState({
     id: null,
     email: "",
@@ -118,8 +118,9 @@ function ModalNotifyLogin({ handleClose }) {
         if (res) {
           setProfile(res.user);
           setGender(res.gender);
+          console.log(res);
           if (res) {
-            console.log("have avatar");
+            console.log("have avatar", profile);
             // const _res = await fetch(res.user.avatar);
             // const blob = await _res.blob();
             // setAvatar({
@@ -128,10 +129,13 @@ function ModalNotifyLogin({ handleClose }) {
             //     : null,
             //   avatarPreview: res.user.avatar,
             // });
+
             toast.success("Cập nhật thông thành công", {
               autoClose: 1000,
             });
+
             handleClose();
+            onProfileUpdate();
           }
         }
       }
