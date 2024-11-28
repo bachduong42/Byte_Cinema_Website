@@ -15,6 +15,7 @@ import { MdLogin, MdOutlinePerson, MdOutlineSettings, MdPassword, MdShoppingCart
 import { toast } from "react-toastify";
 import ModalEditProfile from "../Modal/ModalEditProfile"
 import ModalChangePassword from "../Modal/ModalChangePassword";
+import { getUser } from "../../services/login";
 const Navbar = React.memo(() => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
@@ -28,15 +29,19 @@ const Navbar = React.memo(() => {
   const [confirmOtpModalRef, setConfirmOtpModalRef] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [profileModal, setProfileModal] = useState(false);
+
   const [modalChangePassword, setModalChangePassword] = useState(false);
+  // const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
   const { user, logout } = useContext(UserContext);
+  const [profile, setProfile] = useState(user);
+
   // const [isAdmin, setIsAdmin] = useState(false);
   const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
 
   useEffect(() => {
-    console.log(user);
+    // console.log("navbar", user);
     setActiveButton(location.pathname);
   }, [location.pathname]);
   useEffect(() => {
@@ -114,6 +119,17 @@ const Navbar = React.memo(() => {
   };
 
   const isHome = location.pathname === "/";
+  const fetchUser = async () => {
+    const res = await getUser();
+    setProfile(res.data.user);
+  }
+  const handleUpdateProfile = async () => {
+    fetchUser();
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [profile]);
 
   return (
     <nav
@@ -276,8 +292,7 @@ const Navbar = React.memo(() => {
               onMouseEnter={() => {
                 setShowMenu(true);
               }}
-              // src={null}
-              src={noImage}
+              src={profile?.avatar}
               alt=""
               className="w-[50px] h-[50px] rounded-[90px] cursor-pointer"
             />
@@ -312,7 +327,7 @@ const Navbar = React.memo(() => {
         setModalRef={setConfirmOtpModalRef}
         openLoginModal={handleLoginClick}
       />
-      {profileModal && <ModalEditProfile handleClose={() => setProfileModal(false)}></ModalEditProfile>}
+      {profileModal && <ModalEditProfile onProfileUpdate={handleUpdateProfile} handleClose={() => setProfileModal(false)}></ModalEditProfile>}
       {modalChangePassword && <ModalChangePassword handleClose={() => setModalChangePassword(false)}></ModalChangePassword>}
     </nav>
   );
