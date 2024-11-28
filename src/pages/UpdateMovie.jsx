@@ -235,7 +235,7 @@ function UpdateMovie() {
             navigate("/film-management");
         } catch (error) {
             console.error("UPdate movie error: ", error);
-            toast.error("Có lỗi xảy ra, vui lòng thử lại", {
+            toast.error("Tên phim đã tồn tại!!!", {
                 autoClose: 1000,
             });
             throw error;

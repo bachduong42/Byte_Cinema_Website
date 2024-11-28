@@ -12,6 +12,7 @@ function MovieCard({
   type,
   onDelete,
 }) {
+  // console.log(infor);
   const navigate = useNavigate();
   const isLogin = localStorage.getItem("isLogin");
   // const [openLogin, setOpenLogin] = useState(false);
@@ -60,11 +61,10 @@ function MovieCard({
 
   return (
     <div
-      className={`relative min-w-[200px] ${className} group cursor-pointer ${
-        cardInfor
+      className={`relative min-w-[200px] ${className} group cursor-pointer ${cardInfor
           ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
           : ""
-      }`}
+        }`}
       onClick={handleCardClick}
     >
       <Image
