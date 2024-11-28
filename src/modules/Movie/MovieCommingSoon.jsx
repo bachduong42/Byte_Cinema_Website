@@ -7,7 +7,6 @@ function MovieCommingSoon({ infor }) {
     const handleCardClick = () => {
         navigate(`/movie/${infor.id}`);
     };
-    console.log(infor)
     const formatReleaseDate = (releaseDay) => {
         const date = new Date(releaseDay);
         const day = String(date.getDate()).padStart(2, '0');

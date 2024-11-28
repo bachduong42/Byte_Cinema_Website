@@ -1,12 +1,7 @@
 
 import Image from "../../components/Image/Image";
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from "react-router-dom";
-import config from "../../config";
-import Button from "../../components/Button/Button";
-import { useState } from "react";
-import Login from "../auth/Login";
-import ModalNotifyLogin from "../../components/Modal/ModalNotifyLogin";
+import {useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function MovieCard({
   infor = {},
