@@ -101,12 +101,20 @@ const changePassword = async (
   confirmPassword
 ) => {
   try {
-    const res = await httpRequest.patch("/users/update-password", {
-      currentPassword,
-      newPassword,
-      confirmPassword,
-    });
-    return res;
+    const res = await httpRequest.patch(
+      "/users/update-password",
+      {
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     console.log("Failed to update password ", error);
   }

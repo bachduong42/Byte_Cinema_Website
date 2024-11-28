@@ -25,9 +25,6 @@ function ModalChangePassword({ handleClose }) {
       newErrors.newPassword = "Mật khẩu mới phải có ít nhất 6 ký tự.";
     } else if (newPassword === oldPassword) {
       newErrors.newPassword = "Mật khẩu mới không được trùng với mật khẩu cũ.";
-    } else if (!/[A-Z]/.test(newPassword)) {
-      newErrors.newPassword =
-        "Mật khẩu mới phải chứa ít nhất một chữ cái viết hoa.";
     } else if (!/[a-z]/.test(newPassword)) {
       newErrors.newPassword =
         "Mật khẩu mới phải chứa ít nhất một chữ cái thường.";
@@ -55,12 +52,15 @@ function ModalChangePassword({ handleClose }) {
           newPassword,
           confirmPassword
         );
+        console.log(response);
         if (response.statusCode === 200) {
-          toast.success("Đổi mật khẩu thành công!");
+          toast.success("Đổi mật khẩu thành công!", { autoClose: 800 });
           handleClose();
         }
       } catch (error) {
-        toast.error("Mật khẩu không đúng. Vui lòng thử lại!");
+        toast.error("Mật khẩu không đúng. Vui lòng thử lại!", {
+          autoClose: 1000,
+        });
       }
     }
   };
