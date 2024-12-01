@@ -324,3 +324,9 @@ html *::-webkit-scrollbar-track {
   background-color: #00b3ff !important;
   color: white !important;
 }
+
+.custom-modal .ant-btn-primary{
+  background-color: #092b4b!important;
+  color: white!important;
+  font-weight: 500 !important;
+}
