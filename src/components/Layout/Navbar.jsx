@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import ModalEditProfile from "../Modal/ModalEditProfile"
 import ModalChangePassword from "../Modal/ModalChangePassword";
 import { getUser } from "../../services/login";
+import { Modal } from "antd";
 const Navbar = React.memo(() => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
@@ -100,8 +101,7 @@ const Navbar = React.memo(() => {
     setShowMenu(false);
   };
   const handleLogout = () => {
-    logout();
-    navigate("/");
+   setIsModalOpen(true)
   };
 
   const handleViewTransactions = () => {
@@ -131,15 +131,43 @@ const Navbar = React.memo(() => {
     fetchUser();
   }, [profile]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOk = () => {
+     logout();
+     navigate("/");
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
-        ? "bg-[#092B4B]"
-        : isScrolled
+      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${
+        !isHome
+          ? "bg-[#092B4B]"
+          : isScrolled
           ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
           : ""
-        }`}
+      }`}
     >
+      <Modal
+        title={
+          <span className="text-2xl text-[#092b4b] font-bold">
+            Xác nhận đăng xuất
+          </span>
+        }
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Đăng xuất"
+        cancelText="Thoát"
+        centered
+        className="custom-modal"
+      >
+        <p className="text-[15px]">Bạn chắc chắn muốn đăng xuất tài khoản?</p>
+      </Modal>
       <div className="flex gap-x-14 items-center">
         <div className="flex flex-col items-start">
           <Image
@@ -254,7 +282,8 @@ const Navbar = React.memo(() => {
                     handleOpenModalProfile();
                     handleHideResult();
                   }}
-                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
+                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer "
+                >
                   <MdOutlinePerson className=" text-[25px]" />
                   <span className="nunito-text">Thông tin cá nhân</span>
                 </div>
@@ -263,19 +292,20 @@ const Navbar = React.memo(() => {
                     handleOpenModalChangePassword();
                     handleHideResult();
                   }}
-                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
+                  className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer "
+                >
                   <MdPassword className=" text-[25px]" />
                   <span className="nunito-text">Đổi mật khẩu</span>
                 </div>
-                {
-                  !isAdmin &&
+                {!isAdmin && (
                   <div
                     onClick={handleViewTransactions}
-                    className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer ">
+                    className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer "
+                  >
                     <MdShoppingCart className=" text-[25px]" />
                     <span className="nunito-text">Đơn hàng của tôi</span>
                   </div>
-                }
+                )}
                 <div
                   onClick={handleLogout}
                   className="flex items-center gap-2 hover:bg-[#16182312] px-3 h-[40px] cursor-pointer"
@@ -292,7 +322,7 @@ const Navbar = React.memo(() => {
               onMouseEnter={() => {
                 setShowMenu(true);
               }}
-              src={profile?.avatar}
+              src={profile?.avatar || noImage}
               alt=""
               className="w-[50px] h-[50px] rounded-[90px] cursor-pointer"
             />
@@ -327,8 +357,17 @@ const Navbar = React.memo(() => {
         setModalRef={setConfirmOtpModalRef}
         openLoginModal={handleLoginClick}
       />
-      {profileModal && <ModalEditProfile onProfileUpdate={handleUpdateProfile} handleClose={() => setProfileModal(false)}></ModalEditProfile>}
-      {modalChangePassword && <ModalChangePassword handleClose={() => setModalChangePassword(false)}></ModalChangePassword>}
+      {profileModal && (
+        <ModalEditProfile
+          onProfileUpdate={handleUpdateProfile}
+          handleClose={() => setProfileModal(false)}
+        ></ModalEditProfile>
+      )}
+      {modalChangePassword && (
+        <ModalChangePassword
+          handleClose={() => setModalChangePassword(false)}
+        ></ModalChangePassword>
+      )}
     </nav>
   );
 });

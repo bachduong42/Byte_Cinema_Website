@@ -155,8 +155,17 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
       setPasswordError("Vui lòng nhập mật khẩu");
     } else if (password.length < 6) {
       setPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
-    } else {
-      setPasswordError("");
+    } else if (!/[a-z]/.test(password)) {
+      setPasswordError("Mật khẩu phải có ít nhất một chữ cái thường");
+    } else if (!/[0-9]/.test(password)) {
+      setPasswordError('Mật khẩu phải chứa ít nhất một chữ số')
+    }
+    else if (!/[@$!%*?&]/.test(password)) {
+      setPasswordError("Mật khẩu phải chứa ít nhất một ký tự đặc biệt"
+      );
+    }
+    else {
+      setPasswordError('')
     }
   };
 
@@ -166,7 +175,7 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
     } else if (confirmPassword.length < 6) {
       setConfirmPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
     } else if (confirmPassword !== password) {
-      setConfirmPasswordError("Mật khẩu không khớp");
+      setConfirmPasswordError("Mật khẩu xác nhận không khớp");
     } else {
       setConfirmPasswordError("");
     }

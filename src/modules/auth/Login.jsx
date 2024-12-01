@@ -9,17 +9,16 @@ import { UserContext } from '../../contexts/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-
+import { FadeLoader } from "react-spinners";
 
 const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
-
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [isLoginPasswordVisible, setIsLoginPasswordVisible] = useState(false);
-  const [loginEmailError, setLoginEmailError] = useState('');
-  const [loginPasswordError, setLoginPasswordError] = useState('');
+  const [loginEmailError, setLoginEmailError] = useState("");
+  const [loginPasswordError, setLoginPasswordError] = useState("");
+  const [isLoading, setIsLoading] = useState(null);
   const navigate = useNavigate();
-
 
   const loginOverlayRef = useRef();
   const loginOuterBoxRef = useRef();
@@ -29,29 +28,66 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
   const switchLoginTLRef = useRef();
   const { login } = useContext(UserContext);
   const emailValidate = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isLoginButtonEnabled = !loginEmail || !loginPassword || loginPassword.length < 6 || !emailValidate.test(loginEmail);
+  const isLoginButtonEnabled =
+    !loginEmail ||
+    !loginPassword ||
+    loginPassword.length < 6 ||
+    !emailValidate.test(loginEmail);
 
   useGSAP(() => {
     const tl = gsap.timeline({ paused: true });
-    tl.to(loginOverlayRef.current, { display: 'flex' })
-      .from(loginOverlayRef.current, { duration: 0.3, backgroundColor: 'rgba(0,0,0,0)', ease: 'expo.out' })
-      .from(loginOuterBoxRef.current, { duration: 0.3, scaleY: 0, ease: 'expo.out' })
-      .from(fadeAnimateRef.current, { duration: 0.3, opacity: 0, ease: 'power4.out' })
-      .from(chibiContainerRef.current, { duration: 0.7, yPercent: 100, ease: 'power4.out' }, 1);
+    tl.to(loginOverlayRef.current, { display: "flex" })
+      .from(loginOverlayRef.current, {
+        duration: 0.3,
+        backgroundColor: "rgba(0,0,0,0)",
+        ease: "expo.out",
+      })
+      .from(loginOuterBoxRef.current, {
+        duration: 0.3,
+        scaleY: 0,
+        ease: "expo.out",
+      })
+      .from(fadeAnimateRef.current, {
+        duration: 0.3,
+        opacity: 0,
+        ease: "power4.out",
+      })
+      .from(
+        chibiContainerRef.current,
+        { duration: 0.7, yPercent: 100, ease: "power4.out" },
+        1
+      );
     tlRef.current = tl;
 
     const switchLoginTL = gsap.timeline({ paused: true });
-    switchLoginTL.to(loginOverlayRef.current, { display: 'flex' })
-      .from(fadeAnimateRef.current, { duration: 0.3, opacity: 0, ease: 'power4.out' })
-      .from(chibiContainerRef.current, { duration: 0.7, xPercent: 100, ease: 'power4.out' }, 0)
-      .from(fadeAnimateRef.current, { duration: 0.3, opacity: 1, ease: 'power4.out' })
-      .from(chibiContainerRef.current, { duration: 0.7, xPercent: 0, ease: 'power4.out' }, 0);
+    switchLoginTL
+      .to(loginOverlayRef.current, { display: "flex" })
+      .from(fadeAnimateRef.current, {
+        duration: 0.3,
+        opacity: 0,
+        ease: "power4.out",
+      })
+      .from(
+        chibiContainerRef.current,
+        { duration: 0.7, xPercent: 100, ease: "power4.out" },
+        0
+      )
+      .from(fadeAnimateRef.current, {
+        duration: 0.3,
+        opacity: 1,
+        ease: "power4.out",
+      })
+      .from(
+        chibiContainerRef.current,
+        { duration: 0.7, xPercent: 0, ease: "power4.out" },
+        0
+      );
     switchLoginTLRef.current = switchLoginTL;
   }, []);
 
   useEffect(() => {
     setModalRef({
-      openLoginModal
+      openLoginModal,
     });
   }, [setModalRef]);
 
@@ -62,49 +98,52 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
   const closeLoginModal = () => {
     tlRef.current.reverse();
     setTimeout(() => {
-      setLoginEmail('');
-      setLoginPassword('');
-      setLoginEmailError('');
-      setLoginPasswordError('');
+      setLoginEmail("");
+      setLoginPassword("");
+      setLoginEmailError("");
+      setLoginPasswordError("");
     }, 700);
   };
 
   const handleLogin = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
-    console.log('Username:', loginEmail);
-    console.log('Password:', loginPassword);
+    console.log("Username:", loginEmail);
+    console.log("Password:", loginPassword);
     try {
       const response = await loginService(loginEmail, loginPassword);
       const { access_token } = response.data;
-      localStorage.setItem('accessToken', access_token);
+      localStorage.setItem("accessToken", access_token);
       const user = await getUser();
       login(user);
       console.log(user.data.user);
+      setIsLoading(false);
       toast.success("Đăng nhập thành công", {
-        autoClose: 1000
+        autoClose: 1000,
       });
 
       if (user.data.user.role === "ADMIN") {
         console.log("admin");
-        navigate("/film-management")
+        navigate("/film-management");
       } else if (user.data.user.role === "USER") {
         console.log("user");
-        navigate("/")
+        navigate("/");
       }
       // window.location.reload();
 
       closeLoginModal();
     } catch (error) {
+      setIsLoading(false);
       if (error.response && error.response.data) {
         const { errors } = error.response.data;
         if (errors && errors["Auth.InvalidCredentials"]) {
-          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
+          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng");
         } else {
-          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng")
+          setLoginPasswordError("Tài khoản hoặc mật khẩu không đúng");
         }
       } else {
         toast.error("Lỗi kết nối, vui lòng thử lại", {
-          autoClose: 1000
+          autoClose: 1000,
         });
       }
     }
@@ -130,23 +169,23 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
 
   const checkInputEmail = () => {
     if (loginEmail.length === 0) {
-      setLoginEmailError('Vui lòng nhập email');
+      setLoginEmailError("Vui lòng nhập email");
     } else if (!emailValidate.test(loginEmail)) {
-      setLoginEmailError('Email không hợp lệ');
+      setLoginEmailError("Email không hợp lệ");
     } else {
-      setLoginEmailError('');;
+      setLoginEmailError("");
     }
-  }
+  };
 
   const checkInputPassword = () => {
     if (loginPassword.length === 0) {
-      setLoginPasswordError('Vui lòng nhập mật khẩu');
+      setLoginPasswordError("Vui lòng nhập mật khẩu");
     } else if (loginPassword.length < 6) {
-      setLoginPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
+      setLoginPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
     } else {
-      setLoginPasswordError('');
+      setLoginPasswordError("");
     }
-  }
+  };
 
   // const switchLoginModal = () => {
   //   tlRef.current.reverse();
@@ -172,69 +211,176 @@ const Login = ({ setModalRef, openRegisterModal, openForgetPasswordModal }) => {
     }, 500);
   };
 
+  // if (isLoading) {
+  //   return (
+
+  //   );
+  // }
 
   return (
     <>
-      <div id="login-overlay" ref={loginOverlayRef} className='fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden' onMouseDown={handleOverlayClick}>
-        <div id="login-outer-box" ref={loginOuterBoxRef} className='relative w-[30rem] items-center justify-center self-center'>
-
-          <div id="chibi-container" className='relative w-full h-[130px]' ref={chibiContainerRef}>
-            <img id='chibi-img default-img active' src={logo} alt="chibi" className='block absolute w-[150px] left-1/2 top-full -translate-x-1/2 logo-login-modal transition-all duration-500 ease-in-expo' />
+      {isLoading && (
+        <div
+          className="flex justify-center items-center w-full h-[full]"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: "rgba(0,0,0,0.15)",
+          }}
+        >
+          <FadeLoader loading={isLoading} />
+        </div>
+      )}
+      <div
+        id="login-overlay"
+        ref={loginOverlayRef}
+        className="fixed z-5 inset-0 bg-[rgba(0,0,0,0.5)]  items-center justify-center hidden"
+        onMouseDown={handleOverlayClick}
+      >
+        <div
+          id="login-outer-box"
+          ref={loginOuterBoxRef}
+          className="relative w-[30rem] items-center justify-center self-center"
+        >
+          <div
+            id="chibi-container"
+            className="relative w-full h-[130px]"
+            ref={chibiContainerRef}
+          >
+            <img
+              id="chibi-img default-img active"
+              src={logo}
+              alt="chibi"
+              className="block absolute w-[150px] left-1/2 top-full -translate-x-1/2 logo-login-modal transition-all duration-500 ease-in-expo"
+            />
           </div>
 
-          <div id="login-inner-box" className='relative z-2 bg-white rounded-xl h-full p-[20px]'>
-            <div id="close-div" className='w-full h-max mb-[1rem] flex justify-end' onClick={closeLoginModal}>
-              <IonIcon icon={close} id='close' className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
+          <div
+            id="login-inner-box"
+            className="relative z-2 bg-white rounded-xl h-full p-[20px]"
+          >
+            <div
+              id="close-div"
+              className="w-full h-max mb-[1rem] flex justify-end"
+              onClick={closeLoginModal}
+            >
+              <IonIcon
+                icon={close}
+                id="close"
+                className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
+              />
             </div>
 
             <div className="fade-animate" ref={fadeAnimateRef}>
-              <h2 className='text-center mb-[1rem]'>ĐĂNG NHẬP</h2>
+              <h2 className="text-center mb-[1rem]">ĐĂNG NHẬP</h2>
               {/* <form autoComplete='off' action='/' method='post' className='w-full p-[20px]' onSubmit={handleSubmit}> */}
-              <div className='w-full p-[20px]'>
-
+              <div className="w-full p-[20px]">
                 <div className="input mb-[1.5rem]">
-                  <div className='flex-row'>
-                    <input type="text" name="username" placeholder="Email" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setLoginEmail(e.target.value)} onBlur={checkInputEmail} value={loginEmail} />
+                  <div className="flex-row">
+                    <input
+                      type="text"
+                      name="username"
+                      placeholder="Email"
+                      required
+                      className=" w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]"
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      onBlur={checkInputEmail}
+                      value={loginEmail}
+                    />
                   </div>
-                  <div className='ml-[15px] mt-[3px]'>
-                    <span name='error' id='username-error' className='text-[13px] error text-red-600 text-start flex'>  {loginEmailError}</span>
+                  <div className="ml-[15px] mt-[3px]">
+                    <span
+                      name="error"
+                      id="username-error"
+                      className="text-[13px] error text-red-600 text-start flex"
+                    >
+                      {" "}
+                      {loginEmailError}
+                    </span>
                   </div>
-
                 </div>
 
                 <div className="input mb-[1.5rem]">
-                  <div className='relative flex-row'>
-                    <input type={isLoginPasswordVisible ? "text" : "password"} name="password" placeholder="Mật khẩu" required className=' w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]' onChange={(e) => setLoginPassword(e.target.value)} onBlur={checkInputPassword} value={loginPassword} />
-                    <div className='right-[11px] top-[50%] transform -translate-y-[11px] absolute' onClick={togglePasswordVisibility}>
-                      <IonIcon icon={isLoginPasswordVisible ? eyeOutline : eyeOffOutline} className='text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer' />
+                  <div className="relative flex-row">
+                    <input
+                      type={isLoginPasswordVisible ? "text" : "password"}
+                      name="password"
+                      placeholder="Mật khẩu"
+                      required
+                      className=" w-full px-[15px] py-[10px] bg-[#f8f6f6] rounded-xl   focus:outline-none focus:border focus:border-[#db9a45] pr-[88px]"
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      onBlur={checkInputPassword}
+                      value={loginPassword}
+                    />
+                    <div
+                      className="right-[11px] top-[50%] transform -translate-y-[11px] absolute"
+                      onClick={togglePasswordVisibility}
+                    >
+                      <IonIcon
+                        icon={
+                          isLoginPasswordVisible ? eyeOutline : eyeOffOutline
+                        }
+                        className="text-[rgba(0,0,0,0.5)] text-2xl cursor-pointer"
+                      />
                     </div>
-
                   </div>
-                  <div className='ml-[15px] mt-[3px]'>
-                    <span name='error' id='password-error' className='text-[13px] error text-red-600 text-start flex'>  {loginPasswordError}</span>
+                  <div className="ml-[15px] mt-[3px]">
+                    <span
+                      name="error"
+                      id="password-error"
+                      className="text-[13px] error text-red-600 text-start flex"
+                    >
+                      {" "}
+                      {loginPasswordError}
+                    </span>
                   </div>
-
                 </div>
 
-                <div id="cta-help" className='p-0 text-sm flex justify-end'>
-                  <button className='text-[#db9a45]' onClick={handleForgetPasswordClick}>Quên mật khẩu?</button>
+                <div id="cta-help" className="p-0 text-sm flex justify-end">
+                  <button
+                    className="text-[#db9a45]"
+                    onClick={handleForgetPasswordClick}
+                  >
+                    Quên mật khẩu?
+                  </button>
                 </div>
 
-                <button type='submit-button' className='w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out' disabled={isLoginButtonEnabled} style={{ backgroundColor: isLoginButtonEnabled ? '#e3e3e3' : '#db9a45' }} onClick={handleLogin}>Đăng nhập</button>
+                <button
+                  type="submit-button"
+                  className="w-full text-base p-[10px] mt-[1rem] bg-[#e3e3e3] text-[rgba(0,0,0,0.5)] border-none cursor-pointer rounded-xl transition-all duration-500 ease-in-out"
+                  disabled={isLoginButtonEnabled}
+                  style={{
+                    backgroundColor: isLoginButtonEnabled
+                      ? "#e3e3e3"
+                      : "#db9a45",
+                  }}
+                  onClick={handleLogin}
+                >
+                  Đăng nhập
+                </button>
                 {/* </form> */}
               </div>
 
-              <div id="register-line" className='flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center'>
-                Bạn chưa có tài khoản ? <button className='text-[#db9a45]' onMouseDown={handleRegisterClick}>Đăng ký ngay</button>
-
+              <div
+                id="register-line"
+                className="flex justify-center text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-center"
+              >
+                Bạn chưa có tài khoản ?{" "}
+                <button
+                  className="text-[#db9a45]"
+                  onMouseDown={handleRegisterClick}
+                >
+                  Đăng ký ngay
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Login;
 
