@@ -1,7 +1,7 @@
 
 import Image from "../../components/Image/Image";
 import PropTypes from 'prop-types';
-import {useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 function MovieCard({
   infor = {},
@@ -62,8 +62,8 @@ function MovieCard({
   return (
     <div
       className={`relative min-w-[200px] ${className} group cursor-pointer ${cardInfor
-          ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
-          : ""
+        ? "transition-transform duration-300 ease-in-out transform hover:scale-95"
+        : ""
         }`}
       onClick={handleCardClick}
     >
@@ -130,12 +130,16 @@ function MovieCard({
               )}
             </div>
           ) : (
-            <button
-              onClick={handleBookingClick}
-              className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]"
-            >
-              Mua vé
-            </button>
+            <dic className="flex gap-3 items-center">
+              <button onClick={handleViewDetail}
+                className="text-white text-[12px]">Xem chi tiết</button>
+              <button
+                onClick={handleBookingClick}
+                className="bg-[rgb(254,144,81)] rounded-[5px] lg:w-[80px] lg:h-[30px] w-[80px] h-[25px] text-white text-[12px]"
+              >
+                Mua vé
+              </button>
+            </dic>
           )}
         </div>
       )}

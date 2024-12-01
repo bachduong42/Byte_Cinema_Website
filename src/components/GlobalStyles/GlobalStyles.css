@@ -315,9 +315,10 @@ html *::-webkit-scrollbar-track {
 }
 
 .genre-dropdown .ant-select-selector {
-  background-color: #00b3ff !important; /* Ghi đè màu nền */
-  color: white !important; /* Màu chữ */
+  background-color: #00b3ff !important;
+  color: white !important;
   border-color: #00b3ff !important;
+  cursor: pointer !important;
 }
 
 .genre-dropdown .ant-select-dropdown {
