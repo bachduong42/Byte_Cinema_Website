@@ -100,12 +100,11 @@ function Categories() {
                     <Select
                         showSearch
                         defaultValue="0"
-                        className='w-[150px] shadow-sm border rounded-lg bg-[#00B3FF] text-white genre-dropdown'
-
+                        className='w-[150px] shadow-sm border rounded-lg bg-[#00B3FF] text-white genre-dropdown cursor-pointer'
                         optionFilterProp="label"
                         onChange={handleGenreChange}
                         options={[
-                            { value: '0', label: 'Thể loại' },
+                            { value: '0', label: 'Tất cả' },
                             ...genres.map(genre => ({
                                 value: genre.id,
                                 label: genre.name,
