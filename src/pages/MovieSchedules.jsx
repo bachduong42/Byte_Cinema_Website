@@ -8,6 +8,7 @@ import { getDetailFilm } from "../services/getDetailFilm";
 import { getAllAuditorium } from "../services/getAllAuditorium";
 import { addSchedule } from "../services/addSchedule";
 import { toast } from "react-toastify";
+import { FadeLoader } from "react-spinners";
 
 function MovieSchedules() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -21,6 +22,7 @@ function MovieSchedules() {
   const [endTime, setEndTime] = useState(null);
   const [type, setType] = useState(null);
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
     date: "",
     time: "",
@@ -64,13 +66,16 @@ function MovieSchedules() {
   useEffect(() => {
     async function getFilmData() {
       try {
+        setIsLoading(true);
         const bearer = localStorage.getItem("accessToken");
         const data = await getDetailFilm(id);
         const rooms = await getAllAuditorium(bearer);
         setFilmData(data);
         setRoomData(rooms);
         setScreeningData(data.screenings);
+        setIsLoading(false);
       } catch (e) {
+        setIsLoading(false);
         console.error(e);
       }
     }
@@ -113,92 +118,98 @@ function MovieSchedules() {
     setRoom("");
   };
 
- const handleAddSchedule = async (e) => {
-   e.preventDefault();
+  const handleAddSchedule = async (e) => {
+    e.preventDefault();
 
-   if (!validateForm()) {
-     return;
-   }
+    if (!validateForm()) {
+      return;
+    }
+    // Kết hợp ngày và giờ từ các giá trị đã chọn
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+    const day = selectedDate.getDate();
+    const hours = selectedTime.getHours();
+    const minutes = selectedTime.getMinutes();
+    const combinedDateTime = new Date(
+      Date.UTC(year, month, day, hours, minutes)
+    );
 
-   // Kết hợp ngày và giờ từ các giá trị đã chọn
-   const year = selectedDate.getFullYear();
-   const month = selectedDate.getMonth();
-   const day = selectedDate.getDate();
-   const hours = selectedTime.getHours();
-   const minutes = selectedTime.getMinutes();
-   const combinedDateTime = new Date(
-     Date.UTC(year, month, day, hours, minutes)
-   );
+    // Ngày phát hành phim
+    const releaseDate = new Date(filmData.releaseDay);
 
-   // Ngày phát hành phim
-   const releaseDate = new Date(filmData.releaseDay);
+    // Chuẩn hóa cả hai ngày về 00:00:00 để so sánh
+    const normalizedCombinedDate = new Date(
+      combinedDateTime.getFullYear(),
+      combinedDateTime.getMonth(),
+      combinedDateTime.getDate()
+    );
 
-   // Chuẩn hóa cả hai ngày về 00:00:00 để so sánh
-   const normalizedCombinedDate = new Date(
-     combinedDateTime.getFullYear(),
-     combinedDateTime.getMonth(),
-     combinedDateTime.getDate()
-   );
+    const normalizedReleaseDate = new Date(
+      releaseDate.getFullYear(),
+      releaseDate.getMonth(),
+      releaseDate.getDate()
+    );
 
-   const normalizedReleaseDate = new Date(
-     releaseDate.getFullYear(),
-     releaseDate.getMonth(),
-     releaseDate.getDate()
-   );
+    try {
+      // So sánh chỉ ngày
+      if (normalizedCombinedDate >= normalizedReleaseDate) {
+        const data = await addSchedule(
+          combinedDateTime.toISOString(),
+          price,
+          id,
+          room
+        );
 
-   try {
-     // So sánh chỉ ngày
-     if (normalizedCombinedDate >= normalizedReleaseDate) {
-       const data = await addSchedule(
-         combinedDateTime.toISOString(),
-         price,
-         id,
-         room
-       );
+        if (data) {
+          // Thông báo thành công
+          toast.success("Thêm lịch chiếu thành công", {
+            autoClose: 800,
+            position: "top-right",
+          });
 
-       if (data) {
-         // Thông báo thành công
-         toast.success("Thêm lịch chiếu thành công", {
-           autoClose: 800,
-           position: "top-right",
-         });
+          // Reset form và cập nhật danh sách lịch chiếu
+          handleCancel();
+          setReload((prev) => !prev);
+        } else {
+          // Thông báo trùng lịch chiếu
+          toast.error(
+            "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
+            {
+              autoClose: 1500,
+              position: "top-right",
+            }
+          );
+        }
+      } else {
+        // Format lại ngày phát hành để hiển thị
+        const formattedDate = `${releaseDate
+          .getDate()
+          .toString()
+          .padStart(2, "0")}-${(releaseDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${releaseDate.getFullYear()}`;
 
-         // Reset form và cập nhật danh sách lịch chiếu
-         handleCancel();
-         setReload((prev) => !prev);
-       } else {
-         // Thông báo trùng lịch chiếu
-         toast.error(
-           "Đã có phim chiếu trong thời gian này. Vui lòng chọn lịch chiếu khác!",
-           {
-             autoClose: 1500,
-             position: "top-right",
-           }
-         );
-       }
-     } else {
-       // Format lại ngày phát hành để hiển thị
-       const formattedDate = `${releaseDate
-         .getDate()
-         .toString()
-         .padStart(2, "0")}-${(releaseDate.getMonth() + 1)
-         .toString()
-         .padStart(2, "0")}-${releaseDate.getFullYear()}`;
-
-       setErrors({
-         ...errors,
-         date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
-       });
-     }
-   } catch (message) {
-     console.error("Lỗi khi thêm lịch chiếu:", message);
-   }
- };
-
+        setErrors({
+          ...errors,
+          date: `Lịch chiếu phải bắt đầu từ ngày ${formattedDate}`,
+        });
+      }
+    } catch (message) {
+      console.error("Lỗi khi thêm lịch chiếu:", message);
+    }
+  };
 
   const handleChange = (type) => {
     setType(type);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-[700px]">
+        <FadeLoader loading={isLoading} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">

@@ -84,14 +84,14 @@ useEffect(() => {
       title: "STT",
       dataIndex: "STT",
       key: "STT",
-      width: "5%",
+      width: "8%",
       render: (_, __, index) => index + 1,
     },
     {
       title: "Ngày chiếu",
       dataIndex: "showDate",
       key: "showDate",
-      width: "15%",
+      width: "13%",
       filters: showDateFilters,
       filteredValue: filteredInfo.showDate || null,
       onFilter: (value, record) => record.showDate.includes(value),
@@ -106,12 +106,12 @@ useEffect(() => {
     {
       title: "Giờ kết thúc",
       dataIndex: "endTime",
-      width: "10%",
+      width: "12%",
       key: "endTime",
     },
     {
       title: "Phòng chiếu",
-      width: "15%",
+      width: "13%",
       dataIndex: "screenRoom",
       key: "screenRoom",
       filters: uniqueRoomData.map((room) => ({
@@ -125,10 +125,10 @@ useEffect(() => {
       title: "Giá vé (VNĐ)",
       dataIndex: "price",
       key: "price",
+      width: "15%",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.price - b.price,
-      render: (value, record) =>
-        `${(record.price || 0).toLocaleString()}`,
+      render: (value, record) => `${(record.price || 0).toLocaleString()}`,
     },
     {
       title: "Vé đã đặt",
@@ -150,7 +150,7 @@ useEffect(() => {
       ),
     },
     {
-      title: "Delete",
+      title: "Xoá",
       dataIndex: "delete",
       key: "delete",
       render: (_, record) => (

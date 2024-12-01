@@ -4,12 +4,14 @@ import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
 import { changePassword } from "../../services/login";
+import { FadeLoader } from "react-spinners";
 
 function ModalChangePassword({ handleClose }) {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false)
   const handleSave = async () => {
     const newErrors = {};
 
@@ -46,18 +48,21 @@ function ModalChangePassword({ handleClose }) {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      setIsLoading(true)
       try {
         const response = await changePassword(
           oldPassword,
           newPassword,
           confirmPassword
         );
+        setIsLoading(false)
         console.log(response);
         if (response.statusCode === 200) {
           toast.success("Đổi mật khẩu thành công!", { autoClose: 800 });
           handleClose();
         }
       } catch (error) {
+        setIsLoading(false)
         toast.error("Mật khẩu không đúng. Vui lòng thử lại!", {
           autoClose: 1000,
         });
@@ -67,6 +72,19 @@ function ModalChangePassword({ handleClose }) {
 
   return (
     <>
+      {isLoading && (
+        <div
+          className="flex justify-center items-center w-full h-[full]"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: "rgba(0,0,0,0.15)",
+          }}
+        >
+          <FadeLoader loading={isLoading} />
+        </div>
+      )}
       <div className="fixed inset-0 bg-black bg-opacity-50 z-0"></div>
       <div
         className="fixed inset-0 flex w-full h-screen justify-center items-center text-center z-50"
@@ -86,7 +104,9 @@ function ModalChangePassword({ handleClose }) {
           <hr className="w-[90%]" />
           <div className="flex flex-col gap-3 pt-5 pb-5 w-full px-16">
             <div className="flex flex-col gap-2">
-              <span className="text-start font-semibold">Mật khẩu cũ:</span>
+              <span className="text-start font-semibold">
+                Mật khẩu cũ<span className="text-[red] ml-[2px]">*</span>
+              </span>
               <Input.Password
                 className="custom-password-input"
                 iconRender={(visible) =>
@@ -101,7 +121,9 @@ function ModalChangePassword({ handleClose }) {
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <span className="text-start font-semibold">Mật khẩu mới:</span>
+              <span className="text-start font-semibold">
+                Mật khẩu mới<span className="text-[red] ml-[2px]">*</span>
+              </span>
               <Input.Password
                 className="custom-password-input"
                 iconRender={(visible) =>
@@ -117,12 +139,14 @@ function ModalChangePassword({ handleClose }) {
             </div>
             <div className="flex flex-col gap-2">
               <span className="text-start font-semibold">
-                Nhập lại mật khẩu:
+                Nhập lại mật khẩu<span className="text-[red] ml-[2px]">*</span>
               </span>
-              <input
+              <Input.Password
+                className="custom-password-input"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                type="text"
-                className="w-full h-[37px] outline-none border-none bg-[#dce1e6] rounded-md px-3"
               />
               {errors.confirmPassword && (
                 <span className="text-red-500 text-[12px] leading-3 text-start">
