@@ -87,18 +87,18 @@ function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
     }
   };
 
-  const isInputValid = () => {
-    return Object.values(profile)
-      .filter((value) => typeof value === "string")
-      .every((value) => value.trim() !== "");
-  };
+  // const isInputValid = () => {
+  //   return Object.values(profile)
+  //     .filter((value) => typeof value === "string")
+  //     .every((value) => value.trim() !== "");
+  // };
   const handleSave = async () => {
     if (profile.phoneNumber && profile.phoneNumber.length !== 10) {
       toast.error("Số điện thoại phải có 10 chữ số!", { autoClose: 3000 });
       return;
     }
     try {
-      if (isInputValid()) {
+      // if (isInputValid()) {
         const form = new FormData();
         form.append("fileAvatar", avatar.avatarImg);
         form.append(
@@ -142,7 +142,7 @@ function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
             onProfileUpdate();
           }
         }
-      }
+      // }
     } catch (e) {
       console.log(e);
       toast.error("Có lỗi xảy ra, vui lòng thử lại", {
