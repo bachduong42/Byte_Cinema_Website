@@ -129,7 +129,7 @@ const Navbar = React.memo(() => {
 
   useEffect(() => {
     fetchUser();
-  }, [profile]);
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
