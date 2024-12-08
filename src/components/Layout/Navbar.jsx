@@ -101,7 +101,7 @@ const Navbar = React.memo(() => {
     setShowMenu(false);
   };
   const handleLogout = () => {
-   setIsModalOpen(true)
+    setIsModalOpen(true)
   };
 
   const handleViewTransactions = () => {
@@ -129,13 +129,13 @@ const Navbar = React.memo(() => {
 
   useEffect(() => {
     fetchUser();
-  }, [profile]);
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOk = () => {
-     logout();
-     navigate("/");
+    logout();
+    navigate("/");
     setIsModalOpen(false);
   };
   const handleCancel = () => {
@@ -144,13 +144,12 @@ const Navbar = React.memo(() => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${
-        !isHome
+      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
           ? "bg-[#092B4B]"
           : isScrolled
-          ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
-          : ""
-      }`}
+            ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
+            : ""
+        }`}
     >
       <Modal
         title={
