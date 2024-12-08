@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 function Image({
     src,
     alt,
-    className
+    className,
+    onClick
 }
 
 ) {
@@ -10,6 +11,7 @@ function Image({
         <img
             className={className}
             src={src} alt={alt}
+            onClick={onClick}
         />
     );
 }

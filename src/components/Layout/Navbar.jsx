@@ -145,10 +145,10 @@ const Navbar = React.memo(() => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
-          ? "bg-[#092B4B]"
-          : isScrolled
-            ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
-            : ""
+        ? "bg-[#092B4B]"
+        : isScrolled
+          ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
+          : ""
         }`}
     >
       <Modal
@@ -168,7 +168,9 @@ const Navbar = React.memo(() => {
         <p className="text-[15px]">Bạn chắc chắn muốn đăng xuất tài khoản?</p>
       </Modal>
       <div className="flex gap-x-14 items-center">
-        <div className="flex flex-col items-start">
+        <a
+          href="/"
+          className="flex flex-col items-start cursor-pointer">
           <Image
             src={logo}
             alt={logo}
@@ -180,7 +182,7 @@ const Navbar = React.memo(() => {
           <div className="text-[#43CFFB]  lg:text-xl md:text-[18px] text-[12px] playfair-text">
             Cinema
           </div>
-        </div>
+        </a>
         <ul className="lg:flex hidden gap-x-12 items-center">
           {isLogin && isAdmin ? (
             <>
@@ -318,8 +320,9 @@ const Navbar = React.memo(() => {
         >
           <div className="flex  items-center">
             <img
+              // onClick={() => { handleHideResult(); }}
               onMouseEnter={() => {
-                setShowMenu(true);
+                setShowMenu((prev) => !prev);
               }}
               src={profile?.avatar || noImage}
               alt=""
