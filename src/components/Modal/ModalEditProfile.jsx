@@ -87,14 +87,18 @@ function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
     }
   };
 
-  const isInputValid = () => {
-    return Object.values(profile)
-      .filter((value) => typeof value === "string")
-      .every((value) => value.trim() !== "");
-  };
+  // const isInputValid = () => {
+  //   return Object.values(profile)
+  //     .filter((value) => typeof value === "string")
+  //     .every((value) => value.trim() !== "");
+  // };
   const handleSave = async () => {
+    if (profile.phoneNumber && profile.phoneNumber.length !== 10) {
+      toast.error("Số điện thoại phải có 10 chữ số!", { autoClose: 3000 });
+      return;
+    }
     try {
-      if (isInputValid()) {
+      // if (isInputValid()) {
         const form = new FormData();
         form.append("fileAvatar", avatar.avatarImg);
         form.append(
@@ -138,7 +142,7 @@ function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
             onProfileUpdate();
           }
         }
-      }
+      // }
     } catch (e) {
       console.log(e);
       toast.error("Có lỗi xảy ra, vui lòng thử lại", {
@@ -259,7 +263,7 @@ function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
               </div>
               <div className="flex items-center">
                 <span className="text-[18px] w-1/3 font-semibold text-start">
-                  Email:
+                  Email*:
                 </span>
                 <input
                   value={profile?.email}
@@ -275,7 +279,7 @@ function ModalNotifyLogin({ handleClose, onProfileUpdate }) {
                 <input
                   value={profile?.phoneNumber}
                   type="text"
-                  maxLength={11}
+                  maxLength={10}
                   onChange={handlePhoneNumberChange}
                   name="phoneNumber"
                   className="border border-[#6da9c4] outline w-2/3 h-[37px] outline-none rounded-md px-2 bg-[#d9e9f0] text-[#092B4B]"

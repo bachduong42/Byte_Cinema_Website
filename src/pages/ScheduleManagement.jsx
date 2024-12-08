@@ -63,10 +63,10 @@ function ScheduleManagement() {
   return (
     <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">
       <div className="flex justify-between w-full h-full">
-        <Search
+        {/* <Search
           searchResult={searchResult}
           setSearchResult={setSearchResult}
-        ></Search>
+        ></Search> */}
       </div>
       <div className="w-full flex justify-between mt-5">
         <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400  gap-3">
@@ -123,14 +123,14 @@ function ScheduleManagement() {
             </a>
           </li> */}
         </ul>
-        <Button
+        {/* <Button
           className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base"
           leftIcon={<MdFilterList />}
         >
           Sắp xếp
-        </Button>
+        </Button> */}
       </div>
-      <div className="w-full grid lg:grid-cols-6 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">
+      <div className="mt-[30px] w-full grid lg:grid-cols-6 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">
         {filteredMovies.map((movie) => (
           <MovieCard
             infor={movie}

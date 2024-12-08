@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 // import listMovie from "../constants/MovieList";
-import {
-  close,
-  playCircleOutline,
-} from "ionicons/icons";
+import { close, playCircleOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import MovieSchedule from "../components/MovieSchedule/MovieSchedule";
 import HorizontalMovieCard from "../modules/Movie/HorizontalMovieCard";
 import { getDetailFilm } from "../services/getDetailFilm";
 import { FadeLoader } from "react-spinners";
 import { getUpComingFilm } from "../services/getUpComingFilm";
+import Button from "../components/Button/Button";
+import { UserContext } from "../contexts/UserContext";
+import { Empty } from "antd";
 
 const Movie = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,6 +19,9 @@ const Movie = () => {
   const [movie, setMovie] = useState({});
   const [listMovie, setListMovie] = useState([]);
   const [isLoading, setIsLoading] = useState(null);
+  const { user } = useContext(UserContext);
+  const isLogin = localStorage.getItem("isLogin");
+  const navigate = useNavigate()
 
   function formatDate(dateStr) {
     const date = new Date(dateStr);
@@ -72,7 +75,7 @@ const Movie = () => {
       if (movie) {
         setMovie(movie);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
     getMovie();
   }, [id]);
@@ -108,15 +111,26 @@ const Movie = () => {
         (minutes ? parseInt(minutes[1]) : 0);
       return totalMinutes;
     }
-    return ''
+    return "";
   }
 
   function getGenres(genres) {
     if (genres) {
       return genres.map((genre) => genre.name).join(", ");
     }
-    return ''
+    return "";
   }
+
+  const handleBookFilmUpcoming = () => {
+    if (isLogin) {
+      navigate(`/book-movie-ticket/${id}`);
+    } else {
+      toast.info("Vui lòng đăng nhập để đặt vé!", {
+        autoClose: 1000,
+        position: "top-center",
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -135,8 +149,9 @@ const Movie = () => {
               <div
                 className="absolute inset-0 bg-cover bg-center filter blur-xl"
                 style={{
-                  backgroundImage: `url(${movie.imagePaths ? movie.imagePaths?.[0] : null
-                    })`,
+                  backgroundImage: `url(${
+                    movie.imagePaths ? movie.imagePaths?.[0] : null
+                  })`,
                 }}
               ></div>
               <img
@@ -165,35 +180,8 @@ const Movie = () => {
                 <h1 className="text-6xl mb-[15px] font-semibold text-[#092b4b]">
                   {movie.name}
                 </h1>
-                <>
-                  {/* <div className="flex-row flex text-lg items-center gap-[30px]">
-                  <div className="flex-row flex items-center gap-[7px]">
-                    <IonIcon
-                      icon={timeOutline}
-                      className="text-[#FE9051] text-2xl"
-                    />
-                    <p>{movie.time}</p>
-                  </div>
-                  <div className="flex-row flex items-center gap-[10px]">
-                    <IonIcon
-                      icon={calendarOutline}
-                      className="text-[#FE9051] text-2xl"
-                    />
-                    <p>{movie.date}</p>
-                  </div>
-                </div> */}
-                </>
 
                 <div className="grid grid-cols-1 gap-x-2 py-4 text-2xl w-full">
-                  {/* <div className="flex items-center py-2 text-2xl font-semibold">
-                    <div className="w-[90%] flex items-center gap-[10px]">
-                      <IonIcon
-                        icon={calendarOutline}
-                        className="text-[#FE9051] text-2xl"
-                      />
-                      <p>{formatDate(movie.releaseDay)}</p>
-                    </div>
-                  </div> */}
                   <div className="flex py-2">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Đạo diễn:
@@ -297,13 +285,48 @@ const Movie = () => {
                           Lịch chiếu
                         </h1>
                       </div>
-                      <div className="w-[92%]">
+                      <div>
                         {movie?.screenings && (
                           <MovieSchedule
                             data={groupScreeningsByDate(movie.screenings)}
                           />
                         )}
                       </div>
+                    </div>
+                  )}
+
+                  {movie.screenings?.length === 0 && (
+                    <div className="mt-[60px]">
+                      <div
+                        id="description-title"
+                        className="flex text-base text-[#c0c1c4] font-medium px-0 py-[20px] gap-[0.7rem] text-left"
+                      >
+                        <h1 className="text-[#092b4b] text-3xl font-medium text-left">
+                          Lịch chiếu
+                        </h1>
+                      </div>
+                      <Empty
+                        className="mt-[40px]"
+                        description={
+                          <span className="text-[24px]">
+                            Chưa có xuất chiếu nào cho phim này
+                          </span>
+                        }
+                      />
+                    </div>
+                  )}
+
+                  {movie.screenings?.length > 0 && (
+                    <div className="mt-[50px]">
+                      {user.role !== "ADMIN" && (
+                      <Button
+                        onClick={handleBookFilmUpcoming}
+                        secondary
+                        className="h-[120px] w-[350px] m-auto bg-[#092b4b] hover:text-[#092b4b]"
+                      >
+                        Đặt vé ngay
+                      </Button>
+                       )}
                     </div>
                   )}
                 </div>
