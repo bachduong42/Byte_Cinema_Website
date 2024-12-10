@@ -8,7 +8,7 @@ import { getDetailFilm } from "../services/getDetailFilm";
 import { getAllAuditorium } from "../services/getAllAuditorium";
 import { addSchedule } from "../services/addSchedule";
 import { toast } from "react-toastify";
-import { FadeLoader } from "react-spinners";
+// import { FadeLoader } from "react-spinners";
 
 function MovieSchedules() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -22,7 +22,7 @@ function MovieSchedules() {
   const [endTime, setEndTime] = useState(null);
   const [type, setType] = useState(null);
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
     date: "",
     time: "",
@@ -66,14 +66,14 @@ function MovieSchedules() {
   useEffect(() => {
     async function getFilmData() {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const bearer = localStorage.getItem("accessToken");
         const data = await getDetailFilm(id);
         const rooms = await getAllAuditorium(bearer);
         setFilmData(data);
         setRoomData(rooms);
         setScreeningData(data.screenings);
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (e) {
         setIsLoading(false);
         console.error(e);
@@ -154,7 +154,7 @@ function MovieSchedules() {
       // So sánh chỉ ngày
       if (normalizedCombinedDate >= normalizedReleaseDate) {
         const data = await addSchedule(
-          combinedDateTime.toISOString(),
+          combinedDateTime.toISOString().replace(".000", ""),
           price,
           id,
           room
@@ -203,13 +203,13 @@ function MovieSchedules() {
     setType(type);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center w-full h-[700px]">
-        <FadeLoader loading={isLoading} />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex justify-center items-center w-full h-[700px]">
+  //       <FadeLoader loading={isLoading} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">

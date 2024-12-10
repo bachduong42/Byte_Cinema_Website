@@ -27,7 +27,9 @@ useEffect(() => {
     // Create dataTb array with count included
     const dataTb = data?.map((screening, index) => {
       const startTime = new Date(screening.startTime);
-      const showDate = startTime.toLocaleDateString("en-GB");
+      const showDate = startTime.toLocaleDateString("en-GB", {
+        timeZone: "UTC",
+      });
       const showTime = startTime.toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
