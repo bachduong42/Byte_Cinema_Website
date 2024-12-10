@@ -63,7 +63,7 @@ const AuditoriumTable = ({ roomData, handleReload }) => {
       key: "seatsPerRow",
     },
     {
-      title: 'Số lượng xuất chiếu',
+      title: 'Số lượng suất chiếu',
       dataIndex: 'countScreening',
       key: 'countScreening',
     },

@@ -16,7 +16,7 @@ function ModalDelScreening({ handleClose, idDel, handleReload }) {
     } catch (error) {
       console.log(error);
       handleClose();
-      toast.error("Xuất chiếu này đang có vé đặt. Không thể xoá!", {
+      toast.error("Suất chiếu này đang có vé đặt. Không thể xoá!", {
         autoClose: 800,
         position: "top-center",
       });
