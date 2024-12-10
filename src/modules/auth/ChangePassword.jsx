@@ -87,14 +87,17 @@ const ChangePassword = ({ openLoginModal }) => {
   // };
   const validatePassword = () => {
     const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const letterRegex = /[a-zA-Z]/;
+    const digitRegex = /\d/;
+
     if (newPassword.length === 0) {
       setNewPasswordError("Vui lòng nhập mật khẩu");
     } else if (newPassword.length < 6) {
       setNewPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
-    } else if (!/[A-Z]/.test(newPassword)) {
-      setNewPasswordError("Mật khẩu phải có ít nhất 1 chữ cái in hoa");
-    } else if (!/[a-z]/.test(newPassword)) {
-      setNewPasswordError("Mật khẩu phải có ít nhất 1 chữ cái thường");
+    } else if (!letterRegex.test(newPassword)) {
+      setNewPasswordError("Mật khẩu phải có ít nhất 1 chữ cái");
+    } else if (!digitRegex.test(newPassword)) {
+      setNewPasswordError("Mật khẩu phải có ít nhất 1 chữ số");
     } else if (!specialCharRegex.test(newPassword)) {
       setNewPasswordError("Mật khẩu phải có ít nhất 1 ký tự đặc biệt");
     } else {
