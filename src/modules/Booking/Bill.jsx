@@ -59,7 +59,7 @@ function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPr
   return (
     <div
       className={`flex flex-col bg-[#d9e9f0] ${billSuccess ? "w-full" : "lg:w-1/4 w-2/5"
-        } min-h-[650px] rounded-md pt-2 gap-1`}
+        } min-h-[650px] rounded-md pt-2 gap-1 mt-10 `}
     >
       <span className="text-2xl mb-[15px] font-bold text-[#092b4b]">
         HÓA ĐƠN
