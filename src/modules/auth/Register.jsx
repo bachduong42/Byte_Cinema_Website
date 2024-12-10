@@ -98,33 +98,65 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
     }, 700);
   };
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
-    try {
-      saveEmail(email);
-      const data = await register(email, password, confirmPassword);
-      toast.info(data.info, { autoClose: 2000 });
-      switchModal();
-      setTimeout(() => {
-        openConfirmOtpModal();
-      }, 500);
-    } catch (message) {
-      toast.error(message);
-      setShowOTPModal(
-        String(message).includes(
-          "Email này đã được đăng ký nhưng chưa xác nhận. Vui lòng xác nhận"
-        )
-      );
-    }
-  };
+const handleRegister = async (event) => {
+  event.preventDefault();
+  const newErrors = {};
 
-  //   const handleBlur = (event) => {
-  //     if (!event.target.value) {
-  //       event.target.style.borderColor = 'red';
-  //     } else {
-  //       event.target.style.borderColor = '';
-  //     }
-  //   };
+  // Kiểm tra mật khẩu mới
+  if (!password) {
+    newErrors.password = "Vui lòng nhập mật khẩu mới.";
+  } else if (password.length < 6) {
+    newErrors.password = "Mật khẩu mới phải có ít nhất 6 ký tự.";
+  } else if (password === confirmPassword) {
+    newErrors.password = "Mật khẩu mới không được trùng với mật khẩu cũ.";
+  } else if (!/[a-z]/.test(password)) {
+    newErrors.password = "Mật khẩu mới phải chứa ít nhất một chữ cái thường.";
+  } else if (!/[0-9]/.test(password)) {
+    newErrors.password = "Mật khẩu mới phải chứa ít nhất một chữ số.";
+  } else if (!/[@$!%*?&]/.test(password)) {
+    newErrors.password =
+      "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt (@, $, !, %, *, ?, &).";
+  }
+
+  // Kiểm tra mật khẩu xác nhận
+  if (!confirmPassword) {
+    newErrors.confirmPassword = "Vui lòng xác nhận mật khẩu.";
+  } else if (confirmPassword !== password) {
+    newErrors.confirmPassword =
+      "Mật khẩu xác nhận không khớp với mật khẩu mới.";
+  }
+
+  if (Object.keys(newErrors).length !== 0) {
+    return;
+  }
+
+  try {
+    // Lưu email trước khi gọi API
+    saveEmail(email);
+
+    // Gọi API để đăng ký người dùng
+    const data = await register(email, password, confirmPassword);
+    toast.info(data.info, { autoClose: 2000 });
+
+    // Chuyển modal sau khi đăng ký thành công
+    switchModal();
+
+    // Mở modal xác nhận OTP sau một khoảng thời gian ngắn
+    setTimeout(() => {
+      openConfirmOtpModal();
+    }, 500);
+  } catch (message) {
+    // Hiển thị lỗi nếu đăng ký không thành công
+    toast.error(message);
+
+    // Kiểm tra thông báo lỗi để quyết định hiển thị modal OTP
+    setShowOTPModal(
+      String(message).includes(
+        "Email này đã được đăng ký nhưng chưa xác nhận. Vui lòng xác nhận"
+      )
+    );
+  }
+};
 
   const handleOverlayClick = (event) => {
     if (event.target === registerOverlayRef.current) {
@@ -156,16 +188,13 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
     } else if (password.length < 6) {
       setPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
     } else if (!/[a-z]/.test(password)) {
-      setPasswordError("Mật khẩu phải có ít nhất một chữ cái thường");
+      setPasswordError("Mật khẩu phải có ít nhất một chữ cái");
     } else if (!/[0-9]/.test(password)) {
-      setPasswordError('Mật khẩu phải chứa ít nhất một chữ số')
-    }
-    else if (!/[@$!%*?&]/.test(password)) {
-      setPasswordError("Mật khẩu phải chứa ít nhất một ký tự đặc biệt"
-      );
-    }
-    else {
-      setPasswordError('')
+      setPasswordError("Mật khẩu phải chứa ít nhất một chữ số");
+    } else if (!/[@$!%*?&]/.test(password)) {
+      setPasswordError("Mật khẩu phải chứa ít nhất một ký tự đặc biệt");
+    } else {
+      setPasswordError("");
     }
   };
 
