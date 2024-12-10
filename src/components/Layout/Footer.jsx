@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png"
 import Image from "../Image/Image";
 function Footer() {
@@ -6,19 +7,21 @@ function Footer() {
         <hr className="border-t-0 border-[#0DB1F6] border w-full" />
         <div className="flex justify-around mt-[50px]">
           {/* Logo và tên hệ thống */}
-          <div className="flex flex-col items-start justify-center">
-            <Image
-              src={logo}
-              alt="Bytes Cinema Logo"
-              className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]"
-            />
-            <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5 text-white">
-              Bytes
+         <Link to='/'>
+            <div className="flex flex-col items-start justify-center">
+              <Image
+                src={logo}
+                alt="Bytes Cinema Logo"
+                className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]"
+              />
+              <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5 text-white">
+                Bytes
+              </div>
+              <div className="text-[#43CFFB] lg:text-xl md:text-[18px] text-[12px] playfair-text">
+                Cinema
+              </div>
             </div>
-            <div className="text-[#43CFFB] lg:text-xl md:text-[18px] text-[12px] playfair-text">
-              Cinema
-            </div>
-          </div>
+         </Link>
           {/* Về chúng tôi */}
           <div className="flex flex-col items-start gap-3">
             <div className="nunito-text text-white text-[24px] font-semibold">

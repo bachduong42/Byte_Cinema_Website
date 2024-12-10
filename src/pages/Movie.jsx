@@ -288,7 +288,13 @@ const Movie = () => {
                       <div>
                         {movie?.screenings && (
                           <MovieSchedule
-                            data={groupScreeningsByDate(movie.screenings)}
+                            data={groupScreeningsByDate(
+                              movie.screenings.filter((screening) => {
+                                const currentTime = new Date(); 
+                                const endTime = new Date(screening.endTime); 
+                                return endTime > currentTime; 
+                              })
+                            )}
                           />
                         )}
                       </div>
@@ -319,14 +325,14 @@ const Movie = () => {
                   {movie.screenings?.length > 0 && (
                     <div className="mt-[50px]">
                       {user.role !== "ADMIN" && (
-                      <Button
-                        onClick={handleBookFilmUpcoming}
-                        secondary
-                        className="h-[120px] w-[350px] m-auto bg-[#092b4b] hover:text-[#092b4b]"
-                      >
-                        Đặt vé ngay
-                      </Button>
-                       )}
+                        <Button
+                          onClick={handleBookFilmUpcoming}
+                          secondary
+                          className="h-[120px] w-[350px] m-auto bg-[#092b4b] hover:text-[#092b4b]"
+                        >
+                          Đặt vé ngay
+                        </Button>
+                      )}
                     </div>
                   )}
                 </div>
