@@ -130,7 +130,7 @@ function MovieCard({
               )}
             </div>
           ) : (
-            <dic className="flex gap-3 items-center">
+            <div className="flex gap-3 items-center">
               <button onClick={handleViewDetail}
                 className="text-white text-[12px]">Xem chi tiết</button>
               <button
@@ -139,7 +139,7 @@ function MovieCard({
               >
                 Mua vé
               </button>
-            </dic>
+            </div>
           )}
         </div>
       )}

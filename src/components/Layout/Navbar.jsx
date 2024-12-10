@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/images/logo.png";
 import Button from "../Button/Button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Image from "../Image/Image";
 import Login from "../../modules/auth/Login";
 import Register from "../../modules/auth/Register";
@@ -17,6 +17,7 @@ import ModalEditProfile from "../Modal/ModalEditProfile"
 import ModalChangePassword from "../Modal/ModalChangePassword";
 import { getUser } from "../../services/login";
 import { Modal } from "antd";
+import { config } from "@fortawesome/fontawesome-svg-core";
 const Navbar = React.memo(() => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
@@ -168,21 +169,21 @@ const Navbar = React.memo(() => {
         <p className="text-[15px]">Bạn chắc chắn muốn đăng xuất tài khoản?</p>
       </Modal>
       <div className="flex gap-x-14 items-center">
-        <a
-          href="/"
-          className="flex flex-col items-start cursor-pointer">
-          <Image
-            src={logo}
-            alt={logo}
-            className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]"
-          />
-          <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5 text-white">
-            Bytes
+       <Link to={user?.role === "ADMIN"?'/film-management':'/'}>
+          <div className="flex flex-col items-start">
+            <Image
+              src={logo}
+              alt={logo}
+              className="w-[40px] h-[30px] md:w-[50px] md:h-[45px] lg:w-[60px] lg:h-[55px]"
+            />
+            <div className="pixel-text lg:text-[32px] md:text-[25px] text-base leading-5 text-white">
+              Bytes
+            </div>
+            <div className="text-[#43CFFB]  lg:text-xl md:text-[18px] text-[12px] playfair-text">
+              Cinema
+            </div>
           </div>
-          <div className="text-[#43CFFB]  lg:text-xl md:text-[18px] text-[12px] playfair-text">
-            Cinema
-          </div>
-        </a>
+       </Link>
         <ul className="lg:flex hidden gap-x-12 items-center">
           {isLogin && isAdmin ? (
             <>

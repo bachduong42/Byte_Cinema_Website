@@ -287,7 +287,13 @@ const Movie = () => {
                       <div>
                         {movie?.screenings && (
                           <MovieSchedule
-                            data={groupScreeningsByDate(movie.screenings)}
+                            data={groupScreeningsByDate(
+                              movie.screenings.filter((screening) => {
+                                const currentTime = new Date(); 
+                                const endTime = new Date(screening.endTime); 
+                                return endTime > currentTime; 
+                              })
+                            )}
                           />
                         )}
                       </div>
