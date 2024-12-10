@@ -8,12 +8,14 @@ import { register } from '../../services/registerService';
 import { toast } from "react-toastify";
 import { UserContext } from '../../contexts/UserContext';
 import { resendOTP } from "../../services/resendOTP";
+import { FadeLoader } from 'react-spinners';
 
 const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(null);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
   const [emailError, setEmailError] = useState("");
@@ -100,15 +102,13 @@ const Register = ({ setModalRef, openLoginModal, openConfirmOtpModal }) => {
 
 const handleRegister = async (event) => {
   event.preventDefault();
-  const newErrors = {};
+  const newErrors = {}; 
 
   // Kiểm tra mật khẩu mới
   if (!password) {
     newErrors.password = "Vui lòng nhập mật khẩu mới.";
   } else if (password.length < 6) {
     newErrors.password = "Mật khẩu mới phải có ít nhất 6 ký tự.";
-  } else if (password === confirmPassword) {
-    newErrors.password = "Mật khẩu mới không được trùng với mật khẩu cũ.";
   } else if (!/[a-z]/.test(password)) {
     newErrors.password = "Mật khẩu mới phải chứa ít nhất một chữ cái thường.";
   } else if (!/[0-9]/.test(password)) {
@@ -131,6 +131,7 @@ const handleRegister = async (event) => {
   }
 
   try {
+    setIsLoading(true)
     // Lưu email trước khi gọi API
     saveEmail(email);
 
@@ -145,7 +146,9 @@ const handleRegister = async (event) => {
     setTimeout(() => {
       openConfirmOtpModal();
     }, 500);
+    setIsLoading(false)
   } catch (message) {
+    setIsLoading(false)
     // Hiển thị lỗi nếu đăng ký không thành công
     toast.error(message);
 
@@ -157,7 +160,6 @@ const handleRegister = async (event) => {
     );
   }
 };
-
   const handleOverlayClick = (event) => {
     if (event.target === registerOverlayRef.current) {
       closeRegisterModal();
@@ -220,7 +222,7 @@ const handleRegister = async (event) => {
   const handleShowOTPModal = async () => {
     setShowOTPModal(false);
     closeRegisterModal();
-    await setTimeout(() => {
+     setTimeout(() => {
       openConfirmOtpModal();
     }, 500);
     try {
@@ -233,6 +235,19 @@ const handleRegister = async (event) => {
 
   return (
     <>
+      {isLoading && (
+        <div
+          className="flex justify-center items-center w-full h-[full]"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: "rgba(0,0,0,0.15)",
+          }}
+        >
+          <FadeLoader loading={isLoading} />
+        </div>
+      )}
       <div
         id="register-overlay"
         ref={registerOverlayRef}
