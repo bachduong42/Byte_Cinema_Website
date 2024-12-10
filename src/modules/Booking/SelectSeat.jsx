@@ -99,7 +99,7 @@ function SelectSeat({
     <>
       <div className="flex w-full bg-[#d9e9f0] rounded-md h-[180px] mb-5 items-center px-5 justify-between">
         <div className="font-bold text-[#092b4b] text-[20px]">
-          Đổi suất chiếu
+          Chọn suất chiếu
         </div>
         {/* <div className="flex gap-3">
                     <div className="bg-[#092b4b] cursor-pointer  text-white rounded-md px-5 py-2">11:30</div>
