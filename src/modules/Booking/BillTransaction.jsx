@@ -33,9 +33,9 @@ function BillTransaction({ listSeats, billSuccess, name, imgSrc, duration, natio
     <>
       <div
         className={`flex flex-col bg-[#d9e9f0] ${billSuccess ? "w-full" : "lg:w-1/4 w-2/5"
-          } min-h-[650px] h-fit rounded-md pt-2 gap-1 tippy-box`}
+          } min-h-[650px] h-fit rounded-md pt-2 gap-1`}
       >
-        <span className="text-2xl mb-[15px] font-bold text-[#092b4b]">
+        <span className="text-2xl font-bold text-[#092b4b]">
           HÓA ĐƠN
         </span>
         <hr className="border-t-0 border-[#092b4b] border w-[80%] mx-auto" />
