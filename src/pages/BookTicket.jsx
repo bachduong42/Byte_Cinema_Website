@@ -325,7 +325,11 @@ function BookTicket() {
                 totalSeats={totalSeats}
                 listSeats={listSeats}
                 setListSeats={setListSeats}
-                schedule={movie.screenings}
+                schedule={movie.screenings.filter((screening) => {
+                  const currentTime = new Date();
+                  const endTime = new Date(screening.endTime);
+                  return endTime > currentTime;
+                })}
                 onClick={handleSelectScreening}
                 listSeatIds={listIdSeats}
                 setlistSeatIds={setListIdSeats}
