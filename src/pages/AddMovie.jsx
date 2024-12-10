@@ -203,7 +203,7 @@ function AddMovie() {
       navigate("/film-management");
     } catch (error) {
       console.error("Add movie error: ", error);
-      toast.error("Tên phim không đượC trùng", {
+      toast.error("Tên phim không được trùng", {
         autoClose: 1000,
       });
       throw error;
