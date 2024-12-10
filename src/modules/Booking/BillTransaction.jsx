@@ -59,7 +59,7 @@ function BillTransaction({ listSeats, billSuccess, name, imgSrc, duration, natio
                 <span className="text-[14px] font-semibold">Quốc gia:</span>
                 <span className="text-[14px]">{nation}</span>
               </div>
-              <div className="flex gap-3 items-center">
+              <div className="block gap-3 items-center">
                 <span className="text-[14px] font-semibold">Ngôn ngữ:</span>
                 <span className="text-[14px]">{language}</span>
               </div>
