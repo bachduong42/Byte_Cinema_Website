@@ -326,8 +326,11 @@ html *::-webkit-scrollbar-track {
   color: white !important;
 }
 
-.custom-modal .ant-btn-primary{
-  background-color: #092b4b!important;
-  color: white!important;
+.custom-modal .ant-btn-primary {
+  background-color: #092b4b !important;
+  color: white !important;
   font-weight: 500 !important;
+}
+.tippy-box {
+  z-index: 9999; /* Tăng giá trị nếu cần */
 }

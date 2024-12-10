@@ -1,39 +1,39 @@
 function BillTransaction({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPrice, startTime, totalPrice, auditorium, language }) {
 
 
-  
-  
-    function convertDurationToMinutes(duration) {
-      if (duration) {
-        const hours = duration.match(/(\d+)H/);
-        const minutes = duration.match(/(\d+)M/);
-  
-        const totalMinutes =
-          (hours ? parseInt(hours[1]) * 60 : 0) +
-          (minutes ? parseInt(minutes[1]) : 0);
-        return totalMinutes;
-      }
-      return ''
-    }
 
-    function getTimeFromDateTime(dateTime) {
-        const [timePart] = dateTime.split(" ");
-        return timePart;
-      }
-      
-      function getDateFromDateTime(dateTime) {
-        const [, datePart] = dateTime.split(" ");
-        const [day, month, year] = datePart.split("-");
-        return `${day}/${month}/${year}`;
-      }
-    
-  
-  
-    return (
+
+  function convertDurationToMinutes(duration) {
+    if (duration) {
+      const hours = duration.match(/(\d+)H/);
+      const minutes = duration.match(/(\d+)M/);
+
+      const totalMinutes =
+        (hours ? parseInt(hours[1]) * 60 : 0) +
+        (minutes ? parseInt(minutes[1]) : 0);
+      return totalMinutes;
+    }
+    return ''
+  }
+
+  function getTimeFromDateTime(dateTime) {
+    const [timePart] = dateTime.split(" ");
+    return timePart;
+  }
+
+  function getDateFromDateTime(dateTime) {
+    const [, datePart] = dateTime.split(" ");
+    const [day, month, year] = datePart.split("-");
+    return `${day}/${month}/${year}`;
+  }
+
+
+
+  return (
+    <>
       <div
-        className={`flex flex-col bg-[#d9e9f0] ${
-          billSuccess ? "w-full" : "lg:w-1/4 w-2/5"
-        } min-h-[650px] rounded-md pt-2 gap-1`}
+        className={`flex flex-col bg-[#d9e9f0] ${billSuccess ? "w-full" : "lg:w-1/4 w-2/5"
+          } min-h-[650px] rounded-md pt-2 gap-1 tippy-box`}
       >
         <span className="text-2xl mb-[15px] font-bold text-[#092b4b]">
           HÓA ĐƠN
@@ -52,32 +52,32 @@ function BillTransaction({ listSeats, billSuccess, name, imgSrc, duration, natio
                 18+
               </div>
               <div className="flex gap-3 items-center">
-                <span className="text-[16px] font-semibold">Thời lượng:</span>
-                <span className="text-[16px]">{convertDurationToMinutes(duration)} phút</span>
+                <span className="text-[14px] font-semibold">Thời lượng:</span>
+                <span className="text-[14px]">{convertDurationToMinutes(duration)} phút</span>
               </div>
               <div className="flex gap-3 items-center">
-                <span className="text-[16px] font-semibold">Quốc gia:</span>
-                <span className="text-[16px]">{nation}</span>
+                <span className="text-[14px] font-semibold">Quốc gia:</span>
+                <span className="text-[14px]">{nation}</span>
               </div>
               <div className="flex gap-3 items-center">
-                <span className="text-[16px] font-semibold">Ngôn ngữ:</span>
-                <span className="text-[16px]">{language}</span>
+                <span className="text-[14px] font-semibold">Ngôn ngữ:</span>
+                <span className="text-[14px]">{language}</span>
               </div>
               {/* <div className="flex gap-3">
-                <span className="text-[16px] font-semibold ">Ngôn ngữ:</span>
-                <span className="text-[16px]">{language}</span>
-              </div> */}
+                  <span className="text-[16px] font-semibold ">Ngôn ngữ:</span>
+                  <span className="text-[16px]">{language}</span>
+                </div> */}
             </div>
           </div>
           <div className="bg-white w-full h-auto min-h-[280px] px-5 pt-5 mt-5 gap-2 flex flex-col">
-            <div className="flex justify-between font-semibold">  
+            <div className="flex justify-between font-semibold">
               <span>Thời gian:</span>
-              <span>{ startTime ? getDateFromDateTime(startTime) :  "Chưa chọn suất chiếu"}</span>
+              <span>{startTime ? getDateFromDateTime(startTime) : "Chưa chọn suất chiếu"}</span>
             </div>
-            
+
             <div className="flex justify-between font-semibold">
               <span>Suất chiếu:</span>
-              <span>{ startTime ? getTimeFromDateTime(startTime) :  "Chưa chọn suất chiếu"}</span>
+              <span>{startTime ? getTimeFromDateTime(startTime) : "Chưa chọn suất chiếu"}</span>
             </div>
             <div className="flex justify-between font-semibold">
               <span>Giá tiền 1 vé:</span>
@@ -108,7 +108,8 @@ function BillTransaction({ listSeats, billSuccess, name, imgSrc, duration, natio
           )}
         </div>
       </div>
-    );
-  }
-  
-  export default BillTransaction;
+    </>
+  );
+}
+
+export default BillTransaction;
