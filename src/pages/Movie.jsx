@@ -314,7 +314,7 @@ const Movie = () => {
                         className="mt-[40px]"
                         description={
                           <span className="text-[24px]">
-                            Chưa có xuất chiếu nào cho phim này
+                            Chưa có Suất chiếu nào cho phim này
                           </span>
                         }
                       />

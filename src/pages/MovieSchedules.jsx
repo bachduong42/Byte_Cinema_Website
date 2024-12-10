@@ -388,7 +388,7 @@ function MovieSchedules() {
       </div>
       <div className="mt-[30px]">
         <h3 className="text-[#092B4B] font-medium text-[26px] float-left mb-4">
-          Danh sách xuất chiếu
+          Danh sách suất chiếu
         </h3>
         {screeningData && roomData && (
           <ScheduleTable
