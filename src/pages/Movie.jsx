@@ -149,9 +149,8 @@ const Movie = () => {
               <div
                 className="absolute inset-0 bg-cover bg-center filter blur-xl"
                 style={{
-                  backgroundImage: `url(${
-                    movie.imagePaths ? movie.imagePaths?.[0] : null
-                  })`,
+                  backgroundImage: `url(${movie.imagePaths ? movie.imagePaths?.[0] : null
+                    })`,
                 }}
               ></div>
               <img
@@ -173,30 +172,30 @@ const Movie = () => {
                 <img
                   src={movie.imagePaths ? movie.imagePaths?.[0] : null}
                   alt={movie.name}
-                  className="border-2 border-black rounded-lg w-[450px]"
+                  className="border-2 border-black rounded-lg w-[300px]"
                 />
               </div>
               <div className="items-start  text-left ml-[50px] w-3/4 flex flex-col">
-                <h1 className="text-6xl mb-[15px] font-semibold text-[#092b4b]">
+                <h1 className="text-3xl mb-[15px] font-semibold text-[#092b4b]">
                   {movie.name}
                 </h1>
 
-                <div className="grid grid-cols-1 gap-x-2 py-4 text-2xl w-full">
-                  <div className="flex py-2">
+                <div className="grid grid-cols-1 gap-x-2 py-2 gap-2 text-xl w-full">
+                  <div className="flex ">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Đạo diễn:
                     </span>
                     <span className="w-[85%]">{movie.director}</span>
                   </div>
 
-                  <div className="flex py-2">
+                  <div className="flex ">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Diễn viên:
                     </span>
                     <span className="w-[85%]">{movie.actors}</span>
                   </div>
 
-                  <div className="flex py-2">
+                  <div className="flex ">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Thể loại:
                     </span>
@@ -205,7 +204,7 @@ const Movie = () => {
                     </span>
                   </div>
 
-                  <div className="flex py-2">
+                  <div className="flex ">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Khởi chiếu:
                     </span>
@@ -214,7 +213,7 @@ const Movie = () => {
                     </span>
                   </div>
 
-                  <div className="flex py-2">
+                  <div className="flex ">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Thời lượng:
                     </span>
@@ -223,13 +222,13 @@ const Movie = () => {
                     </span>
                   </div>
 
-                  <div className="flex py-2">
+                  <div className="flex">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Quốc gia:
                     </span>
                     <span className="w-[85%]">{movie.nation}</span>
                   </div>
-                  <div className="flex py-2">
+                  <div className="flex">
                     <span className="font-bold mr-[12px] w-[15%]">
                       Ngôn ngữ:
                     </span>

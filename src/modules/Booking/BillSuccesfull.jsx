@@ -35,7 +35,7 @@ function BillSuccessfull() {
     getTransaction();
     console.log("Transaction: ", transaction);
   }, [location, myTransactionId]);
-   
+
 
   return (
     <div className="flex flex-col w-full justify-center  mt-[115px]  lg:px-16 pt-5 pb-10">
@@ -91,15 +91,15 @@ function BillSuccessfull() {
                 VÉ XEM PHIM
               </span>
               <div className="w-[80%] border border-t-[#576f85] border-t-0 mx-auto my-2"></div>
-              <div className="justify-end text-white text-end flex">
+              <div className="justify-end text-white text-end flex text-[14px] gap-2">
                 {/* Đặt lúc: 12:00 , 22/09/2024 */}
-                Đặt lúc: <div className="ml-5">{transaction.paidTime}</div>
+                Đặt lúc: <div className="">{transaction.paidTime}</div>
               </div>
-              <div className="text-white text-end flex">
+              <div className="text-white text-end flex text-[14px] gap-2">
                 {/* Người đặt: Nguyễn Trần Thu Phương */}
-                Người đặt:  <div className="ml-5">{transaction.email}</div>
+                Người đặt:  <div className="">{transaction.email}</div>
               </div>
-              
+
             </div>
           </div>
           <div className="w-full h-[370px]">

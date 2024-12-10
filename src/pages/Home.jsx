@@ -383,7 +383,7 @@ const Home = () => {
           </div>
           <hr className="border-t-2 border-[#0DB1F6] border w-[85%]" />
         </div>
-        <div className="flex flex-row w-full gap-[50px] mt-[80px]">
+        <div className="flex flex-row w-full gap-[50px] mt-[80px] justify-center">
           <Swiper
             ref={swiperRef}
             spaceBetween={30}

@@ -18,7 +18,7 @@ function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPr
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('de-DE').format(price);
-};
+  };
 
   function convertDurationToMinutes(duration) {
     if (duration) {
@@ -35,9 +35,9 @@ function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPr
 
 
   function getTimeFromDateTime(dateTime) {
-    const timePart = dateTime.split("T")[1]; 
+    const timePart = dateTime.split("T")[1];
     const [hour, minute] = timePart.split(":");
-    return `${hour}:${minute}`; 
+    return `${hour}:${minute}`;
   }
 
   function formatDate(dateStr) {
@@ -53,38 +53,37 @@ function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPr
     const formattedMinutes = minutes.toString().padStart(2, "0");
     return `${formattedDay}/${formattedMonth}/${year}`;
   }
-  
+
 
 
   return (
     <div
-      className={`flex flex-col bg-[#d9e9f0] ${
-        billSuccess ? "w-full" : "lg:w-1/4 w-2/5"
-      } min-h-[650px] rounded-md pt-2 gap-1`}
+      className={`flex flex-col bg-[#d9e9f0] ${billSuccess ? "w-full" : "lg:w-1/4 w-2/5"
+        } min-h-[650px] rounded-md pt-2 gap-1 mt-10 `}
     >
       <span className="text-2xl mb-[15px] font-bold text-[#092b4b]">
         HÓA ĐƠN
       </span>
       <hr className="border-t-0 border-[#092b4b] border w-[80%] mx-auto" />
       <div className="w-full px-3 h-[200px] pt-2">
-        <div className="w-full bg-white h-full px-4 py-4 flex gap-2">
+        <div className="w-full bg-white h-fit px-4 py-4 flex gap-2">
           <img
             src={imgSrc}
             alt=""
-            className="w-[150px] h-full rounded-sm object-cover"
+            className="w-[130px] h-full rounded-sm object-cover"
           />
           <div className="flex flex-col px-1 gap-2 text-start">
-            <h1 className="text-xl font-bold text-[#092b4b] ">{name}</h1>
+            <h1 className="text-[18px] font-bold text-[#092b4b] ">{name}</h1>
             <div className="w-[40px] h-[20px] bg-[#9E0000] rounded-sm text-[14px] items-center justify-center flex text-white font-bold">
               18+
             </div>
-            <div className="flex gap-3 items-center">
-              <span className="text-[16px] font-semibold">Thời lượng:</span>
-              <span className="text-[16px]">{convertDurationToMinutes(duration)} phút</span>
+            <div className="flex gap-1 items-center">
+              <span className="text-[14px] font-semibold">Thời lượng:</span>
+              <span className="text-[14px]">{convertDurationToMinutes(duration)} phút</span>
             </div>
             <div className="flex gap-3 items-center">
-              <span className="text-[16px] font-semibold">Quốc gia:</span>
-              <span className="text-[16px]">{nation}</span>
+              <span className="text-[14px] font-semibold">Quốc gia:</span>
+              <span className="text-[14px]">{nation}</span>
             </div>
             {/* <div className="flex gap-3">
               <span className="text-[16px] font-semibold ">Ngôn ngữ:</span>
@@ -93,14 +92,14 @@ function Bill({ listSeats, billSuccess, name, imgSrc, duration, nation, ticketPr
           </div>
         </div>
         <div className="bg-white w-full h-auto min-h-[280px] px-5 pt-5 mt-5 gap-2 flex flex-col">
-          <div className="flex justify-between font-semibold">  
+          <div className="flex justify-between font-semibold">
             <span>Thời gian:</span>
-            <span>{ startTime ? formatDate(startTime) :  "Chưa chọn suất chiếu"}</span>
+            <span>{startTime ? formatDate(startTime) : "Chưa chọn suất chiếu"}</span>
           </div>
-          
+
           <div className="flex justify-between font-semibold">
             <span>Suất chiếu:</span>
-            <span>{ startTime ? getTimeFromDateTime(startTime) :  "Chưa chọn suất chiếu"}</span>
+            <span>{startTime ? getTimeFromDateTime(startTime) : "Chưa chọn suất chiếu"}</span>
           </div>
           <div className="flex justify-between font-semibold">
             <span>Giá tiền 1 vé:</span>

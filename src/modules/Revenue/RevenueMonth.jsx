@@ -9,8 +9,9 @@ function RevenueMonth({ revenueData, month, isYear }) {
     return (
         <>
             <div className="w-full mx-auto gap-10">
-                <TableMonthRevenue revenueData={filteredData} isYear={isYear}></TableMonthRevenue>
                 <ChartDaily data={filteredData}></ChartDaily>
+                <TableMonthRevenue revenueData={filteredData} isYear={isYear}></TableMonthRevenue>
+
             </div>
         </>
     );

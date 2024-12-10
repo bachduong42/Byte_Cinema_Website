@@ -17,6 +17,7 @@ import ModalEditProfile from "../Modal/ModalEditProfile"
 import ModalChangePassword from "../Modal/ModalChangePassword";
 import { getUser } from "../../services/login";
 import { Modal } from "antd";
+import { config } from "@fortawesome/fontawesome-svg-core";
 const Navbar = React.memo(() => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState("/");
@@ -101,7 +102,7 @@ const Navbar = React.memo(() => {
     setShowMenu(false);
   };
   const handleLogout = () => {
-   setIsModalOpen(true)
+    setIsModalOpen(true)
   };
 
   const handleViewTransactions = () => {
@@ -134,8 +135,8 @@ const Navbar = React.memo(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOk = () => {
-     logout();
-     navigate("/");
+    logout();
+    navigate("/");
     setIsModalOpen(false);
   };
   const handleCancel = () => {
@@ -144,13 +145,12 @@ const Navbar = React.memo(() => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${
-        !isHome
-          ? "bg-[#092B4B]"
-          : isScrolled
+      className={`fixed top-0 left-0 right-0 flex z-50 justify-between lg:px-14 px-6 lg:h-[111px] md:h-[90px] h-[68px] transition-colors duration-300  ${!isHome
+        ? "bg-[#092B4B]"
+        : isScrolled
           ? "bg-[#092B4B] shadow-md border border-b-1 border-black"
           : ""
-      }`}
+        }`}
     >
       <Modal
         title={
@@ -169,7 +169,7 @@ const Navbar = React.memo(() => {
         <p className="text-[15px]">Bạn chắc chắn muốn đăng xuất tài khoản?</p>
       </Modal>
       <div className="flex gap-x-14 items-center">
-       <Link to='/'>
+       <Link to={user?.role === "ADMIN"?'/film-management':'/'}>
           <div className="flex flex-col items-start">
             <Image
               src={logo}
@@ -321,8 +321,9 @@ const Navbar = React.memo(() => {
         >
           <div className="flex  items-center">
             <img
+              // onClick={() => { handleHideResult(); }}
               onMouseEnter={() => {
-                setShowMenu(true);
+                setShowMenu((prev) => !prev);
               }}
               src={profile?.avatar || noImage}
               alt=""

@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png"
 import Image from "../Image/Image";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 function Footer() {
+  const { user } = useContext(UserContext)
     return (
       <div className="bg-[#092B4B]">
         <hr className="border-t-0 border-[#0DB1F6] border w-full" />
         <div className="flex justify-around mt-[50px]">
           {/* Logo và tên hệ thống */}
-         <Link to='/'>
+          <Link to={user?.role === "ADMIN" ? "/film-management" : "/"}>
             <div className="flex flex-col items-start justify-center">
               <Image
                 src={logo}
@@ -21,7 +24,7 @@ function Footer() {
                 Cinema
               </div>
             </div>
-         </Link>
+          </Link>
           {/* Về chúng tôi */}
           <div className="flex flex-col items-start gap-3">
             <div className="nunito-text text-white text-[24px] font-semibold">

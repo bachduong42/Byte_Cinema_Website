@@ -101,19 +101,8 @@ function FilmManagement() {
 
   return (
     <div className="flex min-h-[850px] h-auto flex-col md:px-[130px] w-full mt-[150px] pb-5">
-      <div className="flex justify-between w-full h-full">
-        <Search searchResult={searchResult} setSearchResult={setSearchResult}></Search>
-        {activeTab !== "Thể loại" ?
-          <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} onClick={handleAddClick}>
-            Tạo phim mới
-          </Button> :
-          <Button
-            onClick={handleOpenAddGenre}
-            className="flex w-[170px] gap-1 px-2 bg-[#092B4B] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} >
-            Thêm thể loại
-          </Button>}
-      </div>
-      <div className="w-full flex justify-between mt-5">
+
+      <div className="w-full flex justify-between mt-5 mb-5">
         <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400  gap-3">
           <li className="me-2">
             <a
@@ -152,7 +141,16 @@ function FilmManagement() {
               aria-current={activeTab === 'Thể loại' ? "page" : undefined}>Thể loại</a>
           </li>
         </ul>
-        <Button className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base" leftIcon={<MdFilterList />}>Sắp xếp</Button>
+        {activeTab !== "Thể loại" ?
+          <Button className="flex w-[170px] gap-1 px-2 bg-[#00B3FF] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} onClick={handleAddClick}>
+            Tạo phim mới
+          </Button> :
+          <Button
+            onClick={handleOpenAddGenre}
+            className="flex w-[170px] gap-1 px-2 bg-[#092B4B] rounded-[5px] lg:h-[50px]  md:h-[35px]  h-[25px] text-white cursor-pointer" leftIcon={<MdAddCircleOutline className="text-white " />} >
+            Thêm thể loại
+          </Button>}
+        {/* <Button className="flex gap-2 bg-[#006A97] w-[110px] px-2 rounded-md text-base" leftIcon={<MdFilterList />}>Sắp xếp</Button> */}
       </div>
       {activeTab !== "Thể loại" ? (
         <div className="w-full grid lg:grid-cols-6 sm:grid-cols-3 gap-[30px] justify-items-center mt-5">

@@ -76,15 +76,32 @@ const ChangePassword = ({ openLoginModal }) => {
     setIsConfirmNewPasswordVisible(!isConfirmNewPasswordVisible);
   };
 
+  // const validatePassword = () => {
+  //   if (newPassword.length === 0) {
+  //     setNewPasswordError("Vui lòng nhập mật khẩu");
+  //   } else if (newPassword.length < 6) {
+  //     setNewPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
+  //   } else {
+  //     setNewPasswordError("");
+  //   }
+  // };
   const validatePassword = () => {
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
     if (newPassword.length === 0) {
       setNewPasswordError("Vui lòng nhập mật khẩu");
     } else if (newPassword.length < 6) {
       setNewPasswordError("Mật khẩu phải có ít nhất 6 ký tự");
+    } else if (!/[A-Z]/.test(newPassword)) {
+      setNewPasswordError("Mật khẩu phải có ít nhất 1 chữ cái in hoa");
+    } else if (!/[a-z]/.test(newPassword)) {
+      setNewPasswordError("Mật khẩu phải có ít nhất 1 chữ cái thường");
+    } else if (!specialCharRegex.test(newPassword)) {
+      setNewPasswordError("Mật khẩu phải có ít nhất 1 ký tự đặc biệt");
     } else {
       setNewPasswordError("");
     }
   };
+
 
   const validateConfirmPassword = () => {
     if (confirmNewPassword.length === 0) {
